@@ -1,0 +1,1 @@
+<p style="text-align: justify;"><?php echo $oil_article; ?></p>

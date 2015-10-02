@@ -1,0 +1,152 @@
+@screen-xs-max:767px;
+@screen-sm-min: 768px;
+@screen-sm-max:991px;
+@screen-md-min:992px;
+@screen-md-max:1199px;
+@screen-lg-min: 1200px;
+
+@media (max-width: @screen-xs-max) {
+  /*.container{
+    background: red;
+  }*/
+  #search{
+    margin-bottom: 10px;
+  }
+  .breadcrumb > li{
+    font-size: 0.9em;
+    padding: 0 9px
+  }
+  .product-list{
+    .product-thumb{
+      .caption {
+        min-height: 0;
+        margin-left: 0;
+        padding: 0 10px;
+      }
+    }
+  }
+  .product-grid{
+    .product-thumb{
+      .caption {
+        min-height: 0;
+      }
+    }
+  }
+  header{
+    #header-right{
+      #phone{
+        .fa{
+          /*background: #2c24ff;*/
+        }
+      }
+    }
+    #slogan{
+      padding-top:0;
+    }
+  }
+}
+@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+  /*.container{
+    background: blue;
+  }*/
+  header{
+    #header-right{
+       #phone{
+         font-size: 1.2em;
+         margin-bottom: 0;
+         /*background: red;*/
+       }
+    }
+  }
+  #menu .nav > li > a{
+    font-size: 1em;
+    padding-top:11px;
+    padding-bottom: 11px;
+  }
+}
+/*@media(min-width : @screen-sm-min) and (max-device-width : 1024px){
+
+}*/
+@media (min-width: @screen-md-min) and (max-width: @screen-md-max){
+  #search{
+    margin-bottom: 10px;
+  }
+
+  /*.container{
+    background: purple;
+  }*/
+  /*header{
+    #header-right{
+      #phone{
+          background: #56ff23;
+      }
+    }
+
+  }*/
+}
+
+@media (min-width: @screen-lg-min) {
+  /*.container{
+    background: green;
+  }*/
+}
+@media (min-width: @screen-xs-max) {
+  .product-list{
+    .product-thumb{
+      .image {
+        float: left;
+        padding: 0 15px;
+      }
+    }
+  }
+}
+@media (max-width: @screen-lg-min) {
+  .product-grid{
+    .product-thumb{
+      .caption {
+        min-height: 210px;
+        padding: 0 10px;
+      }
+    }
+  }
+}
+@media (max-width: @screen-sm-min) {
+  .product-list{
+    .product-thumb{
+      .button-group {
+        border-left: none;
+      }
+    }
+  }
+}
+@media  (max-width: @screen-sm-max){
+  header{
+    #header-right{
+      #phone{
+        #icon_block{
+          width:30px;
+        }
+        #num_phone{
+          font-size: 0.9em;
+        }
+
+
+      }
+    }
+  }
+  #menu .nav > li > a{
+    font-size: 0.9em;
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+}
+/*@media (min-width : 768px) and (max-width : 1024px) {
+  header{
+    #header-right{
+      #phone{
+        background: #ffa10b;
+      }
+    }
+
+  }
+}*/

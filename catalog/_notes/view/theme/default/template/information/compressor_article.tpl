@@ -1,0 +1,1 @@
+<p style="text-align: justify;"><?php echo $compressor_article; ?></p>

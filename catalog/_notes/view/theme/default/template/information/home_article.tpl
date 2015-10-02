@@ -1,0 +1,1 @@
+<p style="text-align: justify;"><?php echo $home_article; ?></p>

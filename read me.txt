@@ -1,0 +1,42 @@
+﻿Кэш менеджер версии 1.0 (vQMod Cache Manager v1.0)
+
+Данное расширение позволяет чистить кэш вашего сайта. Иногда, после обновления информации в админке, она не отображается на сайте. Например, после импорта данных через экзель цены на некоторых страницах могут остаться прежними. На этот случай вам и пригодится "Кэш менеджер", при помощи которого вы сможете легко очистить кэш сайта. 
+
+Поддерживаемы версии движка OpenCart: v1.5.0, v1.5.0.1, v1.5.0.2, v1.5.0.3, v1.5.0.4, v1.5.0.5, v1.5.1, v1.5.1.1, v1.5.1.2, v1.5.1.3, v1.5.2, v1.5.2.1, v1.5.3, v1.5.3.1
+
+Автор:	jason.sang
+Русскую версию подготовил: vladi noVe специально для http://opencart.ws/
+
+Внимание!!! Для работы модуля требуется VQMOD (http://code.google.com/p/vqmod/downloads/list)
+Установка:
+1. Сделайте резервную копию папки admin (на всякий пожарный).
+2. Распакуйте содержимое папки CacheManager в корень сайта.
+3. Зайдите в админку и добавьте вашей группе права на просмотр и внесение изменений (Система -> Пользователи -> Группы пользователей -> Ваша группа; поставьте галочки напротив  catalog/cachemanager).
+4. Можете приступать к работе. Зайдите в админку (Каталог -> Кэш менеджер). Поставьте галочки напротив необходимых кэш файлов (а лучше всех) и нажмите кнопку "Удалить".
+
+
+_________________________________________________________________
+
+
+vQMod Cache Manager v1.0
+Developer	jason.sang
+
+v1.5.0, v1.5.0.1, v1.5.0.2, v1.5.0.3, v1.5.0.4, v1.5.0.5, v1.5.1, v1.5.1.1, v1.5.1.2, v1.5.1.3, v1.5.2, v1.5.2.1, v1.5.3, v1.5.3.1
+
+Cache Manager v1.0
+ Manage your cache files after you update you site. Sometimes, the web site can not be updated because of cache files. So you need a manage page to delete related cache files.
+
+ Install (You need install vQMod first!!):
+ 1. Backup your admin folder.
+ 2. Unzip all files.
+ 3. Copy cache_manager.xml to vQMod->xml folder.
+ 4. You'd better execute http://www.yoursite.com/vQMod/install.
+ 4. Copy other files to corresponding position.
+ 4. Go to System->Users->User Groups, assign admin group access and modify permission for "common\cachemanager".
+ 5. All done.
+
+ If you like it, please look at my another plugin: Rich Content Grid
+ http://www.opencart.com/index.php?route=extension/extension/info&extension_id=6728
+
+ Have a good day!
+ Thank you!

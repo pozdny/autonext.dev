@@ -1,0 +1,77 @@
+@media (max-width: 767px) {
+  /*.container{
+    background: red;
+  }*/
+  #search {
+    margin-bottom: 10px;
+  }
+  .breadcrumb > li {
+    font-size: 0.9em;
+    padding: 0 9px;
+  }
+  .product-list .product-thumb .caption {
+    min-height: 0;
+    margin-left: 0;
+    padding: 0 10px;
+  }
+  .product-grid .product-thumb .caption {
+    min-height: 0;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  /*.container{
+    background: blue;
+  }*/
+  #menu .nav > li > a {
+    font-size: 1em;
+    padding-top: 11px;
+    padding-bottom: 11px;
+  }
+}
+@media (min-width: 768px) and (max-width: 1999px) {
+  #search {
+    margin-bottom: 10px;
+  }
+  header #header-right #phone {
+    font-size: 1.3em;
+  }
+  header #header-right #phone .fa {
+    font-size: 1em;
+  }
+  /*.container{
+    background: purple;
+  }*/
+}
+@media (min-width: 992px) and (max-width: 1999px) {
+  /*.container{
+    background: yellow;
+  }*/
+  header #header-right #phone {
+    font-size: 1.7em;
+  }
+  header #header-right #phone .fa {
+    font-size: 1em;
+  }
+}
+@media (min-width: 1200px) {
+  /*.container{
+    background: green;
+  }*/
+}
+@media (min-width: 767px) {
+  .product-list .product-thumb .image {
+    float: left;
+    padding: 0 15px;
+  }
+}
+@media (max-width: 1200px) {
+  .product-grid .product-thumb .caption {
+    min-height: 210px;
+    padding: 0 10px;
+  }
+}
+@media (max-width: 768px) {
+  .product-list .product-thumb .button-group {
+    border-left: none;
+  }
+}
