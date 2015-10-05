@@ -131,18 +131,50 @@ class ControllerCommonColumnLeft extends Controller {
                     }
 
                     $category_info = $this->model_catalog_category->getCategory($path_id);
-
+                    $data['categories'] = array();
                     if ($category_info) {
                         $data['breadcrumbs'][] = array(
                             'text' => $category_info['name'],
                             'href' => $this->url->link('product/category', 'path=' . $path . $url)
                         );
-                        $categories = $this->model_catalog_category->getCategories($cat_id);
+                        if($category_info['alias'] == 'zapasnye-chasti'){
+                            $cat_id = array();
+                            if(sizeof($arr_path) <= 1){
+                                $parts = array();
+                            }
+                            $categories = $this->model_catalog_category->getCategoriesAuto($cat_id);echo '<pre>'; print_r($categories); echo '</pre>';
+                            foreach($categories as $category){
+                                $data['categories'][] = array(
+                                    'id'  => $category['category_id'],
+                                    'name'  => $category['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_catalog_product->getTotalProducts($filter_data) . ')' : ''),
+                                    'href'  => $this->url->link('product/category', 'path=' . $category['parent_id'] . '_' . $category['category_id'] . $url),
+                                    'children'    => '',
+                                    'active'   => in_array($category['category_id'], $parts),
+                                );
+                            }
+                        }
+                        else{
+                            $categories = $this->model_catalog_category->getCategories($cat_id);
+                            foreach ($categories as $category) {
+                                if(isset($cat_id_child)){
+                                    $children_data = array();
+                                    if ($category['category_id'] == $data['child_id']) {
+                                        $children = $this->model_catalog_category->getCategories($category['category_id']);
 
-                        foreach ($categories as $category) {
-                            if(isset($cat_id_child)){
-                                $children_data = array();
-                                if ($category['category_id'] == $data['child_id']) {
+                                        foreach($children as $child) {
+                                            $filter_data = array('filter_category_id' => $child['category_id'], 'filter_sub_category' => true);
+
+                                            $children_data[] = array(
+                                                'category_id' => $child['category_id'],
+                                                'name' => $child['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_catalog_product->getTotalProducts($filter_data) . ')' : ''),
+                                                'href' => $this->url->link('product/category', 'path=' . $cat_id . '_' . $category['category_id'] . '_' . $child['category_id'])
+                                            );
+                                        }
+                                    }
+                                }
+                                else{
+                                    $children_data = null;
+                                    /*$children_data = array();
                                     $children = $this->model_catalog_category->getCategories($category['category_id']);
 
                                     foreach($children as $child) {
@@ -151,40 +183,26 @@ class ControllerCommonColumnLeft extends Controller {
                                         $children_data[] = array(
                                             'category_id' => $child['category_id'],
                                             'name' => $child['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_catalog_product->getTotalProducts($filter_data) . ')' : ''),
-                                            'href' => $this->url->link('product/category', 'path=' . $cat_id . '_' . $category['category_id'] . '_' . $child['category_id'])
+                                            'href' => $this->url->link('product/category', 'path=' . $category['category_id'] . '_' . $child['category_id'])
                                         );
-                                    }
+                                    }*/
+                                    // echo '<pre>'; print_r($children_data); echo '</pre>';
                                 }
+                                $filter_data = array(
+                                    'filter_category_id'  => $category['category_id'],
+                                    'filter_sub_category' => true
+                                );
+                                $parts = explode('_', (string)$this->request->get['path']);
+                                $data['categories'][] = array(
+                                    'name'  => $category['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_catalog_product->getTotalProducts($filter_data) . ')' : ''),
+                                    'href'  => $this->url->link('product/category', 'path=' . $category['parent_id'] . '_' . $category['category_id'] . $url),
+                                    'children'    => $children_data,
+                                    'active'   => in_array($category['category_id'], $parts),
+                                );
+                                //echo $category['category_id'];
                             }
-                            else{
-                                $children_data = null;
-                                /*$children_data = array();
-                                $children = $this->model_catalog_category->getCategories($category['category_id']);
-
-                                foreach($children as $child) {
-                                    $filter_data = array('filter_category_id' => $child['category_id'], 'filter_sub_category' => true);
-
-                                    $children_data[] = array(
-                                        'category_id' => $child['category_id'],
-                                        'name' => $child['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_catalog_product->getTotalProducts($filter_data) . ')' : ''),
-                                        'href' => $this->url->link('product/category', 'path=' . $category['category_id'] . '_' . $child['category_id'])
-                                    );
-                                }*/
-                               // echo '<pre>'; print_r($children_data); echo '</pre>';
-                            }
-                            $filter_data = array(
-                                'filter_category_id'  => $category['category_id'],
-                                'filter_sub_category' => true
-                            );
-                            $parts = explode('_', (string)$this->request->get['path']);
-                            $data['categories'][] = array(
-                                'name'  => $category['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_catalog_product->getTotalProducts($filter_data) . ')' : ''),
-                                'href'  => $this->url->link('product/category', 'path=' . $category['parent_id'] . '_' . $category['category_id'] . $url),
-                                'children'    => $children_data,
-                                'active'   => in_array($category['category_id'], $parts),
-                            );
-                            //echo $category['category_id'];
                         }
+
                     }
                 }
             } else {

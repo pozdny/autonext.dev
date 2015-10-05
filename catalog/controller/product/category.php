@@ -138,7 +138,7 @@ class ControllerProductCategory extends Controller {
         else{
             $data['name_files'] = '';
         }
-		$category_info = $this->model_catalog_category->getCategory($category_id); echo '<pre>'; print_r($category_info); echo '</pre>';
+		$category_info = $this->model_catalog_category->getCategory($category_id); //echo '<pre>'; print_r($category_info); echo '</pre>';
 
 		if ($category_info) {
 			$this->document->setTitle($category_info['meta_title']);

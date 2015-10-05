@@ -338,12 +338,15 @@ $(document).ready(function() {
 // ajax catalog */
 $(function(){
 	getUrlVars();
+	window.loader = $("#loader");
 	window.Catalog = new Catalog();
 
 });
-
+var Settings = {
+	delayedTime: 10000,
+};
 var Catalog = function(){
-	this.skladNov = [];
+	this.catalogList = [];
 	var requestUrl = 'https://api2.autotrade.su?json',
 		requestUrl2 = 'index.php?route=catalog/product/editCatalog&token=' + token,
 		login = 'brylev.pavel@inbox.ru',
@@ -366,25 +369,50 @@ var Catalog = function(){
 			"method":"getCatalogsList"
 		};
 		var data = 'data=' + JSON.stringify(request);
-
 		$.ajax({
 			data: data,
+			beforeSend: function(){
+				elemShow();
+			},
 			success: function(data)
 			{
 				if(data !=''){
-					//console.log(data);
-					//_this.getSectionsList();
-					ajaxFunc(requestUrl2, data);
+					if(data.code !=''){
+						elemShow($('#notificCatalogAuto'));
+					}
+					else{
+						_this.catalogList = data;
+						_this.putMainCategory();
+					}
+
 				}
 			},
 			error: function(obj, err)
 			{
 				console.log(err);
 			}
+		}).done(function(data){
+			elemHide();
 		});
+	};
+	/**
+	 * put main category auto
+	 */
+    this.putMainCategory = function(){
+		var request = {
+			"action":"putMainCategory",
+			"list": _this.catalogList
+		};
+		ajaxFunc(requestUrl2, request);
+		setTimeout(_this.getSectionsList(), Settings.delayedTime);
 	};
 
 	this.getSectionsList = function(){
+		$.ajaxSetup({
+			url:requestUrl,
+			dataType:"json",
+			type: "POST"
+		});
 		var request = {
 			"auth_key":hash,
 			"method": "getSectionsList",
@@ -397,10 +425,13 @@ var Catalog = function(){
 
 		$.ajax({
 			data: data,
+			beforeSend: function(){
+				elemShow();
+			},
 			success: function(data)
 			{
 				if(data !=''){
-					//console.log(data);
+					console.log(data);
 					//_this.getSubSectionsList();
 				}
 			},
@@ -408,9 +439,12 @@ var Catalog = function(){
 			{
 				console.log(err);
 			}
+		}).done(function(data){
+			elemHide();
 		});
 	};
 	this.getSubSectionsList = function(){
+
 		var request = {
 			"auth_key":hash,
 			"method": "getSubSectionsList",
@@ -477,6 +511,7 @@ var Catalog = function(){
 
 	buttonStart.on('click', function(){
 		_this.getCatalogList();
+
 	});
 
 
@@ -496,16 +531,13 @@ getUrlVars = function (){
 	return vars;
 };
 
-ajaxFunc = function(requestUrl, arrayList){
+ajaxFunc = function(requestUrl, request){
 	$.ajaxSetup({
 		url:requestUrl,
 		dataType:"json",
-		type: "POST",
+		type: "POST"
 	});
-	var request = {
-		"action":"putMainCategory",
-		"list": arrayList
-	};
+
 	var data = "data=" + JSON.stringify(request);
 	$.ajax({
         data: data,
@@ -523,5 +555,24 @@ ajaxFunc = function(requestUrl, arrayList){
 		}
 	});
 };
+function elemHide(obj){
+	if(!obj){
+		obj = loader;
+	}
+	obj.animate(
+		{
+			opacity: 0
+		},
+		500,
+		function(){
+			obj.css("display", "none");
+		}
+	);
+}
+function elemShow(obj){
+	if(!obj) obj = loader;
+	obj.css("display", "block");
+	obj.animate({ opacity: 1 }, 500);
+}
 
 

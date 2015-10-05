@@ -1492,11 +1492,11 @@ class ControllerCatalogProduct extends Controller {
 			$action = $data->action;
 			$categories = $data->list;
 			if($action == 'putMainCategory'){
-				$category_id = $this->model_catalog_category->putMainCategoryAuto($categories);
+				$result = $this->model_catalog_category->putMainCategoryAuto($categories);
 			}
 		}
 		$json['action'] = $action;
-		$json['category_id'] = $category_id;
+		$json['categories'] = $result;
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}

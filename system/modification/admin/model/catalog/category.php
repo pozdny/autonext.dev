@@ -329,6 +329,14 @@ class ModelCatalogCategory extends Model {
 		$category_id_str = $query->row['query'];
 		$pos = strpos($category_id_str, '=');
 		$category_id = substr($category_id_str, $pos + 1);
+		$this->db->query("DELETE FROM " . DB_PREFIX . "category_auto");
+
+		foreach($data as $category){
+			$category_id = $category->id;
+			$category_name = $category->name;
+			$parent_name = 'zapasnye_chasti';
+			$this->db->query("INSERT INTO `" . DB_PREFIX . "category_auto` SET category_id = '" . (int)$category->id . "', `name` = '" . $category_name . "', `parent_id` = '" . (int)$category_id . "', `parent_name` = '" . $parent_name . "'");
+		}
 		if ($query->num_rows) {
 			return $data;
 		} else {

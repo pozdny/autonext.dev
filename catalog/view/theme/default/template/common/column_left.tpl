@@ -14,8 +14,14 @@
                  else{
                  $active = '';
                  }
+                 if($category['id']){
+                    $datakey = 'data-key="'.$category['id'].'"';
+                 }
+                 else{
+                    $datakey = '';
+                 }
              ?>
-            <a class="list-group-item <?php echo $active; ?>" href="<?php echo $category['href']; ?>"><?php echo $category['name']; ?></a>
+            <a class="list-group-item <?php echo $active; ?>" href="<?php echo $category['href']; ?>" <?php echo $datakey; ?>><?php echo $category['name']; ?></a>
                 <?php if ($category['children']) { ?>
                     <?php foreach ($category['children'] as $child) { ?>
                         <?php if ($child['category_id'] == $child_id_sub) { ?>
