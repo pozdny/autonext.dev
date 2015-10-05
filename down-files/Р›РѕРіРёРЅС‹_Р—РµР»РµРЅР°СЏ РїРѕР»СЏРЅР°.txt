@@ -1,0 +1,14 @@
+Зеленая поляна:
+хостинг:  https://spl50.hosting.reg.ru:8443/
+логин: u0010769
+пароль: pFF9z_7C
+
+админка:http://зеленаяполяна.рф/zp-adminsfaj9a0jladqbmo
+
+Суперадмин
+login: Zp_wp_2014
+pass:  Sadmin_Zp_2014^1
+
+Админ
+login: ZpAdmin
+pass:  SimAdmin_Zp_2014^2
