@@ -112,7 +112,7 @@ class ControllerCatalogProduct extends Controller {
 			$this->response->redirect($this->url->link('catalog/product', 'token=' . $this->session->data['token'] . $url, 'SSL'));
 		}
 
-	    $this->getForm();
+		$this->getForm();
 	}
 
 	public function delete() {
@@ -367,8 +367,8 @@ class ControllerCatalogProduct extends Controller {
 				'name'       => $result['name'],
 				'model'      => $result['model'],
 				'price'      => $result['price'],
-                'price_opt'  => $result['price_opt'],
-                'price_opt_big'  => $result['price_opt_big'],
+				'price_opt'  => $result['price_opt'],
+				'price_opt_big'  => $result['price_opt_big'],
 				'special'    => $special,
 				'quantity'   => $result['quantity'],
 				'status'     => ($result['status']) ? $this->language->get('text_enabled') : $this->language->get('text_disabled'),
@@ -395,8 +395,8 @@ class ControllerCatalogProduct extends Controller {
 		$data['entry_name'] = $this->language->get('entry_name');
 		$data['entry_model'] = $this->language->get('entry_model');
 		$data['entry_price'] = $this->language->get('entry_price');
-        $data['entry_price_opt'] = $this->language->get('entry_price_opt');
-        $data['entry_price_opt_big'] = $this->language->get('entry_price_opt_big');
+		$data['entry_price_opt'] = $this->language->get('entry_price_opt');
+		$data['entry_price_opt_big'] = $this->language->get('entry_price_opt_big');
 		$data['entry_quantity'] = $this->language->get('entry_quantity');
 		$data['entry_status'] = $this->language->get('entry_status');
 
@@ -561,8 +561,8 @@ class ControllerCatalogProduct extends Controller {
 		$data['entry_quantity'] = $this->language->get('entry_quantity');
 		$data['entry_stock_status'] = $this->language->get('entry_stock_status');
 		$data['entry_price'] = $this->language->get('entry_price');
-        $data['entry_price_opt'] = $this->language->get('entry_price_opt');
-        $data['entry_price_opt_big'] = $this->language->get('entry_price_opt_big');
+		$data['entry_price_opt'] = $this->language->get('entry_price_opt');
+		$data['entry_price_opt_big'] = $this->language->get('entry_price_opt_big');
 		$data['entry_tax_class'] = $this->language->get('entry_tax_class');
 		$data['entry_points'] = $this->language->get('entry_points');
 		$data['entry_option_points'] = $this->language->get('entry_option_points');
@@ -731,13 +731,13 @@ class ControllerCatalogProduct extends Controller {
 		if (isset($this->request->get['product_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
 			$product_info = $this->model_catalog_product->getProduct($this->request->get['product_id']);
 
-            $data['price_opt'] = $product_info['price_opt'];
+			$data['price_opt'] = $product_info['price_opt'];
 
-            $data['price_opt_big'] = $product_info['price_opt_big'];
-        }
-        //$data['price_opt'] = $product_info['price_opt'];
+			$data['price_opt_big'] = $product_info['price_opt_big'];
+		}
+		//$data['price_opt'] = $product_info['price_opt'];
 
-        //$data['price_opt_big'] = $product_info['price_opt_big'];
+		//$data['price_opt_big'] = $product_info['price_opt_big'];
 
 
 		$data['token'] = $this->session->data['token'];
@@ -866,30 +866,30 @@ class ControllerCatalogProduct extends Controller {
 			$data['shipping'] = 1;
 		}
 
-        if (isset($this->request->post['price'])) {
-            $data['price'] = $this->request->post['price'];
-        } elseif (!empty($product_info)) {
-            $data['price'] = $product_info['price'];
-        } else {
-            $data['price'] = '';
-        }
+		if (isset($this->request->post['price'])) {
+			$data['price'] = $this->request->post['price'];
+		} elseif (!empty($product_info)) {
+			$data['price'] = $product_info['price'];
+		} else {
+			$data['price'] = '';
+		}
 
 
-        if (isset($this->request->post['price_opt'])) {
-            $data['price_opt'] = $this->request->post['price_opt'];
-        } elseif (!empty($product_info)) {
-            $data['price_opt'] = $product_info['price_opt'];
-        } else {
-            $data['price_opt'] = '';
-        }
+		if (isset($this->request->post['price_opt'])) {
+			$data['price_opt'] = $this->request->post['price_opt'];
+		} elseif (!empty($product_info)) {
+			$data['price_opt'] = $product_info['price_opt'];
+		} else {
+			$data['price_opt'] = '';
+		}
 
-        if (isset($this->request->post['price_opt_big'])) {
-            $data['price_opt_big'] = $this->request->post['price_opt_big'];
-        } elseif (!empty($product_info)) {
-            $data['price_opt_big'] = $product_info['price_opt_big'];
-        } else {
-            $data['price_opt_big'] = '';
-        }
+		if (isset($this->request->post['price_opt_big'])) {
+			$data['price_opt_big'] = $this->request->post['price_opt_big'];
+		} elseif (!empty($product_info)) {
+			$data['price_opt_big'] = $product_info['price_opt_big'];
+		} else {
+			$data['price_opt_big'] = '';
+		}
 
 		$this->load->model('catalog/recurring');
 
@@ -1152,8 +1152,8 @@ class ControllerCatalogProduct extends Controller {
 						'quantity'                => $product_option_value['quantity'],
 						'subtract'                => $product_option_value['subtract'],
 						'price'                   => $product_option_value['price'],
-                        'price_opt'               => $product_option_value['price_opt'],
-                        'price_opt_big'           => $product_option_value['price_opt_big'],
+						'price_opt'               => $product_option_value['price_opt'],
+						'price_opt_big'           => $product_option_value['price_opt_big'],
 						'price_prefix'            => $product_option_value['price_prefix'],
 						'points'                  => $product_option_value['points'],
 						'points_prefix'           => $product_option_value['points_prefix'],
@@ -1204,8 +1204,8 @@ class ControllerCatalogProduct extends Controller {
 				'quantity'          => $product_discount['quantity'],
 				'priority'          => $product_discount['priority'],
 				'price'             => $product_discount['price'],
-                'price_opt'         => $product_discount['price_opt'],
-                'price_opt_big'     => $product_discount['price_opt_big'],
+				'price_opt'         => $product_discount['price_opt'],
+				'price_opt_big'     => $product_discount['price_opt_big'],
 				'date_start'        => ($product_discount['date_start'] != '0000-00-00') ? $product_discount['date_start'] : '',
 				'date_end'          => ($product_discount['date_end'] != '0000-00-00') ? $product_discount['date_end'] : ''
 			);
@@ -1226,8 +1226,8 @@ class ControllerCatalogProduct extends Controller {
 				'customer_group_id' => $product_special['customer_group_id'],
 				'priority'          => $product_special['priority'],
 				'price'             => $product_special['price'],
-                'price_opt'         => $product_special['price_opt'],
-                'price_opt_big'     => $product_special['price_opt_big'],
+				'price_opt'         => $product_special['price_opt'],
+				'price_opt_big'     => $product_special['price_opt_big'],
 				'date_start'        => ($product_special['date_start'] != '0000-00-00') ? $product_special['date_start'] : '',
 				'date_end'          => ($product_special['date_end'] != '0000-00-00') ? $product_special['date_end'] :  ''
 			);
@@ -1450,8 +1450,8 @@ class ControllerCatalogProduct extends Controller {
 									'option_value_id'         => $product_option_value['option_value_id'],
 									'name'                    => $option_value_info['name'],
 									'price'                   => (float)$product_option_value['price'] ? $this->currency->format($product_option_value['price'], $this->config->get('config_currency')) : false,
-                                    'price_opt'               => (float)$product_option_value['price_opt'] ? $this->currency->format($product_option_value['price_opt'], $this->config->get('config_currency')) : false,
-                                    'price_opt_big'               => (float)$product_option_value['price_opt_big'] ? $this->currency->format($product_option_value['price_opt_big'], $this->config->get('config_currency')) : false,
+									'price_opt'               => (float)$product_option_value['price_opt'] ? $this->currency->format($product_option_value['price_opt'], $this->config->get('config_currency')) : false,
+									'price_opt_big'               => (float)$product_option_value['price_opt_big'] ? $this->currency->format($product_option_value['price_opt_big'], $this->config->get('config_currency')) : false,
 									'price_prefix'            => $product_option_value['price_prefix']
 								);
 							}
@@ -1475,8 +1475,8 @@ class ControllerCatalogProduct extends Controller {
 					'model'      => $result['model'],
 					'option'     => $option_data,
 					'price'      => $result['price'],
-                    'price_opt'  => $result['price_opt'],
-                    'price_opt_big'  => $result['price_opt_big']
+					'price_opt'  => $result['price_opt'],
+					'price_opt_big'  => $result['price_opt_big']
 				);
 			}
 		}
@@ -1490,15 +1490,6 @@ class ControllerCatalogProduct extends Controller {
 			$this->load->model('catalog/category');
 			$data = json_decode(html_entity_decode($this->request->post['data']));
 			$action = $data->action;
-<<<<<<< HEAD
-			$categories = $data->list;
-			if($action == 'putMainCategory'){
-				$result = $this->model_catalog_category->putMainCategoryAuto($categories);
-			}
-		}
-		$json['action'] = $action;
-		$json['categories'] = $result;
-=======
 			if($action == 'putMainCategory'){
 				$categories = $data->list;
 				$this->model_catalog_category->putMainCategoryAuto($categories);
@@ -1521,7 +1512,6 @@ class ControllerCatalogProduct extends Controller {
 		$json['action'] = $action;
 
 
->>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}

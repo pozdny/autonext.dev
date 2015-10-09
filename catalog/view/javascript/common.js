@@ -506,9 +506,10 @@ var Catalog = function(){
 	var htmlCElems = {
 		apiContent:     $('#content'),
 		placeTo:        $('#content').find('h1'),
-		buttonSearch:   $('#searchAuto'),
+		buttonSearch:   $('#searchItems'),
 		buttonCategory: $('.getSectionsList'),
-		buttonSection:  '.getSubSectionsList'
+		buttonSection:  '.getSubSectionsList',
+		itemsSection:  '.getItemsByCatalog'
 	};
 	$.ajaxSetup({
 		url:requestUrl2,
@@ -518,6 +519,7 @@ var Catalog = function(){
 	});
 
 	this.startAction = function(){
+
 		$(htmlCElems.buttonCategory).on('click', function(e){
 			e.preventDefault();
 			var catalog_id = $(this).data("key");
@@ -525,9 +527,15 @@ var Catalog = function(){
 
 		});
 		$(htmlCElems.apiContent).on('click', htmlCElems.buttonSection, function(e){
-			var section_id = $(this).data("key"); console.log(section_id);
+			var section_id = $(this).data("key");
 			_this.getSubSectionsList(section_id);
 		});
+		$(htmlCElems.apiContent).on('click', htmlCElems.itemsSection, function(e){
+			$(this).toggleClass('active');
+			//var item_id = $(this).data("key");
+
+		});
+
 	};
 	this.getSectionsList = function(catalog_id){
 		var  request = {
@@ -544,6 +552,7 @@ var Catalog = function(){
 				if(isError(data)) return false;
 				var body = new BodySection(data);
 				_this.pushBody(body);
+				$('body,html').animate({scrollTop:0},800);
 			},
 			error: function (obj, err) {
 				console.log(err);
@@ -572,6 +581,16 @@ var Catalog = function(){
 				if(isError(data)) return false;
 				var body = new BodySection(data);
 				_this.pushBody(body);
+				var sectionPhoto = $('.section-photo');
+				$.each(sectionPhoto, function(){
+					$(this).magnificPopup({
+						type:'image',
+					});
+					$(this).on('click', function(e){
+						e.preventDefault();
+					})
+				});
+				$('body,html').animate({scrollTop:0},800);
 			},
 			error: function (obj, err) {
 				console.log(err);
@@ -606,10 +625,12 @@ var BodySection = function(options){
 		breadCrumbElem: '<ol class="breadcrumb"></ol>',
 		breadCrumbElemLi: '<li class="active"></li>',
 		sectionBody: '<div id="sectionBody"></div>',
-		spanElem: '<span></span>',
-		rowElem: '<div class="row"></div>',
+		spanElem: '<div class="chooseInfo"></div>',
+		rowElem: '<div class="row rowBody"></div>',
 		sectionElem: '<div class="col-xs-4 getSubSectionsList list-group-item"></div>',
-		photoElem:'<a href="" class="thumbnail"><i class="fa fa-camera"></li></a>'
+		itemsElem: '<div class="col-xs-4 getItemsByCatalog list-group-item"></div>',
+		photoElem:'<i class="fa fa-camera"></li>',
+		searchElem:'<button class="btn btn-warning" id="searchItems">Найти</button>'
 
 	};
 	var sectionMain = $('#sectionMain');
@@ -634,7 +655,6 @@ var BodySection = function(options){
 			textChoose = "Выберите подраздел:";
 			photo = htmlMsgElems.photoElem;
 		}
-		console.log(photo);
 		$.each(this.parent_name, function(ind, val){
 			breadcrumb
 				.append($(htmlMsgElems.breadCrumbElemLi)
@@ -643,20 +663,39 @@ var BodySection = function(options){
 		});
 		$.each(this.sections, function(ind, val){
 			var data_key = val.category_id;
-			
-			sectionBody
-				.append($(htmlMsgElems.sectionElem).attr("data-key", data_key)
-					.append(photo)
-					.append($('<h5>')
-						.append($('<strong>')
-							.append(val.name)))
-					);
+			if(parentLength == 1){
+				sectionBody
+					.append($(htmlMsgElems.sectionElem).attr("data-key", data_key)
+						.append(href)
+						.append($('<h5>')
+							.append($('<strong>')
+								.append(val.name)))
+				);
+			}
+			else if(parentLength == 2){
+				var href = '';
+				if(val.photo){
+					href = $('<a class="section-photo">').attr('href', val.photo).append(photo);
+				}
+				sectionBody
+					.append($(htmlMsgElems.itemsElem).attr("data-key", data_key)
+						.append(href)
+						.append($('<h5>')
+							.append($('<strong>')
+								.append(val.name)))
+				);
+			}
+
 		});
+		if(parentLength == 2){
+			var searchButton = htmlMsgElems.searchElem;
+		}
         body
 			.append(breadcrumb)
 			.append($(htmlMsgElems.sectionBody)
 				.append($(htmlMsgElems.spanElem).addClass('chooseInfo')
 					.append(textChoose))
+				.append(searchButton)
 				.append(sectionBody)
 
 
@@ -701,7 +740,7 @@ ajaxFunc = function(requestUrl, arrayList){
 		success: function(data)
 		{
 			if(data !=''){
-				console.log('234');
+
 				//_this.getSectionsList();
 
 			}
@@ -715,5 +754,8 @@ ajaxFunc = function(requestUrl, arrayList){
 function isError(replay){
 	return (replay.error != null);
 }
+$(document).ready(function() {
+
+});
 
 

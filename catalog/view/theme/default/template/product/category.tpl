@@ -188,3 +188,14 @@
     <?php echo $column_right; ?></div>
 </div>
 <?php echo $footer; ?>
+<script type="text/javascript"><!--
+  $(document).ready(function() {
+    $('.thumbnails').magnificPopup({
+      type:'image',
+      delegate: 'a',
+      gallery: {
+        enabled:true
+      }
+    });
+  });
+  //--></script>
