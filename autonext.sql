@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.11
+-- version 4.0.10.10
 -- http://www.phpmyadmin.net
 --
--- Хост: 127.0.0.1
--- Время создания: Окт 09 2015 г., 05:22
--- Версия сервера: 5.6.21
--- Версия PHP: 5.6.3
+-- Хост: 127.0.0.1:3306
+-- Время создания: Окт 09 2015 г., 13:31
+-- Версия сервера: 5.5.45
+-- Версия PHP: 5.6.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `oc_address` (
-`address_id` int(11) NOT NULL,
+  `address_id` int(11) NOT NULL AUTO_INCREMENT,
   `customer_id` int(11) NOT NULL,
   `firstname` varchar(32) NOT NULL,
   `lastname` varchar(32) NOT NULL,
@@ -38,8 +38,10 @@ CREATE TABLE IF NOT EXISTS `oc_address` (
   `postcode` varchar(10) NOT NULL,
   `country_id` int(11) NOT NULL DEFAULT '0',
   `zone_id` int(11) NOT NULL DEFAULT '0',
-  `custom_field` text NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  `custom_field` text NOT NULL,
+  PRIMARY KEY (`address_id`),
+  KEY `customer_id` (`customer_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Дамп данных таблицы `oc_address`
@@ -56,7 +58,7 @@ INSERT INTO `oc_address` (`address_id`, `customer_id`, `firstname`, `lastname`, 
 --
 
 CREATE TABLE IF NOT EXISTS `oc_affiliate` (
-`affiliate_id` int(11) NOT NULL,
+  `affiliate_id` int(11) NOT NULL AUTO_INCREMENT,
   `firstname` varchar(32) NOT NULL,
   `lastname` varchar(32) NOT NULL,
   `email` varchar(96) NOT NULL,
@@ -86,8 +88,9 @@ CREATE TABLE IF NOT EXISTS `oc_affiliate` (
   `ip` varchar(40) NOT NULL,
   `status` tinyint(1) NOT NULL,
   `approved` tinyint(1) NOT NULL,
-  `date_added` datetime NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `date_added` datetime NOT NULL,
+  PRIMARY KEY (`affiliate_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -96,13 +99,14 @@ CREATE TABLE IF NOT EXISTS `oc_affiliate` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_affiliate_activity` (
-`activity_id` int(11) NOT NULL,
+  `activity_id` int(11) NOT NULL AUTO_INCREMENT,
   `affiliate_id` int(11) NOT NULL,
   `key` varchar(64) NOT NULL,
   `data` text NOT NULL,
   `ip` varchar(40) NOT NULL,
-  `date_added` datetime NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `date_added` datetime NOT NULL,
+  PRIMARY KEY (`activity_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -111,13 +115,16 @@ CREATE TABLE IF NOT EXISTS `oc_affiliate_activity` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_affiliate_login` (
-`affiliate_login_id` int(11) NOT NULL,
+  `affiliate_login_id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(96) NOT NULL,
   `ip` varchar(40) NOT NULL,
   `total` int(4) NOT NULL,
   `date_added` datetime NOT NULL,
-  `date_modified` datetime NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `date_modified` datetime NOT NULL,
+  PRIMARY KEY (`affiliate_login_id`),
+  KEY `email` (`email`),
+  KEY `ip` (`ip`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -126,13 +133,14 @@ CREATE TABLE IF NOT EXISTS `oc_affiliate_login` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_affiliate_transaction` (
-`affiliate_transaction_id` int(11) NOT NULL,
+  `affiliate_transaction_id` int(11) NOT NULL AUTO_INCREMENT,
   `affiliate_id` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
   `description` text NOT NULL,
   `amount` decimal(15,4) NOT NULL,
-  `date_added` datetime NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `date_added` datetime NOT NULL,
+  PRIMARY KEY (`affiliate_transaction_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -141,15 +149,16 @@ CREATE TABLE IF NOT EXISTS `oc_affiliate_transaction` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_api` (
-`api_id` int(11) NOT NULL,
+  `api_id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(64) NOT NULL,
   `firstname` varchar(64) NOT NULL,
   `lastname` varchar(64) NOT NULL,
   `password` text NOT NULL,
   `status` tinyint(1) NOT NULL,
   `date_added` datetime NOT NULL,
-  `date_modified` datetime NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `date_modified` datetime NOT NULL,
+  PRIMARY KEY (`api_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Дамп данных таблицы `oc_api`
@@ -165,10 +174,11 @@ INSERT INTO `oc_api` (`api_id`, `username`, `firstname`, `lastname`, `password`,
 --
 
 CREATE TABLE IF NOT EXISTS `oc_attribute` (
-`attribute_id` int(11) NOT NULL,
+  `attribute_id` int(11) NOT NULL AUTO_INCREMENT,
   `attribute_group_id` int(11) NOT NULL,
-  `sort_order` int(3) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+  `sort_order` int(3) NOT NULL,
+  PRIMARY KEY (`attribute_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 --
 -- Дамп данных таблицы `oc_attribute`
@@ -196,7 +206,8 @@ INSERT INTO `oc_attribute` (`attribute_id`, `attribute_group_id`, `sort_order`) 
 CREATE TABLE IF NOT EXISTS `oc_attribute_description` (
   `attribute_id` int(11) NOT NULL,
   `language_id` int(11) NOT NULL,
-  `name` varchar(64) NOT NULL
+  `name` varchar(64) NOT NULL,
+  PRIMARY KEY (`attribute_id`,`language_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -223,9 +234,10 @@ INSERT INTO `oc_attribute_description` (`attribute_id`, `language_id`, `name`) V
 --
 
 CREATE TABLE IF NOT EXISTS `oc_attribute_group` (
-`attribute_group_id` int(11) NOT NULL,
-  `sort_order` int(3) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+  `attribute_group_id` int(11) NOT NULL AUTO_INCREMENT,
+  `sort_order` int(3) NOT NULL,
+  PRIMARY KEY (`attribute_group_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Дамп данных таблицы `oc_attribute_group`
@@ -246,7 +258,8 @@ INSERT INTO `oc_attribute_group` (`attribute_group_id`, `sort_order`) VALUES
 CREATE TABLE IF NOT EXISTS `oc_attribute_group_description` (
   `attribute_group_id` int(11) NOT NULL,
   `language_id` int(11) NOT NULL,
-  `name` varchar(64) NOT NULL
+  `name` varchar(64) NOT NULL,
+  PRIMARY KEY (`attribute_group_id`,`language_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -266,10 +279,11 @@ INSERT INTO `oc_attribute_group_description` (`attribute_group_id`, `language_id
 --
 
 CREATE TABLE IF NOT EXISTS `oc_banner` (
-`banner_id` int(11) NOT NULL,
+  `banner_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
-  `status` tinyint(1) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+  `status` tinyint(1) NOT NULL,
+  PRIMARY KEY (`banner_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- Дамп данных таблицы `oc_banner`
@@ -287,12 +301,13 @@ INSERT INTO `oc_banner` (`banner_id`, `name`, `status`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `oc_banner_image` (
-`banner_image_id` int(11) NOT NULL,
+  `banner_image_id` int(11) NOT NULL AUTO_INCREMENT,
   `banner_id` int(11) NOT NULL,
   `link` varchar(255) NOT NULL,
   `image` varchar(255) NOT NULL,
-  `sort_order` int(3) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM AUTO_INCREMENT=115 DEFAULT CHARSET=utf8;
+  `sort_order` int(3) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`banner_image_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=115 ;
 
 --
 -- Дамп данных таблицы `oc_banner_image`
@@ -326,7 +341,8 @@ CREATE TABLE IF NOT EXISTS `oc_banner_image_description` (
   `banner_image_id` int(11) NOT NULL,
   `language_id` int(11) NOT NULL,
   `banner_id` int(11) NOT NULL,
-  `title` varchar(64) NOT NULL
+  `title` varchar(64) NOT NULL,
+  PRIMARY KEY (`banner_image_id`,`language_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -358,7 +374,7 @@ INSERT INTO `oc_banner_image_description` (`banner_image_id`, `language_id`, `ba
 --
 
 CREATE TABLE IF NOT EXISTS `oc_category` (
-`category_id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL AUTO_INCREMENT,
   `image` varchar(255) DEFAULT NULL,
   `parent_id` int(11) NOT NULL DEFAULT '0',
   `top` tinyint(1) NOT NULL,
@@ -366,8 +382,10 @@ CREATE TABLE IF NOT EXISTS `oc_category` (
   `sort_order` int(3) NOT NULL DEFAULT '0',
   `status` tinyint(1) NOT NULL,
   `date_added` datetime NOT NULL,
-  `date_modified` datetime NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=79 DEFAULT CHARSET=utf8;
+  `date_modified` datetime NOT NULL,
+  PRIMARY KEY (`category_id`),
+  KEY `parent_id` (`parent_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=79 ;
 
 --
 -- Дамп данных таблицы `oc_category`
@@ -402,7 +420,8 @@ CREATE TABLE IF NOT EXISTS `oc_category_auto` (
   `category_id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `parent_id` int(11) DEFAULT NULL,
-  `parent_name` varchar(255) DEFAULT NULL
+  `parent_name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`category_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -467,7 +486,9 @@ CREATE TABLE IF NOT EXISTS `oc_category_description` (
   `description` text NOT NULL,
   `meta_title` varchar(255) NOT NULL,
   `meta_description` varchar(255) NOT NULL,
-  `meta_keyword` varchar(255) NOT NULL
+  `meta_keyword` varchar(255) NOT NULL,
+  PRIMARY KEY (`category_id`,`language_id`),
+  KEY `name` (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -501,7 +522,8 @@ INSERT INTO `oc_category_description` (`category_id`, `language_id`, `name`, `de
 
 CREATE TABLE IF NOT EXISTS `oc_category_filter` (
   `category_id` int(11) NOT NULL,
-  `filter_id` int(11) NOT NULL
+  `filter_id` int(11) NOT NULL,
+  PRIMARY KEY (`category_id`,`filter_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -513,7 +535,8 @@ CREATE TABLE IF NOT EXISTS `oc_category_filter` (
 CREATE TABLE IF NOT EXISTS `oc_category_path` (
   `category_id` int(11) NOT NULL,
   `path_id` int(11) NOT NULL,
-  `level` int(11) NOT NULL
+  `level` int(11) NOT NULL,
+  PRIMARY KEY (`category_id`,`path_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -563,7 +586,8 @@ INSERT INTO `oc_category_path` (`category_id`, `path_id`, `level`) VALUES
 CREATE TABLE IF NOT EXISTS `oc_category_section_auto` (
   `category_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `photo` varchar(255) DEFAULT NULL
+  `photo` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -713,8 +737,9 @@ CREATE TABLE IF NOT EXISTS `oc_category_subsection_auto` (
   `name` varchar(255) NOT NULL,
   `code` int(11) DEFAULT NULL,
   `photo` varchar(255) DEFAULT NULL,
-  `photo_preview` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `photo_preview` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Дамп данных таблицы `oc_category_subsection_auto`
@@ -893,7 +918,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (487, 'RENAULT KANGOO 97-03', 1057, 'http://autotrade.su/picw.php?model=1057&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/1057.jpg'),
 (489, 'DAEWOO LANOS 97-', 809, 'http://autotrade.su/picw.php?model=809&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/809.jpg'),
 (490, 'DAEWOO ESPERO 95-99', 811, 'http://autotrade.su/picw.php?model=811&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/811.jpg'),
-(491, 'HONDA ACCORD 98-02 ??????????', 76, 'http://autotrade.su/picw.php?model=76&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/76.jpg'),
+(491, 'HONDA ACCORD 98-02 сингапурец', 76, 'http://autotrade.su/picw.php?model=76&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/76.jpg'),
 (492, 'HONDA INSPIRE/ACCORD USA  UC1 03-07', 66, 'http://autotrade.su/picw.php?model=66&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/66.jpg'),
 (493, 'HONDA MOBILIO GB1/2 01-', 786, 'http://autotrade.su/picw.php?model=786&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/786.jpg'),
 (494, 'SUZUKI AERIO/LIANA 01-07', 286, 'http://autotrade.su/picw.php?model=286&amp;state=1&amp;size=602.452', 'http://autotrade.su/files/photo/models/preview/286.jpg'),
@@ -971,7 +996,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (785, 'CHEVROLET AVEO 05-07 4/5D DAEWOO KALOS 02-', 6457, 'http://autotrade.su/picw.php?model=6457&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/6457.jpg'),
 (786, 'CHEVROLET LACETTI 04-', 6458, 'http://autotrade.su/picw.php?model=6458&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/6458.jpg'),
 (787, 'FORD TRANSIT 06-', 6459, 'http://autotrade.su/picw.php?model=6459&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/6459.jpg'),
-(788, 'HYUNDAI SANTA FE 00-06/????? 06-', 6460, 'http://autotrade.su/picw.php?model=6460&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/6460.jpg'),
+(788, 'HYUNDAI SANTA FE 00-06/ТАГАЗ 06-', 6460, 'http://autotrade.su/picw.php?model=6460&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/6460.jpg'),
 (789, 'HYUNDAI SONATA IV 01-04', 6461, 'http://autotrade.su/picw.php?model=6461&amp;state=1&amp;size=500.354', 'http://autotrade.su/files/photo/models/preview/6461.jpg'),
 (790, 'HYUNDAI SONATA NF V 04-09', 6462, 'http://autotrade.su/picw.php?model=6462&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/6462.jpg'),
 (791, 'HYUNDAI ACCENT 06-10', 6463, 'http://autotrade.su/picw.php?model=6463&amp;state=1&amp;size=500.340', 'http://autotrade.su/files/photo/models/preview/6463.jpg'),
@@ -1023,7 +1048,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (845, 'MAZDA TITAN 89-00', 240, 'http://autotrade.su/picw.php?model=240&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/240.jpg'),
 (846, 'NISSAN CONDORDIESEL 91-01', 234, 'http://autotrade.su/picw.php?model=234&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/234.jpg'),
 (847, 'TOYOTA STARLET #P9# 96-99', 136, 'http://autotrade.su/picw.php?model=136&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/136.jpg'),
-(848, '????????????? ??????', 277, '', ''),
+(848, 'Универсальные товары', 277, '', ''),
 (849, 'NISSAN DATSUN D21 85-97', 26, 'http://autotrade.su/picw.php?model=26&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/26.jpg'),
 (850, 'MITSUBISHI PAJERO V8/9#W 06-', 7589, 'http://autotrade.su/picw.php?model=7589&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/7589.jpg'),
 (851, 'SUBARU FORESTER SH5 08-13', 7590, 'http://autotrade.su/picw.php?model=7590&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/7590.jpg'),
@@ -1112,33 +1137,33 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (2034, 'CHEVROLET TAHOE/SUBURBAN 92-99', 1782, '', ''),
 (2035, 'SKODA FABIA 99-', 1783, '', ''),
 (2041, 'TOYOTA AVENSIS #T27# 08-', 6451, 'http://autotrade.su/picw.php?model=6451&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/6451.jpg'),
-(2042, '??? ??????', 7614, '', ''),
-(2043, '??? ??????', 7615, '', ''),
-(2044, '??? ??????', 7616, '', ''),
-(2046, '??? ??????', 7618, '', ''),
-(2047, '??? ??????', 7619, '', ''),
-(2048, '??? ??????', 7620, '', ''),
-(2049, '??? ??????', 7621, '', ''),
-(2050, '??? ??????', 7622, '', ''),
-(2051, '??? ??????', 7623, '', ''),
-(2052, '??? ??????', 7624, '', ''),
-(2053, '??? ??????', 7625, '', ''),
-(2054, '??? ??????', 7626, '', ''),
-(2056, '??? ??????', 7628, '', ''),
-(2057, '??? ??????', 7629, '', ''),
-(2058, '??? ??????', 7630, '', ''),
-(2059, '??? ??????', 7631, '', ''),
-(2060, '??? ??????', 7632, '', ''),
-(2061, '??? ??????', 7633, '', ''),
-(2067, '??? ??????', 7639, '', ''),
-(2069, '??? ??????', 7641, '', ''),
-(2074, '??? ??????', 7646, '', ''),
-(2078, '??? ??????', 7650, '', ''),
-(2081, '??? ??????', 7653, '', ''),
-(2082, '??? ??????', 7654, '', ''),
-(2084, '??? ??????', 7656, '', ''),
-(2088, '??? ??????', 7660, '', ''),
-(2095, '??? ??????', 7667, '', ''),
+(2042, 'Все модели', 7614, '', ''),
+(2043, 'Все модели', 7615, '', ''),
+(2044, 'Все модели', 7616, '', ''),
+(2046, 'Все модели', 7618, '', ''),
+(2047, 'Все модели', 7619, '', ''),
+(2048, 'Все модели', 7620, '', ''),
+(2049, 'Все модели', 7621, '', ''),
+(2050, 'Все модели', 7622, '', ''),
+(2051, 'Все модели', 7623, '', ''),
+(2052, 'Все модели', 7624, '', ''),
+(2053, 'Все модели', 7625, '', ''),
+(2054, 'Все модели', 7626, '', ''),
+(2056, 'Все модели', 7628, '', ''),
+(2057, 'Все модели', 7629, '', ''),
+(2058, 'Все модели', 7630, '', ''),
+(2059, 'Все модели', 7631, '', ''),
+(2060, 'Все модели', 7632, '', ''),
+(2061, 'Все модели', 7633, '', ''),
+(2067, 'Все модели', 7639, '', ''),
+(2069, 'Все модели', 7641, '', ''),
+(2074, 'Все модели', 7646, '', ''),
+(2078, 'Все модели', 7650, '', ''),
+(2081, 'Все модели', 7653, '', ''),
+(2082, 'Все модели', 7654, '', ''),
+(2084, 'Все модели', 7656, '', ''),
+(2088, 'Все модели', 7660, '', ''),
+(2095, 'Все модели', 7667, '', ''),
 (2100, 'AUDI A4/S4 99-01', 7672, 'http://autotrade.su/picw.php?model=7672&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/7672.jpg'),
 (2101, 'BMW 7-SERIES E65 01-08', 7673, 'http://autotrade.su/picw.php?model=7673&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/7673.jpg'),
 (2102, 'BMW 3-SERIES E36 90-00', 7674, 'http://autotrade.su/picw.php?model=7674&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/7674.jpg'),
@@ -1182,11 +1207,29 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (3140, 'LEXUS RX300 97-03', 8712, 'http://autotrade.su/picw.php?model=8712&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/8712.jpg'),
 (3141, 'LEXUS RX300/330/350/400H 03-08', 8713, 'http://autotrade.su/picw.php?model=8713&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/8713.jpg'),
 (3142, 'VOLVO S60 00-09', 8714, 'http://autotrade.su/picw.php?model=8714&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/8714.jpg'),
+(3144, '1-2KD-FTV', 8715, '', ''),
+(3145, '1UZ', 8716, '', ''),
 (3146, '1JZ-GE', 8717, '', ''),
+(3147, '1JZ-FSE', 8718, '', ''),
+(3148, '1JZ-GTE', 8719, '', ''),
 (3149, '1KZ-TE', 8720, '', ''),
+(3150, '2-5L', 8721, '', ''),
+(3151, '2UZ', 8722, '', ''),
 (3152, '2JZ-GE', 8723, '', ''),
+(3153, '2JZ-FSE', 8724, '', ''),
+(3154, '3UZ', 8725, '', ''),
+(3155, '3S-FSE', 8726, '', ''),
+(3156, '4-5AFE', 8727, '', ''),
 (3157, '4E-FE', 8728, '', ''),
 (3158, '5E-FE', 8729, '', ''),
+(3159, '3-5S-FE', 8730, '', ''),
+(3160, '1.4VZ', 8731, '', ''),
+(3161, '5VZ-FE', 8732, '', ''),
+(3162, '1-3C', 8733, '', ''),
+(3163, '1-3MZ-FE', 8734, '', ''),
+(3164, '1G-FE', 8735, '', ''),
+(3165, '4A-GE', 8736, '', ''),
+(3166, '3S-GE/3S-GTE', 8737, '', ''),
 (3167, 'B18-20B', 8738, '', ''),
 (3168, 'F23', 8739, '', ''),
 (3169, 'D16A', 8740, '', ''),
@@ -1218,71 +1261,103 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (3202, '4G93 SOHC', 8773, '', ''),
 (3203, 'MITSUBISHI FUSO CANTER FE5#/FE6# 94-03', 8774, 'http://autotrade.su/picw.php?model=8774&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/8774.jpg'),
 (3204, 'MITSUBISHI FUSO CANTER FE7# 03-', 8775, 'http://autotrade.su/picw.php?model=8775&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/8775.jpg'),
-(3207, '????????', 8778, '', ''),
-(3214, '????????', 8785, '', ''),
-(3216, '?????? ?????????', 8787, '', ''),
-(3218, '?????', 8789, '', ''),
-(3226, '????????? ??????????', 8797, '', ''),
-(3232, '????? ???', 8803, '', ''),
-(3234, '????????', 8805, '', ''),
-(3235, '????? ?????????', 8806, '', ''),
-(3237, '??????? ??????????????', 8808, '', ''),
-(3241, '??????????', 8812, '', ''),
-(3248, '????????????', 8819, '', ''),
-(3249, '??????', 8820, '', ''),
-(3250, '?????? ???', 8821, '', ''),
-(3251, '?????? ?????????????? ????', 8822, '', ''),
-(3252, '???????', 8823, '', ''),
-(3253, '??????? ????????? ????????', 8824, '', ''),
-(3254, '??????? ????????? ??????', 8825, '', ''),
-(3255, '??????? ???????', 8826, '', ''),
-(3256, '??????? ?????????', 8827, '', ''),
-(3257, '???? ?????????', 8828, '', ''),
-(3258, '????????', 8829, '', ''),
-(3259, '??????????', 8830, '', ''),
-(3260, '?????', 8831, '', ''),
-(3261, '???????????', 8832, '', ''),
-(3262, '????? ?????', 8833, '', ''),
-(3263, '??????????_', 8834, '', ''),
-(3264, '???????', 8835, '', ''),
-(3265, '?/? ?????????', 8836, '', ''),
-(3266, '?/? ??????? ?????', 8837, '', ''),
-(3267, '?/? ???', 8838, '', ''),
-(3268, '?/? ????????? ???????', 8839, '', ''),
-(3269, '?/? ??????', 8840, '', ''),
-(3270, '??????? ?????', 8841, '', ''),
-(3271, '??????', 8842, '', ''),
-(3272, '???? ????????', 8843, '', ''),
-(3273, '???????????', 8844, '', ''),
-(3274, '???? ??????', 8845, '', ''),
-(3275, '???? ???????', 8846, '', ''),
-(3276, '??????? ?????', 8847, '', ''),
-(3277, '?????? ?????????', 8848, '', ''),
-(3278, '???????', 8849, '', ''),
-(3279, '?????', 8850, '', ''),
-(3280, '???????????', 8851, '', ''),
-(3281, '???????? ??????', 8852, '', ''),
-(3282, '????????', 8853, '', ''),
-(3283, '????????', 8854, '', ''),
-(3284, '?????? ??????', 8855, '', ''),
-(3285, '????????', 8856, '', ''),
-(3286, '??????? ????????', 8857, '', ''),
-(3287, '??????? ??????', 8858, '', ''),
-(3288, '???????', 8859, '', ''),
-(3289, '????????', 8860, '', ''),
-(3290, '?????', 8861, '', ''),
-(3291, '??????', 8862, '', ''),
-(3292, '??????', 8863, '', ''),
-(3293, '???????? ??????', 8864, '', ''),
-(3294, '????????', 8865, '', ''),
-(3295, '??????????????', 8866, '', ''),
-(3296, '????? ??????', 8867, '', ''),
-(3297, '???????', 8868, '', ''),
-(3298, '?????? ??????', 8869, '', ''),
-(3299, '????', 8870, '', ''),
-(3300, '??????', 8871, '', ''),
-(3301, '???????', 8872, '', ''),
-(3303, '?????', 8874, '', ''),
+(3205, '1HZ/HDT', 8776, '', ''),
+(3206, '1HZ/HDTFTE', 8777, '', ''),
+(3207, 'Вкладыши', 8778, '', ''),
+(3208, 'Полукольца', 8779, '', ''),
+(3209, 'Головки блока цилиндров', 8780, '', ''),
+(3210, 'Двигатель прочее', 8781, '', ''),
+(3211, 'Детали газораспределительного механизма', 8782, '', ''),
+(3214, 'Шестерни', 8785, '', ''),
+(3215, 'Колпачки маслосъемные', 8786, '', ''),
+(3216, 'Кольца поршневые', 8787, '', ''),
+(3217, 'Подушки двигателя', 8788, '', ''),
+(3218, 'Помпы', 8789, '', ''),
+(3219, 'Вискомуфта', 8790, '', ''),
+(3220, 'Крыльчатки и диффузоры', 8791, '', ''),
+(3221, 'Пробка радиатора', 8792, '', ''),
+(3222, 'Поршневая группа', 8793, '', ''),
+(3223, 'Прокладки головки блока', 8794, '', ''),
+(3224, 'Прокладка клапанной крышки', 8795, '', ''),
+(3225, 'Прокладка масленного насоса', 8796, '', ''),
+(3226, 'Прокладки коллектора', 8797, '', ''),
+(3227, 'Прокладка дроссельной заслонки', 8798, '', ''),
+(3228, 'Прокладка глушителя', 8799, '', ''),
+(3229, 'Прокладка поддона двигателя', 8800, '', ''),
+(3230, 'Ремни навесного оборудования', 8801, '', ''),
+(3231, 'Ремкомплекты двигателя', 8802, '', ''),
+(3232, 'Ремни ГРМ', 8803, '', ''),
+(3233, 'Ролики ремней', 8804, '', ''),
+(3234, 'Сальники', 8805, '', ''),
+(3235, 'Свечи зажигания', 8806, '', ''),
+(3236, 'Свеча накала', 8807, '', ''),
+(3237, 'Провода высоковольтные', 8808, '', ''),
+(3238, 'Катушка зажигания', 8809, '', ''),
+(3239, 'Крышка трамблера', 8810, '', ''),
+(3240, 'Бегунок', 8811, '', ''),
+(3241, 'Термостаты', 8812, '', ''),
+(3242, 'Фильтр масляный', 8813, '', ''),
+(3243, 'Фильтр воздушный', 8814, '', ''),
+(3244, 'Фильтр салонный', 8815, '', ''),
+(3245, 'Фильтр топливный', 8816, '', ''),
+(3246, 'Шатуны', 8817, '', ''),
+(3247, 'Шкивы', 8818, '', ''),
+(3248, 'Амортизаторы', 8819, '', ''),
+(3249, 'Стойки', 8820, '', ''),
+(3250, 'Втулки СПУ', 8821, '', ''),
+(3251, 'Насосы гидроусилителя руля', 8822, '', ''),
+(3252, 'Карданы', 8823, '', ''),
+(3253, 'Колодки тормозные передние', 8824, '', ''),
+(3254, 'Колодки тормозные задние', 8825, '', ''),
+(3255, 'Колодки ручника', 8826, '', ''),
+(3256, 'Корзины сцепления', 8827, '', ''),
+(3257, 'Диск сцепления', 8828, '', ''),
+(3258, 'Выжимной', 8829, '', ''),
+(3259, 'Крестовины', 8830, '', ''),
+(3260, 'Линки', 8831, '', ''),
+(3261, 'Наконечники', 8832, '', ''),
+(3262, 'Опоры стоек', 8833, '', ''),
+(3263, 'Подшипники_', 8834, '', ''),
+(3264, 'Полуоси', 8835, '', ''),
+(3265, 'Р/К сцепления', 8836, '', ''),
+(3266, 'Р/К РУЛЕВОЙ РЕЙКИ', 8837, '', ''),
+(3267, 'Р/К ГУР', 8838, '', ''),
+(3268, 'Р/К Тормозной системы', 8839, '', ''),
+(3269, 'Р/К Прочее', 8840, '', ''),
+(3270, 'Рулевая рейка', 8841, '', ''),
+(3271, 'Рычаги', 8842, '', ''),
+(3272, 'Тяги подвески', 8843, '', ''),
+(3273, 'Сайлентблок', 8844, '', ''),
+(3274, 'Тяги задние', 8845, '', ''),
+(3275, 'Тяги рулевые', 8846, '', ''),
+(3276, 'Шаровая опора', 8847, '', ''),
+(3277, 'Шланги тормозные', 8848, '', ''),
+(3278, 'Шпильки', 8849, '', ''),
+(3279, 'Гайки', 8850, '', ''),
+(3280, 'Эксцентрики', 8851, '', ''),
+(3281, 'Подвеска прочее', 8852, '', ''),
+(3282, 'Пыльники', 8853, '', ''),
+(3283, 'Отбойник', 8854, '', ''),
+(3284, 'Втулки прочие', 8855, '', ''),
+(3285, 'Сальники', 8856, '', ''),
+(3286, 'Бамперы передние', 8857, '', ''),
+(3287, 'Бамперы задние', 8858, '', ''),
+(3288, 'Вставки', 8859, '', ''),
+(3289, 'Габариты', 8860, '', ''),
+(3290, 'Двери', 8861, '', ''),
+(3291, 'Капоты', 8862, '', ''),
+(3292, 'Крылья', 8863, '', ''),
+(3293, 'Кузовное прочее', 8864, '', ''),
+(3294, 'Повороты', 8865, '', ''),
+(3295, 'Противотуманки', 8866, '', ''),
+(3296, 'Рамки кузова', 8867, '', ''),
+(3297, 'Решетки', 8868, '', ''),
+(3298, 'Стойка кузова', 8869, '', ''),
+(3299, 'Фары', 8870, '', ''),
+(3300, 'Фонари', 8871, '', ''),
+(3301, 'Датчики', 8872, '', ''),
+(3303, 'Крыши', 8874, '', ''),
+(3306, 'Насосы высокого давления D4', 8877, '', ''),
 (3307, 'VW TRANSPORTER/CARAVELLE T4 90-03', 8878, 'http://autotrade.su/picw.php?model=8878&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/8878.jpg'),
 (3314, 'TOYOTA ALPHARD #H2# 08-', 8885, 'http://autotrade.su/picw.php?model=8885&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/8885.jpg'),
 (3315, 'TOYOTA CHASER #X9# 92-96', 8886, 'http://autotrade.su/picw.php?model=8886&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/8886.jpg'),
@@ -1387,7 +1462,8 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (3520, 'TOYOTA VISTA H/T #V4# 94-98', 9091, 'http://autotrade.su/picw.php?model=9091&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/9091.jpg'),
 (3524, 'TOYOTA VOXY AZR6# 01-07', 9095, 'http://autotrade.su/picw.php?model=9095&amp;state=1&amp;size=333.186', 'http://autotrade.su/files/photo/models/preview/9095.jpg'),
 (3526, 'TOYOTA WILL CYPHA NCP7# 02-05', 9097, 'http://autotrade.su/picw.php?model=9097&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/9097.jpg'),
-(3527, 'TOYOTA WILL VS #ZE12# 01-04', 9098, 'http://autotrade.su/picw.php?model=9098&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/9098.jpg'),
+(3527, 'TOYOTA WILL VS #ZE12# 01-04', 9098, 'http://autotrade.su/picw.php?model=9098&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/9098.jpg');
+INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
 (3528, 'TOYOTA WILL VI  NCP19 00-01', 9099, 'http://autotrade.su/picw.php?model=9099&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/9099.jpg'),
 (3529, 'TOYOTA WINDOM VCV1# 91-96', 9100, 'http://autotrade.su/picw.php?model=9100&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/9100.jpg'),
 (3530, 'TOYOTA WINDOM MCV2# 96-01', 9101, 'http://autotrade.su/picw.php?model=9101&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/9101.jpg'),
@@ -1407,8 +1483,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (3618, 'BMW X6 E71 08-', 9189, 'http://autotrade.su/picw.php?model=9189&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/9189.jpg'),
 (3620, 'BMW Z3 E36 95-04', 9191, 'http://autotrade.su/picw.php?model=9191&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/9191.jpg'),
 (3625, 'BMW Z8 E52 00-05', 9196, 'http://autotrade.su/picw.php?model=9196&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/9196.jpg'),
-(3631, 'CADILLAC CTS  02-07', 9202, 'http://autotrade.su/picw.php?model=9202&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/9202.jpg');
-INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
+(3631, 'CADILLAC CTS  02-07', 9202, 'http://autotrade.su/picw.php?model=9202&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/9202.jpg'),
 (3633, 'CADILLAC DEVILLE 94-99', 9204, 'http://autotrade.su/picw.php?model=9204&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/9204.jpg'),
 (3635, 'CADILLAC ELDORADO 92-02', 9206, 'http://autotrade.su/picw.php?model=9206&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/9206.jpg'),
 (3636, 'CADILLAC ESCALADE III 07-', 9207, 'http://autotrade.su/picw.php?model=9207&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/9207.jpg'),
@@ -1584,7 +1659,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (4174, 'HYUNDAI GENESIS 08-13 4D', 9745, 'http://autotrade.su/picw.php?model=9745&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/9745.jpg'),
 (4180, 'HYUNDAI GRACE H100 94-04', 9751, 'http://autotrade.su/picw.php?model=9751&amp;state=1&amp;size=550.413', 'http://autotrade.su/files/photo/models/preview/9751.jpg'),
 (4181, 'HYUNDAI H1-STAREX 07-', 9752, 'http://autotrade.su/picw.php?model=9752&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/9752.jpg'),
-(4183, 'HYUNDAI H1-STAREX 97-07  8 ????', 9754, 'http://autotrade.su/picw.php?model=9754&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/9754.jpg'),
+(4183, 'HYUNDAI H1-STAREX 97-07  8 мест', 9754, 'http://autotrade.su/picw.php?model=9754&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/9754.jpg'),
 (4185, 'HYUNDAI I20 09- 5D HBK', 9756, 'http://autotrade.su/picw.php?model=9756&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/9756.jpg'),
 (4187, 'HYUNDAI I30 07-12', 9758, 'http://autotrade.su/picw.php?model=9758&amp;state=1&amp;size=333.151', 'http://autotrade.su/files/photo/models/preview/9758.jpg'),
 (4192, 'HYUNDAI MATRIX/LAVITA 01-', 9763, 'http://autotrade.su/picw.php?model=9763&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/9763.jpg'),
@@ -1682,7 +1757,8 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (4386, 'LINCOLN TOWN CAR 92-97', 9957, 'http://autotrade.su/picw.php?model=9957&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/9957.jpg'),
 (4404, 'MAZDA B-SERIES 97-06', 9975, 'http://autotrade.su/picw.php?model=9975&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/9975.jpg'),
 (4407, 'MAZDA BONGO SSE8/SSF8 90-99', 9978, 'http://autotrade.su/picw.php?model=9978&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/9978.jpg'),
-(4408, 'MAZDA BONGO BRAWNY SRE9/SRF9 90-99', 9979, 'http://autotrade.su/picw.php?model=9979&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/9979.jpg'),
+(4408, 'MAZDA BONGO BRAWNY SRE9/SRF9 90-99', 9979, 'http://autotrade.su/picw.php?model=9979&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/9979.jpg');
+INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
 (4410, 'MAZDA BONGO FRIENDEE SG# 95-05', 9981, 'http://autotrade.su/picw.php?model=9981&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/9981.jpg'),
 (4411, 'MAZDA BONGO VAN SK8/SKF/SK22 99-', 9982, 'http://autotrade.su/picw.php?model=9982&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/9982.jpg'),
 (4421, 'MAZDA CX-7 ER3 06-12', 9992, 'http://autotrade.su/picw.php?model=9992&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/9992.jpg'),
@@ -1702,8 +1778,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (4468, 'MAZDA 121 DB# 90-97', 10039, 'http://autotrade.su/picw.php?model=10039&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/10039.jpg'),
 (4473, 'MAZDA RX-8 SE3P 03-09', 10044, 'http://autotrade.su/picw.php?model=10044&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/10044.jpg'),
 (4484, 'MAZDA TRIBUTE EP# 00-08', 10055, 'http://autotrade.su/picw.php?model=10055&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/10055.jpg'),
-(4486, 'MAZDA VERISA DC# 04-', 10057, 'http://autotrade.su/picw.php?model=10057&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/10057.jpg');
-INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
+(4486, 'MAZDA VERISA DC# 04-', 10057, 'http://autotrade.su/picw.php?model=10057&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/10057.jpg'),
 (4498, 'MAZDA SENTIA HD# 91-95', 10069, 'http://autotrade.su/picw.php?model=10069&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/10069.jpg'),
 (4505, 'MITSUBISHI CHARIOT DO#W 83-91', 10076, 'http://autotrade.su/picw.php?model=10076&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/10076.jpg'),
 (4508, 'MITSUBISHI COLT PLUS Z2#A 04-12', 10079, 'http://autotrade.su/picw.php?model=10079&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/10079.jpg'),
@@ -1954,23 +2029,23 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (5204, 'MERCEDES-BENZ SPRINTER CLASSIC 95-', 10775, 'http://autotrade.su/picw.php?model=10775&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/10775.jpg'),
 (5205, 'MERCEDES-BENZ MB140 95-', 10776, 'http://autotrade.su/picw.php?model=10776&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/10776.jpg'),
 (5206, 'MERCEDES-BENZ MB100 87-95', 10777, 'http://autotrade.su/picw.php?model=10777&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/10777.jpg'),
-(5207, '?????????, ??????, ????', 10778, '', ''),
-(5208, '??????????????? ?????????? ? ????????? ??? ????????? ??????????', 10779, '', ''),
-(5209, '?????????? ?????? ??? ???????? ??????', 10780, '', ''),
-(5210, '?????????? ??? ???????? ?????? ? ??????? ?????', 10781, '', ''),
-(5211, '???????? ?????', 10782, '', ''),
-(5212, '?????????? ??? ???????? ??????', 10783, '', ''),
-(5213, '??????????????? ?????????? ??? ????????? ?????, ???????? ? ?????? ????????? ??????????', 10784, '', ''),
-(5214, '?????????? ??? ????????? ????, ?????????', 10785, '', ''),
-(5215, '????????? ?????????', 10786, '', ''),
-(5216, '????? ????????, ????????', 10787, '', ''),
-(5217, '????????? ????????', 10788, '', ''),
-(5218, '?????? ????????', 10789, '', ''),
-(5219, '????????? ???????', 10790, '', ''),
-(5220, '????????? ??????????', 10791, '', ''),
-(5221, '????????? ??????????', 10792, '', ''),
-(5222, '????????? ????? ????????????', 10793, '', ''),
-(5223, '????????? ??????', 10794, '', ''),
+(5207, 'Герметики, грунты, клеи', 10778, '', ''),
+(5208, 'Вспомогательный инструмент и материалы для установки автостекла', 10779, '', ''),
+(5209, 'Инструмент ручной для удаления стекла', 10780, '', ''),
+(5210, 'Инструмент для удаления стекла с помощью струн', 10781, '', ''),
+(5211, 'Защитные чехлы', 10782, '', ''),
+(5212, 'Инструмент для переноса стекла', 10783, '', ''),
+(5213, 'Вспомогательный инструмент для демонтажа клипс, пистонов и других элементов автомобиля', 10784, '', ''),
+(5214, 'Инструмент для нанесения клея, пистолеты', 10785, '', ''),
+(5215, 'Подшипник ступичный', 10786, '', ''),
+(5216, 'Ролик натяжной, обводной', 10787, '', ''),
+(5217, 'Подшипник выжимной', 10788, '', ''),
+(5218, 'Втулка запорная', 10789, '', ''),
+(5219, 'Подшипник полуоси', 10790, '', ''),
+(5220, 'Подшипник генератора', 10791, '', ''),
+(5221, 'Подшипник шкворневой', 10792, '', ''),
+(5222, 'Подшипник муфты кондиционера', 10793, '', ''),
+(5223, 'Подшипник прочее', 10794, '', ''),
 (5229, 'MAZDA EUNOS 800 TA# 93-03', 10800, 'http://autotrade.su/picw.php?model=10800&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/10800.jpg'),
 (5231, 'OPEL VIVARO 01-14', 10802, 'http://autotrade.su/picw.php?model=10802&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/10802.jpg'),
 (5232, 'SATURN VUE 07-09', 10803, 'http://autotrade.su/picw.php?model=10803&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/10803.jpg'),
@@ -1982,8 +2057,10 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (5384, 'LEXUS GS350 2005-', 10955, '', ''),
 (5394, 'MAZDA PREMACY 1999-2005', 10965, '', ''),
 (5405, 'MITSUBISHI L200 2006-', 10976, '', ''),
+(5438, 'OPEL VECTRA A 1988-1995', 11009, 'http://autotrade.su/picw.php?model=11009&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/11009.jpg'),
 (5455, 'SUZUKI ESCUDO 1988-2005', 11026, '', ''),
-(5557, 'HONDA PARTNER 1995-2001', 11128, '', ''),
+(5557, 'HONDA PARTNER 1995-2001', 11128, '', '');
+INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
 (5618, 'MAZDA MPV 1999-', 11189, '', ''),
 (5667, 'MITSUBISHI MONTERO 1991-1998', 11238, '', ''),
 (5786, 'RENAULT CLIO 2005-', 11357, 'http://autotrade.su/picw.php?model=11357&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/11357.jpg'),
@@ -1999,9 +2076,9 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (5903, 'TOYOTA HIACE 2004-', 11474, '', ''),
 (5947, 'TOYOTA PROGRESS 1998-2004', 11518, 'http://autotrade.su/picw.php?model=11518&amp;state=1&amp;size=799.599', 'http://autotrade.su/files/photo/models/preview/11518.jpg'),
 (6065, 'SUZUKI SX4 2006-', 11636, 'http://autotrade.su/picw.php?model=11636&amp;state=1&amp;size=640.480', 'http://autotrade.su/files/photo/models/preview/11636.jpg'),
-(6071, '??????? ????', 11642, '', ''),
-(6072, '??????? ????', 11643, '', ''),
-(6073, '????? ?????', 11644, '', ''),
+(6071, 'Фильтры АКПП', 11642, '', ''),
+(6072, 'Главные пары', 11643, '', ''),
+(6073, 'Чулок моста', 11644, '', ''),
 (6074, 'NISSAN PRESEA 94-99', 11645, 'http://autotrade.su/picw.php?model=11645&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/11645.jpg'),
 (6081, 'ISUZU ELF 93-03', 11652, 'http://autotrade.su/picw.php?model=11652&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/11652.jpg'),
 (6082, 'ISUZU ELF 03-07', 11653, 'http://autotrade.su/picw.php?model=11653&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/11653.jpg'),
@@ -2017,8 +2094,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (6116, 'RENAULT SANDERO 08-12', 11687, 'http://autotrade.su/picw.php?model=11687&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/11687.jpg'),
 (6126, 'RENAULT SYMBOL 02-08 4D', 11697, 'http://autotrade.su/picw.php?model=11697&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/11697.jpg'),
 (6128, 'RENAULT TWINGO 93-07', 11699, 'http://autotrade.su/picw.php?model=11699&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/11699.jpg'),
-(6131, 'IVECO DAILY 99-', 11702, 'http://autotrade.su/picw.php?model=11702&amp;state=1&amp;size=1024.768', 'http://autotrade.su/files/photo/models/preview/11702.jpg');
-INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
+(6131, 'IVECO DAILY 99-', 11702, 'http://autotrade.su/picw.php?model=11702&amp;state=1&amp;size=1024.768', 'http://autotrade.su/files/photo/models/preview/11702.jpg'),
 (6132, 'FORD BRONCO 86-92', 11703, 'http://autotrade.su/picw.php?model=11703&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/11703.jpg'),
 (6133, 'FORD ECONOLINE 75-92', 11704, 'http://autotrade.su/picw.php?model=11704&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/11704.jpg'),
 (6134, 'FORD ESCAPE/MAVERICK 00-08', 11705, 'http://autotrade.su/picw.php?model=11705&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/11705.jpg'),
@@ -2288,7 +2364,8 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (6457, 'VOLKSWAGEN SHARAN 10-', 12025, 'http://autotrade.su/picw.php?model=12025&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/12025.jpg'),
 (6458, 'VOLKSWAGEN SHARAN 95-09', 12026, 'http://autotrade.su/picw.php?model=12026&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/12026.jpg'),
 (6460, 'VOLKSWAGEN GOL 08- 4D', 12028, 'http://autotrade.su/picw.php?model=12028&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/12028.jpg'),
-(6462, 'VOLKSWAGEN GOL 99-08 3D', 12030, 'http://autotrade.su/picw.php?model=12030&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/12030.jpg'),
+(6462, 'VOLKSWAGEN GOL 99-08 3D', 12030, 'http://autotrade.su/picw.php?model=12030&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/12030.jpg');
+INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
 (6463, 'VOLKSWAGEN GOL 99-08 5D', 12031, 'http://autotrade.su/picw.php?model=12031&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/12031.jpg'),
 (6466, 'VOLKSWAGEN GOLF V 03-08 3D', 12034, 'http://autotrade.su/picw.php?model=12034&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/12034.jpg'),
 (6467, 'VOLKSWAGEN GOLF V 03-08 5D HBK', 12035, 'http://autotrade.su/picw.php?model=12035&amp;state=1&amp;size=518.389', 'http://autotrade.su/files/photo/models/preview/12035.jpg'),
@@ -2311,8 +2388,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (6484, 'VOLKSWAGEN PASSAT B5 96-05 5D', 12052, 'http://autotrade.su/picw.php?model=12052&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/12052.jpg'),
 (6486, 'HONDA INTEGRA DC# 01-06', 12054, 'http://autotrade.su/picw.php?model=12054&amp;state=1&amp;size=546.410', 'http://autotrade.su/files/photo/models/preview/12054.jpg'),
 (6487, 'ACURA RSX DC# 01-06', 12055, 'http://autotrade.su/picw.php?model=12055&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/12055.jpg'),
-(6488, 'FIAT DUCATO 81-94', 12056, 'http://autotrade.su/picw.php?model=12056&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/12056.jpg');
-INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
+(6488, 'FIAT DUCATO 81-94', 12056, 'http://autotrade.su/picw.php?model=12056&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/12056.jpg'),
 (6489, 'CITROEN C25 81-94', 12057, 'http://autotrade.su/picw.php?model=12057&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/12057.jpg'),
 (6490, 'PEUGEOT J5 81-94', 12058, 'http://autotrade.su/picw.php?model=12058&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/12058.jpg'),
 (6491, 'FIAT UNO 88-95 3D', 12059, 'http://autotrade.su/picw.php?model=12059&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/12059.jpg'),
@@ -2356,7 +2432,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (6531, 'MERCEDES-BENZ CLK-CLASS W208 97-02 CBR', 12099, 'http://autotrade.su/picw.php?model=12099&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/12099.jpg'),
 (6534, 'MERCEDES-BENZ G-CLASS W463 80-98 3D', 12102, 'http://autotrade.su/picw.php?model=12102&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/12102.jpg'),
 (6535, 'MERCEDES-BENZ G-CLASS W463 80- 5D', 12103, 'http://autotrade.su/picw.php?model=12103&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/12103.jpg'),
-(6536, '??? ??????', 12104, '', ''),
+(6536, 'Все модели', 12104, '', ''),
 (6537, 'FORD ESCORT ZX2 98-03 2D', 12105, 'http://autotrade.su/picw.php?model=12105&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/12105.jpg'),
 (6538, 'DODGE CHALLENGER 08- 2D', 12106, 'http://autotrade.su/picw.php?model=12106&amp;state=1&amp;size=800.601', 'http://autotrade.su/files/photo/models/preview/12106.jpg'),
 (6539, 'HYUNDAI SONATA YF 10-14', 12107, 'http://autotrade.su/picw.php?model=12107&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/12107.jpg'),
@@ -2379,6 +2455,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (6614, 'AVALON', 12182, '', ''),
 (6635, 'TOYOACE', 12203, '', ''),
 (6813, 'ASCOT', 12381, '', ''),
+(6878, 'COLT', 12446, '', ''),
 (6884, 'CUORE', 12452, '', ''),
 (6963, 'MX-5', 12531, '', ''),
 (7170, 'COROLLA FIELDER', 12738, '', ''),
@@ -2404,7 +2481,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (7499, 'EJ15-20', 13067, '', ''),
 (7500, 'EJ20-25', 13068, '', ''),
 (7501, 'EJ20-25 DOHC', 13069, '', ''),
-(7524, '??? ??????', 13092, '', ''),
+(7524, 'Все модели', 13092, '', ''),
 (7527, 'DAEWOO NEXIA 08-', 13095, 'http://autotrade.su/picw.php?model=13095&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/13095.jpg'),
 (7528, 'DONG FENG', 13096, '', ''),
 (7529, 'FORD MONDEO 07- 4D', 13097, 'http://autotrade.su/picw.php?model=13097&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13097.jpg'),
@@ -2417,6 +2494,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (7536, 'FORD MONDEO 93-00 5D HBK', 13104, 'http://autotrade.su/picw.php?model=13104&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13104.jpg'),
 (7537, 'FORD MONDEO 93-00 5D WAGON', 13105, 'http://autotrade.su/picw.php?model=13105&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13105.jpg'),
 (7538, 'MITSUBISHI L200 05-', 13106, 'http://autotrade.su/picw.php?model=13106&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/13106.jpg'),
+(7539, 'INFINITI FX35/45 02-08', 13107, 'http://autotrade.su/picw.php?model=13107&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/13107.jpg'),
 (7545, 'LEXUS LS460 06-', 13113, 'http://autotrade.su/picw.php?model=13113&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13113.jpg'),
 (7549, 'NISSAN PATHFINDER 05-', 13117, 'http://autotrade.su/picw.php?model=13117&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/13117.jpg'),
 (7553, 'NISSAN XTERRA 05-', 13121, 'http://autotrade.su/picw.php?model=13121&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/13121.jpg'),
@@ -2572,7 +2650,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (7753, 'MITSUBISHI MIRAGE CJ# 95-00 2D', 13321, 'http://autotrade.su/picw.php?model=13321&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/13321.jpg'),
 (7755, 'HONDA ACCORD CL#/CM# 02-08 4D', 13323, 'http://autotrade.su/picw.php?model=13323&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/13323.jpg'),
 (7756, 'HONDA ACCORD CL#/CM# 02-08 5D', 13324, 'http://autotrade.su/picw.php?model=13324&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/13324.jpg'),
-(7757, '??? ??????', 13325, '', ''),
+(7757, 'Все модели', 13325, '', ''),
 (7758, 'HINO DOLPHIN FS270 81-', 13326, 'http://autotrade.su/picw.php?model=13326&amp;state=1&amp;size=542.407', 'http://autotrade.su/files/photo/models/preview/13326.jpg'),
 (7759, 'UAZ PATRIOT 03-14', 13327, 'http://autotrade.su/picw.php?model=13327&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13327.jpg'),
 (7760, 'MAZDA TITAN 80-89', 13328, 'http://autotrade.su/picw.php?model=13328&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13328.jpg'),
@@ -2590,7 +2668,8 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (7772, 'LADA KALINA 04-13 5D HBK', 13340, 'http://autotrade.su/picw.php?model=13340&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/13340.jpg'),
 (7773, 'LADA KALINA 04-11 4D', 13341, 'http://autotrade.su/picw.php?model=13341&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13341.jpg'),
 (7774, 'LADA KALINA 04-13 5D WAGON', 13342, 'http://autotrade.su/picw.php?model=13342&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/13342.jpg'),
-(7775, 'HINO RANGER 80-89', 13343, 'http://autotrade.su/picw.php?model=13343&amp;state=1&amp;size=591.442', 'http://autotrade.su/files/photo/models/preview/13343.jpg'),
+(7775, 'HINO RANGER 80-89', 13343, 'http://autotrade.su/picw.php?model=13343&amp;state=1&amp;size=591.442', 'http://autotrade.su/files/photo/models/preview/13343.jpg');
+INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
 (7776, 'MITSUBISHI FIGHTER 92-', 13344, 'http://autotrade.su/picw.php?model=13344&amp;state=1&amp;size=643.481', 'http://autotrade.su/files/photo/models/preview/13344.jpg'),
 (7777, 'HYUNDAI VERACRUZ/IX55 07-12', 13345, 'http://autotrade.su/picw.php?model=13345&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13345.jpg'),
 (7780, 'HONDA EDIX/FR-V BE# 04-09', 13348, 'http://autotrade.su/picw.php?model=13348&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13348.jpg'),
@@ -2613,12 +2692,11 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (7798, 'TOYOTA AVENSIS #ZT25# 03-08 5D HBK', 13366, 'http://autotrade.su/picw.php?model=13366&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13366.jpg'),
 (7799, 'TOYOTA AVENSIS #ZT25# 03-08 5D WAGON', 13367, 'http://autotrade.su/picw.php?model=13367&amp;state=1&amp;size=527.395', 'http://autotrade.su/files/photo/models/preview/13367.jpg'),
 (7800, 'TOYOTA CAMRY GRACIA #XV2# 96-01 5D WGN', 13368, 'http://autotrade.su/picw.php?model=13368&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/13368.jpg'),
-(7803, '??????', 13371, '', ''),
-(7805, '??? ??????', 13373, '', ''),
-(7806, '??? ??????', 13374, '', ''),
+(7803, 'ПРОЧЕЕ', 13371, '', ''),
+(7805, 'Все модели', 13373, '', ''),
+(7806, 'Все модели', 13374, '', ''),
 (7815, 'TOYOTA CARINA #T17# 88-92 4D', 13383, 'http://autotrade.su/picw.php?model=13383&amp;state=1&amp;size=600.450', 'http://autotrade.su/files/photo/models/preview/13383.jpg'),
-(7816, 'TOYOTA CARINA #T17# 88-92 5D WAGON', 13384, 'http://autotrade.su/picw.php?model=13384&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/13384.jpg');
-INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
+(7816, 'TOYOTA CARINA #T17# 88-92 5D WAGON', 13384, 'http://autotrade.su/picw.php?model=13384&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/13384.jpg'),
 (7817, 'TOYOTA CARINA #T17# 88-92 5D LBK', 13385, 'http://autotrade.su/picw.php?model=13385&amp;state=1&amp;size=536.402', 'http://autotrade.su/files/photo/models/preview/13385.jpg'),
 (7818, 'TOYOTA COROLLA #E9# 87-91 4D', 13386, 'http://autotrade.su/picw.php?model=13386&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/13386.jpg'),
 (7819, 'TOYOTA COROLLA #E9# 87-91 3D', 13387, 'http://autotrade.su/picw.php?model=13387&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13387.jpg'),
@@ -2784,9 +2862,11 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (8007, 'HONDA ACCORD/INSPIRE UC1 VII 03-07 4D', 13575, 'http://autotrade.su/picw.php?model=13575&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/13575.jpg'),
 (8009, 'HONDA ACCORD CD# V 93-97 4D', 13577, 'http://autotrade.su/picw.php?model=13577&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13577.jpg'),
 (8010, 'HONDA ACCORD CD# V 93-97 5D', 13578, 'http://autotrade.su/picw.php?model=13578&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/13578.jpg'),
+(8011, 'Маслонасос', 13579, '', ''),
+(8012, 'Муфта VVT-I', 13580, '', ''),
 (8013, 'HONDA ACCORD CB# IV 89-93 4D', 13581, 'http://autotrade.su/picw.php?model=13581&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13581.jpg'),
 (8014, 'HONDA ACCORD CB# IV 89-93 5D', 13582, 'http://autotrade.su/picw.php?model=13582&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13582.jpg'),
-(8015, 'HONDA ACCORD VI ???/????????)  CG123456 98-02 4D', 13583, 'http://autotrade.su/picw.php?model=13583&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13583.jpg'),
+(8015, 'HONDA ACCORD VI США/Сингапур)  CG123456 98-02 4D', 13583, 'http://autotrade.su/picw.php?model=13583&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13583.jpg'),
 (8016, 'HONDA ACCORD CU2 VIII 08-12 4D', 13584, 'http://autotrade.su/picw.php?model=13584&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13584.jpg'),
 (8017, 'HONDA ACCORD CW2 VIII 08-12 5D', 13585, 'http://autotrade.su/picw.php?model=13585&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13585.jpg'),
 (8018, 'HONDA ACCORD INSPIRE/INSPIRE/VIGOR CC#/CB# 90-95', 13586, 'http://autotrade.su/picw.php?model=13586&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/13586.jpg'),
@@ -2871,7 +2951,8 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (8104, 'VOLVO 760 86-92 5D', 13672, 'http://autotrade.su/picw.php?model=13672&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13672.jpg'),
 (8105, 'VOLVO 960 90-96 4D', 13673, 'http://autotrade.su/picw.php?model=13673&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13673.jpg'),
 (8106, 'VOLVO 960 90-96 5D', 13674, 'http://autotrade.su/picw.php?model=13674&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/13674.jpg'),
-(8109, 'VOLVO 850 91-97 4D', 13677, 'http://autotrade.su/picw.php?model=13677&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13677.jpg'),
+(8109, 'VOLVO 850 91-97 4D', 13677, 'http://autotrade.su/picw.php?model=13677&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13677.jpg');
+INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
 (8110, 'VOLVO 850 91-97 5D', 13678, 'http://autotrade.su/picw.php?model=13678&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13678.jpg'),
 (8111, 'CADILLAC CTS 07-13 4D', 13679, 'http://autotrade.su/picw.php?model=13679&amp;state=1&amp;size=561.421', 'http://autotrade.su/files/photo/models/preview/13679.jpg'),
 (8112, 'CADILLAC STS 05-11', 13680, 'http://autotrade.su/picw.php?model=13680&amp;state=1&amp;size=563.422', 'http://autotrade.su/files/photo/models/preview/13680.jpg'),
@@ -2898,8 +2979,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (8136, 'FIAT STILO 01-10 5D HBK', 13704, 'http://autotrade.su/picw.php?model=13704&amp;state=1&amp;size=589.441', 'http://autotrade.su/files/photo/models/preview/13704.jpg'),
 (8137, 'FIAT STILO 03-08 5D WGN', 13705, 'http://autotrade.su/picw.php?model=13705&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/13705.jpg'),
 (8138, 'GREAT WALL HOVER H5 05-', 13706, 'http://autotrade.su/picw.php?model=13706&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/13706.jpg'),
-(8139, 'ISUZU VEHICROSS UGS25W 97-01', 13707, 'http://autotrade.su/picw.php?model=13707&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13707.jpg');
-INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
+(8139, 'ISUZU VEHICROSS UGS25W 97-01', 13707, 'http://autotrade.su/picw.php?model=13707&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13707.jpg'),
 (8140, 'ISUZU BIGHORN/TROOPER UBS# 91-02 3D', 13708, 'http://autotrade.su/picw.php?model=13708&amp;state=1&amp;size=506.380', 'http://autotrade.su/files/photo/models/preview/13708.jpg'),
 (8141, 'ISUZU BIGHORN/TROOPER UBS# 91-02 5D', 13709, 'http://autotrade.su/picw.php?model=13709&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13709.jpg'),
 (8142, 'OPEL MONTEREY 91-02 3D', 13710, 'http://autotrade.su/picw.php?model=13710&amp;state=1&amp;size=540.405', 'http://autotrade.su/files/photo/models/preview/13710.jpg'),
@@ -2921,6 +3001,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (8164, 'CHRYSLER LE BARON 86-95 2D', 13732, 'http://autotrade.su/picw.php?model=13732&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13732.jpg'),
 (8165, 'CHEVROLET AVEO 03-06 3D', 13733, 'http://autotrade.su/picw.php?model=13733&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13733.jpg'),
 (8166, 'DAEWOO KALOS 02-06 4D', 13734, 'http://autotrade.su/picw.php?model=13734&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13734.jpg'),
+(8167, 'GEELY OTAKA 05-', 13735, 'http://autotrade.su/picw.php?model=13735&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/13735.jpg'),
 (8168, 'GREAT WALL SAILOR 05-', 13736, 'http://autotrade.su/picw.php?model=13736&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/13736.jpg'),
 (8169, 'GREAT WALL DEER 05-', 13737, 'http://autotrade.su/picw.php?model=13737&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/13737.jpg'),
 (8170, 'GREAT WALL PEGASUS 05-', 13738, 'http://autotrade.su/picw.php?model=13738&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13738.jpg'),
@@ -3073,8 +3154,9 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (8335, 'MAZDA BT50 06-11 2D', 13903, 'http://autotrade.su/picw.php?model=13903&amp;state=1&amp;size=543.407', 'http://autotrade.su/files/photo/models/preview/13903.jpg'),
 (8336, 'MAZDA BT50 06-11 4D', 13904, 'http://autotrade.su/picw.php?model=13904&amp;state=1&amp;size=592.444', 'http://autotrade.su/files/photo/models/preview/13904.jpg'),
 (8338, 'KIA BONGO III 04-', 13906, 'http://autotrade.su/picw.php?model=13906&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/13906.jpg'),
-(8340, '???????', 13908, '', ''),
-(8341, '??????? ???????', 13909, '', ''),
+(8339, 'Клапан вентиляционный', 13907, '', ''),
+(8340, 'Клапаны', 13908, '', ''),
+(8341, 'Рулевые карданы', 13909, '', ''),
 (8343, 'INFINITI QX56/80 #Z62  10-', 13911, 'http://autotrade.su/picw.php?model=13911&amp;state=1&amp;size=555.416', 'http://autotrade.su/files/photo/models/preview/13911.jpg'),
 (8351, 'CHEVROLET LANOS 97-', 13919, 'http://autotrade.su/picw.php?model=13919&amp;state=1&amp;size=800.369', 'http://autotrade.su/files/photo/models/preview/13919.jpg'),
 (8353, 'CHEVROLET/DAEWOO KALOS 03-', 13921, '', ''),
@@ -3097,18 +3179,20 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (8442, 'NISSAN SKYLINE #V35 01-07', 14010, '', ''),
 (8443, 'OPEL ASTRA F 91-98', 14011, 'http://autotrade.su/picw.php?model=14011&amp;state=1&amp;size=333.148', 'http://autotrade.su/files/photo/models/preview/14011.jpg'),
 (8444, 'OPEL ASTRA G 98-04', 14012, 'http://autotrade.su/picw.php?model=14012&amp;state=1&amp;size=333.223', 'http://autotrade.su/files/photo/models/preview/14012.jpg'),
-(8457, '???????', 14025, '', ''),
-(8458, '?????? ?????????', 14026, '', ''),
+(8456, 'Радиатор', 14024, '', ''),
+(8457, 'Привода', 14025, '', ''),
+(8458, 'Насосы топливные', 14026, '', ''),
 (8459, 'MERCEDES G-CLASS W463 92-', 14027, 'http://autotrade.su/picw.php?model=14027&amp;state=1&amp;size=333.219', 'http://autotrade.su/files/photo/models/preview/14027.jpg'),
 (8460, 'TOYOTA HILUX #GN15/25/35 04-11', 14028, 'http://autotrade.su/picw.php?model=14028&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/14028.jpg'),
 (8461, 'TOYOTA HILUX VIGO 04-10', 14029, 'http://autotrade.su/picw.php?model=14029&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14029.jpg'),
 (8462, 'RENAULT MEGANE III 08-', 14030, 'http://autotrade.su/picw.php?model=14030&amp;state=1&amp;size=333.184', 'http://autotrade.su/files/photo/models/preview/14030.jpg'),
 (8463, 'NISSAN SERENA C25 05-10', 14031, 'http://autotrade.su/picw.php?model=14031&amp;state=1&amp;size=333.214', 'http://autotrade.su/files/photo/models/preview/14031.jpg'),
-(8469, '????????? ??????', 14037, '', ''),
+(8469, 'Электрика прочее', 14037, '', ''),
 (8470, 'HYUNDAI PORTER 96-', 14038, 'http://autotrade.su/picw.php?model=14038&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/14038.jpg'),
 (8471, 'HONDA CITY 98-03', 14039, 'http://autotrade.su/picw.php?model=14039&amp;state=1&amp;size=783.587', 'http://autotrade.su/files/photo/models/preview/14039.jpg'),
 (8472, 'MAZDA 2 DE# 07- 3D', 14040, 'http://autotrade.su/picw.php?model=14040&amp;state=1&amp;size=626.469', 'http://autotrade.su/files/photo/models/preview/14040.jpg'),
 (8473, 'MAZDA 2 DE# 07- 5D', 14041, 'http://autotrade.su/picw.php?model=14041&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/14041.jpg'),
+(8475, 'Цепи ГРМ', 14043, '', ''),
 (8477, 'MITSUBISHI MINICA H4# 98- 3D', 14045, 'http://autotrade.su/picw.php?model=14045&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/14045.jpg'),
 (8478, 'MITSUBISHI MINICA H4# 98- 5D', 14046, 'http://autotrade.su/picw.php?model=14046&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14046.jpg'),
 (8479, 'BMW 5-SERIES F10 10- 4D', 14047, 'http://autotrade.su/picw.php?model=14047&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/14047.jpg'),
@@ -3125,18 +3209,20 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (8490, 'SKODA FAVORIT 89-94 5D WAGON', 14058, 'http://autotrade.su/picw.php?model=14058&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14058.jpg'),
 (8491, 'TOYOTA SIENNA 10-', 14059, 'http://autotrade.su/picw.php?model=14059&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14059.jpg'),
 (8492, 'BENTLEY CONTINENTAL GT 04- 2D CPE', 14060, 'http://autotrade.su/picw.php?model=14060&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/14060.jpg'),
-(8497, '????? ?????????', 14065, '', ''),
-(8498, '????????', 14066, '', ''),
-(8500, '????? ??????? ???????', 14068, '', ''),
-(8501, '?????', 14069, '', ''),
-(8502, '?????', 14070, '', ''),
-(8503, '???????', 14071, '', ''),
-(8504, '???????????', 14072, '', ''),
-(8505, '??????? ?????????????', 14073, '', ''),
+(8497, 'Диски тормозные', 14065, '', ''),
+(8498, 'Лампочки', 14066, '', ''),
+(8500, 'Тросы ручного тормоза', 14068, '', ''),
+(8501, 'Цапфа', 14069, '', ''),
+(8502, 'Шайбы', 14070, '', ''),
+(8503, 'Пружины', 14071, '', ''),
+(8504, 'Полуступица', 14072, '', ''),
+(8505, 'Подушки дифферинциала', 14073, '', ''),
+(8506, 'Болты головки блока', 14074, '', ''),
 (8507, 'SUZUKI IGNIS HT51/81 04-07', 14075, 'http://autotrade.su/picw.php?model=14075&amp;state=1&amp;size=333.198', 'http://autotrade.su/files/photo/models/preview/14075.jpg'),
-(8508, 'KIA SPECTRA ?????? 01-', 14076, 'http://autotrade.su/picw.php?model=14076&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14076.jpg'),
-(8509, '???????? ???????? ??????', 14077, '', ''),
-(8510, '????????? ????????', 14078, '', ''),
+(8508, 'KIA SPECTRA ИЖЕВСК 01-', 14076, 'http://autotrade.su/picw.php?model=14076&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14076.jpg'),
+(8509, 'Молдинги лобового стекла', 14077, '', ''),
+(8510, 'Крепление бамперов', 14078, '', ''),
+(8511, 'Прокладка поддона коробки', 14079, '', ''),
 (8512, 'MAZDA CAPELLA 4D SEDAN 82-87 GC##', 14080, 'http://autotrade.su/picw.php?model=14080&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14080.jpg'),
 (8513, 'MAZDA CAPELLA 2D COUPE 82-87 GC##', 14081, 'http://autotrade.su/picw.php?model=14081&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14081.jpg'),
 (8514, 'MAZDA 6/ATENZA GH# 07-13', 14082, 'http://autotrade.su/picw.php?model=14082&amp;state=1&amp;size=746.559', 'http://autotrade.su/files/photo/models/preview/14082.jpg'),
@@ -3156,12 +3242,12 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (8528, 'OPEL ASTRA J 09- 5D HBK', 14096, 'http://autotrade.su/picw.php?model=14096&amp;state=1&amp;size=611.458', 'http://autotrade.su/files/photo/models/preview/14096.jpg'),
 (8529, 'OPEL ASTRA J 09- 5D WAGON', 14097, 'http://autotrade.su/picw.php?model=14097&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14097.jpg'),
 (8530, 'BMW 6-SERIES E64 04-11 CBR', 14098, 'http://autotrade.su/picw.php?model=14098&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14098.jpg'),
-(8531, '????? ??????????', 14099, '', ''),
-(8532, '???????', 14100, '', ''),
-(8533, '?????', 14101, '', ''),
-(8534, '??????? ??????', 14102, '', ''),
-(8535, '?????????', 14103, '', ''),
-(8536, '?????????', 14104, '', ''),
+(8531, 'Щетки генератора', 14099, '', ''),
+(8532, 'Эмблемы', 14100, '', ''),
+(8533, 'Бачки', 14101, '', ''),
+(8534, 'Пластик прочее', 14102, '', ''),
+(8535, 'Усилители', 14103, '', ''),
+(8536, 'Подкрылки', 14104, '', ''),
 (8537, 'TOYOTA NOAH AZR7# 07-', 14105, 'http://autotrade.su/picw.php?model=14105&amp;state=1&amp;size=333.225', 'http://autotrade.su/files/photo/models/preview/14105.jpg'),
 (8538, 'TOYOTA VOXY AZR7# 07-', 14106, 'http://autotrade.su/picw.php?model=14106&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14106.jpg'),
 (8539, 'TOYOTA ISIS #NM1# 04-', 14107, 'http://autotrade.su/picw.php?model=14107&amp;state=1&amp;size=333.200', 'http://autotrade.su/files/photo/models/preview/14107.jpg'),
@@ -3169,6 +3255,8 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (8541, 'MAZDA 2/DEMIO 07-', 14109, 'http://autotrade.su/picw.php?model=14109&amp;state=1&amp;size=333.189', 'http://autotrade.su/files/photo/models/preview/14109.jpg'),
 (8542, 'MAZDA TRIBUTE 08-', 14110, 'http://autotrade.su/picw.php?model=14110&amp;state=1&amp;size=333.193', 'http://autotrade.su/files/photo/models/preview/14110.jpg'),
 (8543, 'MAZDA RX-8 SE3P 03-', 14111, 'http://autotrade.su/picw.php?model=14111&amp;state=1&amp;size=333.133', 'http://autotrade.su/files/photo/models/preview/14111.jpg'),
+(8544, 'Втягивающие реле стартера', 14112, '', ''),
+(8545, 'Бендиксы', 14113, '', ''),
 (8546, 'LEXUS IS250 05-', 14114, 'http://autotrade.su/picw.php?model=14114&amp;state=1&amp;size=333.184', 'http://autotrade.su/files/photo/models/preview/14114.jpg'),
 (8547, 'CADILLAC CTS 07-13 5D WGN', 14115, 'http://autotrade.su/picw.php?model=14115&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14115.jpg'),
 (8548, 'HONDA CIVIC FN# 06-11 3D HBK', 14116, 'http://autotrade.su/picw.php?model=14116&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/14116.jpg'),
@@ -3176,7 +3264,8 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (8550, 'HONDA ACCORD VI (EURO) CG6789 98-02 4D', 14118, 'http://autotrade.su/picw.php?model=14118&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14118.jpg'),
 (8551, 'HONDA ACCORD VI (EURO) CH5678 98-02 5D HBK', 14119, 'http://autotrade.su/picw.php?model=14119&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14119.jpg'),
 (8552, 'ROVER 400 95-99 4D', 14120, 'http://autotrade.su/picw.php?model=14120&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/14120.jpg'),
-(8553, 'ROVER 400 95-99 5D HBK', 14121, 'http://autotrade.su/picw.php?model=14121&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/14121.jpg'),
+(8553, 'ROVER 400 95-99 5D HBK', 14121, 'http://autotrade.su/picw.php?model=14121&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/14121.jpg');
+INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
 (8554, 'HONDA ODYSSEY RB3/4 08-', 14122, 'http://autotrade.su/picw.php?model=14122&amp;state=1&amp;size=333.159', 'http://autotrade.su/files/photo/models/preview/14122.jpg'),
 (8555, 'CITROEN SAXO 96-04 3D', 14123, 'http://autotrade.su/picw.php?model=14123&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/14123.jpg'),
 (8556, 'CITROEN SAXO 96-04 5D', 14124, 'http://autotrade.su/picw.php?model=14124&amp;state=1&amp;size=800.599', 'http://autotrade.su/files/photo/models/preview/14124.jpg'),
@@ -3184,8 +3273,8 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (8558, 'TOYOTA VERSO #R2# 09-', 14126, 'http://autotrade.su/picw.php?model=14126&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14126.jpg'),
 (8559, 'HYUNDAI ACCENT/SOLARIS 10- 4D', 14127, 'http://autotrade.su/picw.php?model=14127&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14127.jpg'),
 (8560, 'HYUNDAI ACCENT/SOLARIS 10- 5D HBK', 14128, 'http://autotrade.su/picw.php?model=14128&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/14128.jpg'),
-(8561, '??????????', 14129, '', ''),
-(8562, '????????? ????', 14130, '', ''),
+(8561, 'Подшипники', 14129, '', ''),
+(8562, 'Прокладки АКПП', 14130, '', ''),
 (8563, 'BMW 5-SERIES GRAN TURISMO F07 09- 5D HBK', 14131, 'http://autotrade.su/picw.php?model=14131&amp;state=1&amp;size=543.407', 'http://autotrade.su/files/photo/models/preview/14131.jpg'),
 (8564, 'MAZDA MPV LY# 06-', 14132, 'http://autotrade.su/picw.php?model=14132&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14132.jpg'),
 (8565, 'HYUNDAI AVANTE/ELANTRA 10- 4D', 14133, 'http://autotrade.su/picw.php?model=14133&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/14133.jpg'),
@@ -3205,7 +3294,8 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (8598, 'CITROEN JUMPER 06-', 14166, 'http://autotrade.su/picw.php?model=14166&amp;state=1&amp;size=333.246', 'http://autotrade.su/files/photo/models/preview/14166.jpg'),
 (8599, 'HYUNDAI ELANTRA III 00-06', 14167, 'http://autotrade.su/picw.php?model=14167&amp;state=1&amp;size=333.156', 'http://autotrade.su/files/photo/models/preview/14167.jpg'),
 (8601, 'OPEL VECTRA B 95-02', 14169, 'http://autotrade.su/picw.php?model=14169&amp;state=1&amp;size=333.133', 'http://autotrade.su/files/photo/models/preview/14169.jpg'),
-(8603, '??????????????', 14171, '', ''),
+(8602, 'Глушители', 14170, '', ''),
+(8603, 'Предохранители', 14171, '', ''),
 (8604, 'RENAULT MASTER 10-', 14172, 'http://autotrade.su/picw.php?model=14172&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/14172.jpg'),
 (8605, 'RENAULT GRAND SCENIC 09-', 14173, 'http://autotrade.su/picw.php?model=14173&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/14173.jpg'),
 (8606, 'SATURN VUE 02-06', 14174, 'http://autotrade.su/picw.php?model=14174&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/14174.jpg'),
@@ -3215,12 +3305,13 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (8610, 'MAN F90 86-', 14178, '', ''),
 (8611, 'MAN TG SMALL 00-', 14179, '', ''),
 (8612, 'VOLVO FH12 92-', 14180, '', ''),
-(8614, 'NISSAN AD/WINGROAD Y12 05-', 14182, 'http://autotrade.su/picw.php?model=14182&amp;state=1&amp;size=333.187', 'http://autotrade.su/files/photo/models/preview/14182.jpg');
-INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
+(8613, 'RENAULT RVI PREMIUM 96-', 14181, '', ''),
+(8614, 'NISSAN AD/WINGROAD Y12 05-', 14182, 'http://autotrade.su/picw.php?model=14182&amp;state=1&amp;size=333.187', 'http://autotrade.su/files/photo/models/preview/14182.jpg'),
 (8615, 'OPEL VECTRA C 02-08/SIGNUM 03-06', 14183, 'http://autotrade.su/picw.php?model=14183&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14183.jpg'),
 (8616, 'RENAULT KANGOO 03-07', 14184, 'http://autotrade.su/picw.php?model=14184&amp;state=1&amp;size=333.222', 'http://autotrade.su/files/photo/models/preview/14184.jpg'),
 (8617, 'SKODA OCTAVIA II 97-04', 14185, 'http://autotrade.su/picw.php?model=14185&amp;state=1&amp;size=333.146', 'http://autotrade.su/files/photo/models/preview/14185.jpg'),
 (8618, 'SKODA OCTAVIA III 04-13', 14186, 'http://autotrade.su/picw.php?model=14186&amp;state=1&amp;size=333.145', 'http://autotrade.su/files/photo/models/preview/14186.jpg'),
+(8668, 'Патрубки радиаторов', 14236, '', ''),
 (8669, 'AUDI', 14237, '', ''),
 (8670, 'CHERY', 14238, '', ''),
 (8671, 'CITROEN', 14239, '', ''),
@@ -3249,10 +3340,13 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (8695, 'MITSUBISHI', 14263, '', ''),
 (8696, 'TOYOTA', 14264, '', ''),
 (8697, 'RENAULT', 14265, '', ''),
-(8718, '????????? ??????? ??????', 14286, '', ''),
-(8719, '?????', 14287, '', ''),
-(8720, '??????? ????', 14288, '', ''),
-(8721, '???? ????????', 14289, '', ''),
+(8718, 'Тормозная система прочее', 14286, '', ''),
+(8719, 'ШРУСы', 14287, '', ''),
+(8720, 'Подушки рамы', 14288, '', ''),
+(8721, 'Цепи раздатки', 14289, '', ''),
+(8722, 'Плунжерные пары', 14290, '', ''),
+(8723, 'Распылители форсунок', 14291, '', ''),
+(8724, 'Натяжители приводного ремня', 14292, '', ''),
 (8728, 'BMW 6-SERIES E63 04-', 14296, 'http://autotrade.su/picw.php?model=14296&amp;state=1&amp;size=333.164', 'http://autotrade.su/files/photo/models/preview/14296.jpg'),
 (8729, 'TOYOTA HIGHLANDER ##U4# 07-13', 14297, 'http://autotrade.su/picw.php?model=14297&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14297.jpg'),
 (8730, 'CHRYSLER 300C 04-11', 14298, 'http://autotrade.su/picw.php?model=14298&amp;state=1&amp;size=333.134', 'http://autotrade.su/files/photo/models/preview/14298.jpg'),
@@ -3309,7 +3403,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (8783, 'ACURA TL UA4/5 98-03', 14351, 'http://autotrade.su/picw.php?model=14351&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14351.jpg'),
 (8784, 'MITSUBISHI OUTLANDER XL 10-13', 14352, 'http://autotrade.su/picw.php?model=14352&amp;state=1&amp;size=333.181', 'http://autotrade.su/files/photo/models/preview/14352.jpg'),
 (8785, 'NISSAN ATLAS F24 07-', 14353, 'http://autotrade.su/picw.php?model=14353&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14353.jpg'),
-(8786, '????? ??????', 14354, '', ''),
+(8786, 'Петли капота', 14354, '', ''),
 (8787, 'HYUNDAI H1/STAREX 08-', 14355, 'http://autotrade.su/picw.php?model=14355&amp;state=1&amp;size=333.182', 'http://autotrade.su/files/photo/models/preview/14355.jpg'),
 (8788, 'KIA CERATO/FORTE 09-13', 14356, 'http://autotrade.su/picw.php?model=14356&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14356.jpg'),
 (8789, 'NISSAN CARAVAN/URVAN 25 02-', 14357, 'http://autotrade.su/picw.php?model=14357&amp;state=1&amp;size=333.159', 'http://autotrade.su/files/photo/models/preview/14357.jpg'),
@@ -3325,12 +3419,12 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (8799, 'TOYOTA', 14367, '', ''),
 (8800, 'HONDA', 14368, '', ''),
 (8801, 'NISSAN', 14369, '', ''),
-(8802, '?????? ???????????', 14370, '', ''),
+(8802, 'Сонары парковочные', 14370, '', ''),
 (8806, 'ISUZU', 14374, '', ''),
 (8807, 'MAZDA 626 (USA) 98-02 4D', 14375, 'http://autotrade.su/picw.php?model=14375&amp;state=1&amp;size=516.387', 'http://autotrade.su/files/photo/models/preview/14375.jpg'),
 (8808, 'FOTON AUMAN 06-', 14376, 'http://autotrade.su/picw.php?model=14376&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/14376.jpg'),
 (8809, 'FOTON OLLIN BJ1069/BJ1089 AUMARK 06-', 14377, 'http://autotrade.su/picw.php?model=14377&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/14377.jpg'),
-(8810, '?????? ???????', 14378, '', ''),
+(8810, 'Оправы туманок', 14378, '', ''),
 (8811, 'TOYOTA PASSO SETTE M5#2E 08-', 14379, 'http://autotrade.su/picw.php?model=14379&amp;state=1&amp;size=333.207', 'http://autotrade.su/files/photo/models/preview/14379.jpg'),
 (8812, 'DAIHATSU TERIOS/BE-GO J2##E 06-', 14380, 'http://autotrade.su/picw.php?model=14380&amp;state=1&amp;size=333.197', 'http://autotrade.su/files/photo/models/preview/14380.jpg'),
 (8813, 'DAIHATSU TERIOS J100# 97-05', 14381, 'http://autotrade.su/picw.php?model=14381&amp;state=1&amp;size=333.173', 'http://autotrade.su/files/photo/models/preview/14381.jpg'),
@@ -3343,7 +3437,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (8820, 'MERCEDES AXOR 02-', 14388, 'http://autotrade.su/picw.php?model=14388&amp;state=1&amp;size=333.319', 'http://autotrade.su/files/photo/models/preview/14388.jpg'),
 (8821, 'RENAULT PREMIUM', 14389, 'http://autotrade.su/picw.php?model=14389&amp;state=1&amp;size=333.329', 'http://autotrade.su/files/photo/models/preview/14389.jpg'),
 (8825, 'MITSUBISHI PAJERO SPORT 08-', 14393, 'http://autotrade.su/picw.php?model=14393&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14393.jpg'),
-(8826, '??????????', 14394, '', ''),
+(8826, 'Автостекло', 14394, '', ''),
 (8829, 'MITSUBISHI FIGHTER 03-06', 14397, 'http://autotrade.su/picw.php?model=14397&amp;state=1&amp;size=333.173', 'http://autotrade.su/files/photo/models/preview/14397.jpg'),
 (8830, 'MITSUBISHI FUSO 08-', 14398, 'http://autotrade.su/picw.php?model=14398&amp;state=1&amp;size=333.211', 'http://autotrade.su/files/photo/models/preview/14398.jpg'),
 (8831, 'HONDA CIVIC FN#/FK# 06- HB', 14399, 'http://autotrade.su/picw.php?model=14399&amp;state=1&amp;size=333.134', 'http://autotrade.su/files/photo/models/preview/14399.jpg'),
@@ -3371,8 +3465,9 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (8853, 'CHEVROLET CAPTIVA 06-', 14421, 'http://autotrade.su/picw.php?model=14421&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14421.jpg'),
 (8854, 'DAEWOO EVANDA/MAGNUS/TOSCA/EPICA/VERONA 01-', 14422, '', ''),
 (8855, 'FORD ESCAPE 07-', 14423, '', ''),
+(8856, 'HONDA ELEMENT 03-', 14424, '', ''),
 (8857, 'KIA RIO II 05-', 14425, '', ''),
-(8859, '???????? ???????????????', 14427, '', ''),
+(8859, 'Форсунки стеклоомывателя', 14427, '', ''),
 (8860, 'FREIGHTLINER CASCADIA 07-', 14428, 'http://autotrade.su/picw.php?model=14428&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14428.jpg'),
 (8861, 'INTERNATIONAL 9800-SERIES 91-', 14429, 'http://autotrade.su/picw.php?model=14429&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14429.jpg'),
 (8862, 'CHEVROLET CRUZE 09-', 14430, 'http://autotrade.su/picw.php?model=14430&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14430.jpg'),
@@ -3446,20 +3541,26 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (8932, 'SUZUKI', 14500, '', ''),
 (8933, 'VOLKSWAGEN TOUAREG 10-', 14501, 'http://autotrade.su/picw.php?model=14501&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14501.jpg'),
 (8934, 'CHEVROLET VIVA 04-08 4D', 14502, 'http://autotrade.su/picw.php?model=14502&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14502.jpg'),
-(8935, '????? ??????', 14503, '', ''),
+(8935, 'Замок капота', 14503, '', ''),
+(8936, 'Регулятор давления топлива', 14504, '', ''),
 (8937, 'CHRYSLER 300M 98-04', 14505, 'http://autotrade.su/picw.php?model=14505&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14505.jpg'),
 (8938, 'CHRYSLER SEBRING 01-07', 14506, 'http://autotrade.su/picw.php?model=14506&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14506.jpg'),
 (8939, 'CHRYSLER SEBRING 07-', 14507, 'http://autotrade.su/picw.php?model=14507&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14507.jpg'),
 (8940, 'CHRYSLER SEBRING 95-01', 14508, 'http://autotrade.su/picw.php?model=14508&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14508.jpg'),
 (8941, 'FIAT ALBEA 03-', 14509, 'http://autotrade.su/picw.php?model=14509&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14509.jpg'),
 (8942, 'LIFAN SOLANO 06-', 14510, 'http://autotrade.su/picw.php?model=14510&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14510.jpg'),
+(8943, 'MAZDA', 14511, '', ''),
+(8944, 'MITSUBISHI', 14512, '', ''),
+(8945, 'TOYOTA', 14513, '', ''),
+(8946, 'NISSAN', 14514, '', ''),
 (8947, 'TOYOTA', 14515, '', ''),
 (8948, 'TOYOTA', 14516, '', ''),
 (8949, 'TOYOTA', 14517, '', ''),
 (8950, 'MITSUBISHI', 14518, '', ''),
 (8951, 'NISSAN ELGRAND E50 97-02', 14519, 'http://autotrade.su/picw.php?model=14519&amp;state=1&amp;size=800.505', 'http://autotrade.su/files/photo/models/preview/14519.jpg'),
-(8952, '????? ????????', 14520, '', ''),
-(8954, '???????', 14522, '', ''),
+(8952, 'Щетки стартера', 14520, '', ''),
+(8953, 'Прокладка датчика холостого хода', 14521, '', ''),
+(8954, 'Антенна', 14522, '', ''),
 (8956, 'TOYOTA CRESTA #X10# 96-01 2WD', 14524, 'http://autotrade.su/picw.php?model=14524&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14524.jpg'),
 (8957, 'FORD', 14525, '', ''),
 (8958, 'HONDA', 14526, '', ''),
@@ -3479,35 +3580,35 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (8972, 'DAIHATSU MOVE L1#5S 06-10', 14540, 'http://autotrade.su/picw.php?model=14540&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14540.jpg'),
 (8973, 'HONDA ELEMENT 03-08', 14541, 'http://autotrade.su/picw.php?model=14541&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14541.jpg'),
 (8974, 'NISSAN NAVARA 05-', 14542, 'http://autotrade.su/picw.php?model=14542&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14542.jpg'),
-(8975, '????????? ????????? ??????', 14543, '', ''),
-(8976, '??????????', 14544, '', ''),
-(8977, '??????', 14545, '', ''),
-(8978, '????????? ???????', 14546, '', ''),
-(8981, '??????? ???????????', 14549, '', ''),
-(8982, '??????? ????', 14550, '', ''),
-(8983, '??????', 14551, '', ''),
-(8984, '???????', 14552, '', ''),
-(8985, '???. ?????????', 14553, '', ''),
-(8986, '??????? ?????????????', 14554, '', ''),
-(8987, '????????????', 14555, '', ''),
-(8988, '????? ?????????', 14556, '', ''),
-(8989, '????', 14557, '', ''),
-(8990, '??????? ?????????', 14558, '', ''),
-(8991, '??????? ?????????', 14559, '', ''),
-(8992, '????????? ???', 14560, '', ''),
-(8993, '??????? ????????', 14561, '', ''),
-(8994, '????????', 14562, '', ''),
-(8995, '????????', 14563, '', ''),
-(8996, '????????? ?????', 14564, '', ''),
-(8997, '??????? ????????', 14565, '', ''),
-(8998, '???????', 14566, '', ''),
-(8999, '???????????', 14567, '', ''),
-(9000, '??????', 14568, '', ''),
-(9001, '???????', 14569, '', ''),
-(9002, '??????? ?????', 14570, '', ''),
-(9003, '??????? ?????????', 14571, '', ''),
-(9004, '??????', 14572, '', ''),
-(9005, '???????', 14573, '', ''),
+(8975, 'Прокладки клапанной крышки', 14543, '', ''),
+(8976, 'Натяжители', 14544, '', ''),
+(8977, 'Ролики', 14545, '', ''),
+(8978, 'Тормозные колодки', 14546, '', ''),
+(8981, 'Рулевые наконечники', 14549, '', ''),
+(8982, 'Рулевые тяги', 14550, '', ''),
+(8983, 'Втулки', 14551, '', ''),
+(8984, 'Ступицы', 14552, '', ''),
+(8985, 'Рем. комплекты', 14553, '', ''),
+(8986, 'Подушки дифференциала', 14554, '', ''),
+(8987, 'Сайлентблоки', 14555, '', ''),
+(8988, 'Ремни приводные', 14556, '', ''),
+(8989, 'Цепи', 14557, '', ''),
+(8990, 'Катушки зажигания', 14558, '', ''),
+(8991, 'Фильтры воздушные', 14559, '', ''),
+(8992, 'Прокладки ГБЦ', 14560, '', ''),
+(8993, 'Фильтры салонные', 14561, '', ''),
+(8994, 'Заглушки', 14562, '', ''),
+(8995, 'Молдинги', 14563, '', ''),
+(8996, 'Тормозные диски', 14564, '', ''),
+(8997, 'Фильтры масляные', 14565, '', ''),
+(8998, 'Подушки', 14566, '', ''),
+(8999, 'Успокоители', 14567, '', ''),
+(9000, 'Прочее', 14568, '', ''),
+(9001, 'Датчики', 14569, '', ''),
+(9002, 'Шаровые опоры', 14570, '', ''),
+(9003, 'Фильтры топливные', 14571, '', ''),
+(9004, 'Прочее', 14572, '', ''),
+(9005, 'Подушки', 14573, '', ''),
 (9006, 'NISSAN SKYLINE #R32 89-94', 14574, 'http://autotrade.su/picw.php?model=14574&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14574.jpg'),
 (9007, 'NISSAN SKYLINE #R33 94-98', 14575, 'http://autotrade.su/picw.php?model=14575&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14575.jpg'),
 (9008, 'TOYOTA MATRIX #ZE14# 08- 2WD', 14576, 'http://autotrade.su/picw.php?model=14576&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14576.jpg'),
@@ -3569,7 +3670,8 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (9064, 'TOYOTA CELICA/CARINA ED/EXIV ST185 89-92 4WD', 14632, 'http://autotrade.su/picw.php?model=14632&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14632.jpg'),
 (9065, 'TOYOTA CELICA/CARINA ED/EXIV ST20# 93-99 2WD', 14633, 'http://autotrade.su/picw.php?model=14633&amp;state=1&amp;size=640.480', 'http://autotrade.su/files/photo/models/preview/14633.jpg'),
 (9066, 'TOYOTA CELICA/CARINA ED/EXIV ST205 93-99 4WD', 14634, 'http://autotrade.su/picw.php?model=14634&amp;state=1&amp;size=640.480', 'http://autotrade.su/files/photo/models/preview/14634.jpg'),
-(9067, 'TOYOTA CHASER #X8# 88-92 2WD', 14635, 'http://autotrade.su/picw.php?model=14635&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14635.jpg'),
+(9067, 'TOYOTA CHASER #X8# 88-92 2WD', 14635, 'http://autotrade.su/picw.php?model=14635&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14635.jpg');
+INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
 (9068, 'TOYOTA CHASER #ZX9# 92-96 2WD', 14636, 'http://autotrade.su/picw.php?model=14636&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14636.jpg'),
 (9069, 'TOYOTA CHASER #ZX93 92-96 4WD', 14637, 'http://autotrade.su/picw.php?model=14637&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14637.jpg'),
 (9070, 'TOYOTA CHASER #ZX10# 96-01 2WD', 14638, 'http://autotrade.su/picw.php?model=14638&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14638.jpg'),
@@ -3606,8 +3708,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (9101, 'TOYOTA CROWN #S15# 95-01 2WD', 14669, 'http://autotrade.su/picw.php?model=14669&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14669.jpg'),
 (9102, 'TOYOTA CROWN #S153/#S157 95-01 4WD', 14670, 'http://autotrade.su/picw.php?model=14670&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14670.jpg'),
 (9103, 'TOYOTA CROWN #S17# 99-07 2WD', 14671, 'http://autotrade.su/picw.php?model=14671&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14671.jpg'),
-(9104, 'TOYOTA CROWN #S173/#S179 99-07 4WD', 14672, 'http://autotrade.su/picw.php?model=14672&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14672.jpg');
-INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
+(9104, 'TOYOTA CROWN #S173/#S179 99-07 4WD', 14672, 'http://autotrade.su/picw.php?model=14672&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14672.jpg'),
 (9105, 'TOYOTA CYNOS EL44 2WD', 14673, 'http://autotrade.su/picw.php?model=14673&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14673.jpg'),
 (9106, 'TOYOTA CYNOS EL5# 2WD', 14674, 'http://autotrade.su/picw.php?model=14674&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14674.jpg'),
 (9107, 'TOYOTA DUET M10#A 98-04 2WD', 14675, 'http://autotrade.su/picw.php?model=14675&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14675.jpg'),
@@ -3772,13 +3873,13 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (9266, 'TOYOTA IPSUM ##M21 01- 2WD', 14834, 'http://autotrade.su/picw.php?model=14834&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14834.jpg'),
 (9267, 'TOYOTA PORTE NNP15 04- 4WD', 14835, 'http://autotrade.su/picw.php?model=14835&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14835.jpg'),
 (9268, 'TOYOTA SIENNA #CL2# 03-09 2WD', 14836, 'http://autotrade.su/picw.php?model=14836&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14836.jpg'),
-(9269, '????????? ????', 14837, '', ''),
-(9270, '???????', 14838, '', ''),
+(9269, 'Омыватель фары', 14837, '', ''),
+(9270, 'Зеркала', 14838, '', ''),
 (9271, 'ISUZU BOGDAN 04-', 14839, 'http://autotrade.su/picw.php?model=14839&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14839.jpg'),
-(9272, 'HYUNDAI COUNTY  (?????) 06-', 14840, 'http://autotrade.su/picw.php?model=14840&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14840.jpg'),
-(9273, '????????????', 14841, '', ''),
-(9274, '???.?????????', 14842, '', ''),
-(9275, '????????? ??????', 14843, '', ''),
+(9272, 'HYUNDAI COUNTY  (ТАГАЗ) 06-', 14840, 'http://autotrade.su/picw.php?model=14840&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14840.jpg'),
+(9273, 'Амортизаторы', 14841, '', ''),
+(9274, 'Рем.комплекты', 14842, '', ''),
+(9275, 'Тормозные шланги', 14843, '', ''),
 (9276, 'SEAT EXEO 09-', 14844, 'http://autotrade.su/picw.php?model=14844&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14844.jpg'),
 (9277, 'AUDI ALLROAD 06-', 14845, 'http://autotrade.su/picw.php?model=14845&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14845.jpg'),
 (9278, 'CADILLAC BLS 04-', 14846, 'http://autotrade.su/picw.php?model=14846&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14846.jpg'),
@@ -3855,9 +3956,10 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (9349, 'SUZUKI FORENZA 04-', 14917, 'http://autotrade.su/picw.php?model=14917&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14917.jpg'),
 (9350, 'JEEP WRANGLER 97-', 14918, 'http://autotrade.su/picw.php?model=14918&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14918.jpg'),
 (9351, 'VOLVO FM 98-', 14919, 'http://autotrade.su/picw.php?model=14919&amp;state=1&amp;size=800.546', 'http://autotrade.su/files/photo/models/preview/14919.jpg'),
-(9353, '???.?????????', 14921, '', ''),
-(9354, '??????? ?????', 14922, '', ''),
-(9355, '?????', 14923, '', ''),
+(9353, 'Рем.комплекты', 14921, '', ''),
+(9354, 'Рулевые рейки', 14922, '', ''),
+(9355, 'Муфты', 14923, '', '');
+INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
 (9356, 'SKODA SUPERB 08-', 14924, 'http://autotrade.su/picw.php?model=14924&amp;state=1&amp;size=800.379', 'http://autotrade.su/files/photo/models/preview/14924.jpg'),
 (9357, 'HONDA', 14925, '', ''),
 (9358, 'ISUZU', 14926, '', ''),
@@ -3865,10 +3967,10 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (9360, 'NISSAN', 14928, '', ''),
 (9361, 'RENAULT', 14929, '', ''),
 (9362, 'TOYOTA', 14930, '', ''),
-(9363, '??????', 14931, '', ''),
-(9364, '????? ???????????', 14932, '', ''),
+(9363, 'Прочее', 14931, '', ''),
+(9364, 'Свечи накаливания', 14932, '', ''),
 (9365, 'RENAULT SANDERO 10-14', 14933, 'http://autotrade.su/picw.php?model=14933&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14933.jpg'),
-(9366, '???????????', 14934, '', ''),
+(9366, 'Расширители', 14934, '', ''),
 (9367, 'HONDA ORTHIA 96-01', 14935, 'http://autotrade.su/picw.php?model=14935&amp;state=1&amp;size=799.599', 'http://autotrade.su/files/photo/models/preview/14935.jpg'),
 (9368, 'NISSAN GLORIA/CEDRIC Y34 99-04', 14936, 'http://autotrade.su/picw.php?model=14936&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14936.jpg'),
 (9369, 'HONDA PARTNER 96-04', 14937, 'http://autotrade.su/picw.php?model=14937&amp;state=1&amp;size=799.599', 'http://autotrade.su/files/photo/models/preview/14937.jpg'),
@@ -3879,7 +3981,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (9374, 'MITSUBISHI COLT 95-02', 14942, 'http://autotrade.su/picw.php?model=14942&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14942.jpg'),
 (9375, 'NISSAN PULSSAR 90-95', 14943, 'http://autotrade.su/picw.php?model=14943&amp;state=1&amp;size=799.599', 'http://autotrade.su/files/photo/models/preview/14943.jpg'),
 (9376, 'NISSAN AVENIR 90-95', 14944, 'http://autotrade.su/picw.php?model=14944&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14944.jpg'),
-(9377, '??????? ???????? ?????????', 14945, '', ''),
+(9377, 'Демпфер рулевого механизма', 14945, '', ''),
 (9378, 'TOYOTA HIACE/REGIUSACE RZH1## 89-03', 14946, '', ''),
 (9379, 'TOYOTA SOARER GZ20 89-91', 14947, 'http://autotrade.su/picw.php?model=14947&amp;state=1&amp;size=600.420', 'http://autotrade.su/files/photo/models/preview/14947.jpg'),
 (9380, 'TOYOTA HIACE/REGIUSACE LXH1#,2# 95-01', 14948, '', ''),
@@ -3894,13 +3996,15 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (9391, 'TOYOTA TUNDRA GSK30 04-06', 14959, '', ''),
 (9393, 'TOYOTA CROWN GXS12 01-07', 14961, '', ''),
 (9396, 'NISSAN TAXI CREW K30 93-99', 14964, 'http://autotrade.su/picw.php?model=14964&amp;state=1&amp;size=800.590', 'http://autotrade.su/files/photo/models/preview/14964.JPG'),
+(9397, 'GEELY VISION 08-', 14965, 'http://autotrade.su/picw.php?model=14965&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14965.jpg'),
 (9398, 'NISSAN NP300 #D22 08-', 14966, 'http://autotrade.su/picw.php?model=14966&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14966.jpg'),
 (9399, 'SUZUKI SWIFT 5D 00-04', 14967, 'http://autotrade.su/picw.php?model=14967&amp;state=1&amp;size=600.451', 'http://autotrade.su/files/photo/models/preview/14967.jpg'),
+(9400, 'Турбины', 14968, '', ''),
 (9403, 'HONDA ORTHIA EL# 96-02', 14971, '', ''),
-(9410, '???????? ????????????', 14978, '', ''),
-(9411, '???????????', 14979, '', ''),
-(9412, '?????? ?????????', 14980, '', ''),
-(9413, '????????', 14981, '', ''),
+(9410, 'Колпачки маслосьемные', 14978, '', ''),
+(9411, 'Распылители', 14979, '', ''),
+(9412, 'Крышки клапанные', 14980, '', ''),
+(9413, 'Патрубки', 14981, '', ''),
 (9414, 'MAZDA B2500 99-06', 14982, 'http://autotrade.su/picw.php?model=14982&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14982.jpg'),
 (9415, 'RENAULT DUSTER 10-', 14983, 'http://autotrade.su/picw.php?model=14983&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14983.jpg'),
 (9416, 'CHEVROLET ORLANDO 11-', 14984, 'http://autotrade.su/picw.php?model=14984&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14984.jpg'),
@@ -3910,15 +4014,14 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (9420, 'CHEVROLET KALOS 03-08 3D', 14988, 'http://autotrade.su/picw.php?model=14988&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14988.JPG'),
 (9421, 'CHEVROLET KALOS 03-08 5D HBK', 14989, 'http://autotrade.su/picw.php?model=14989&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14989.JPG'),
 (9422, 'CHEVROLET KALOS 03-06 4D', 14990, 'http://autotrade.su/picw.php?model=14990&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14990.JPG'),
-(9424, '???????? ?????????', 14992, '', ''),
+(9424, 'Форсунки топливные', 14992, '', ''),
 (9425, 'DAEWOO KALOS 02-08 5D HBK', 14993, 'http://autotrade.su/picw.php?model=14993&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14993.jpg'),
 (9426, 'TOYOTA MARK II #X11# 00-04', 14994, 'http://autotrade.su/picw.php?model=14994&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/14994.jpg'),
 (9427, 'TOYOTA MARK II BLIT #X11# 02-07', 14995, 'http://autotrade.su/picw.php?model=14995&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14995.jpg'),
 (9428, 'TOYOTA COROLLA VERSO ##R2# 09-', 14996, 'http://autotrade.su/picw.php?model=14996&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14996.jpg'),
 (9429, 'PEUGEOT 308 08-11', 14997, 'http://autotrade.su/picw.php?model=14997&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14997.jpg'),
 (9430, 'TOYOTA CAMRY ##V50 11-', 14998, 'http://autotrade.su/picw.php?model=14998&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/14998.jpg'),
-(9433, 'HYUNDAI GENESIS COUPE 08- 2D', 15001, 'http://autotrade.su/picw.php?model=15001&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15001.jpg');
-INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
+(9433, 'HYUNDAI GENESIS COUPE 08- 2D', 15001, 'http://autotrade.su/picw.php?model=15001&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15001.jpg'),
 (9434, 'HYUNDAI AZERA 11-', 15002, 'http://autotrade.su/picw.php?model=15002&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15002.jpg'),
 (9435, 'HYUNDAI VELOSTER 12-', 15003, 'http://autotrade.su/picw.php?model=15003&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15003.jpg'),
 (9436, 'KIA K5 10-', 15004, 'http://autotrade.su/picw.php?model=15004&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15004.jpg'),
@@ -3961,42 +4064,52 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (9480, 'INFINITI M35/M45 06-10', 15048, 'http://autotrade.su/picw.php?model=15048&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15048.jpg'),
 (9481, 'NISSAN 350Z 03-', 15049, 'http://autotrade.su/picw.php?model=15049&amp;state=1&amp;size=799.599', 'http://autotrade.su/files/photo/models/preview/15049.jpg'),
 (9482, 'NISSAN LAUREL C34 93-97', 15050, 'http://autotrade.su/picw.php?model=15050&amp;state=1&amp;size=800.412', 'http://autotrade.su/files/photo/models/preview/15050.jpg'),
-(9483, '??????', 15051, '', ''),
-(9484, '?????????', 15052, '', ''),
-(9485, '?????????? ???????', 15053, '', ''),
-(9486, '????????', 15054, '', ''),
-(9487, '???????? ?????????', 15055, '', ''),
+(9483, 'Обвесы', 15051, '', ''),
+(9484, 'Ветровики', 15052, '', ''),
+(9485, 'Дифлекторы капотов', 15053, '', ''),
+(9486, 'Рейлинги', 15054, '', ''),
+(9487, 'Суппорта тормозные', 15055, '', ''),
 (9488, 'RENAULT LOGAN 10-14', 15056, 'http://autotrade.su/picw.php?model=15056&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15056.jpg'),
-(9495, '?????? ????????', 15063, '', ''),
-(9499, '?????? ??????????', 15067, '', ''),
-(9502, '??????', 15070, '', ''),
-(9503, '?????? ??????', 15071, '', ''),
-(9504, '?????? ?????????????', 15072, '', ''),
-(9505, '?????? ????????', 15073, '', ''),
-(9506, '?????? ??????? ??????????', 15074, '', ''),
-(9507, '?????? ?????????', 15075, '', ''),
-(9508, '?????? ??????????? ??????', 15076, '', ''),
-(9509, '??????? ABS', 15077, '', ''),
-(9510, '??????? VVT-I', 15078, '', ''),
-(9511, '??????? ???????????', 15079, '', ''),
-(9512, '??????? ???????? ?????', 15080, '', ''),
-(9513, '??????? ????????? ??????????? ????????', 15081, '', ''),
-(9514, '??????? ????????? ????', 15082, '', ''),
-(9515, '???????????? ???????, ????? ??????', 15083, '', ''),
-(9516, '??????????', 15084, '', ''),
-(9517, '??????, ????????, ????????', 15085, '', ''),
-(9518, '?????', 15086, '', ''),
-(9519, '?????? ?????????', 15087, '', ''),
-(9520, '?????? ?????????', 15088, '', ''),
-(9521, '?????? ???, ???????', 15089, '', ''),
-(9522, '??????????', 15090, '', ''),
-(9523, '??????? ?????????? ???????', 15091, '', ''),
-(9524, '????????? ???', 15092, '', ''),
-(9525, '??????? ????', 15093, '', ''),
-(9526, '?????????? ?????? ?????', 15094, '', ''),
-(9527, '???????, ???????????', 15095, '', ''),
+(9489, 'Натяжители цепи ГРМ', 15057, '', ''),
+(9490, 'Башмаки цепи ГРМ', 15058, '', ''),
+(9491, 'Успокоители цепи ГРМ', 15059, '', ''),
+(9492, 'Натяжители ремня ГРМ', 15060, '', ''),
+(9493, 'Кольца уплотнительные форсунок', 15061, '', ''),
+(9494, 'коллектора', 15062, '', ''),
+(9495, 'Детали стартера', 15063, '', ''),
+(9496, 'Детали глушителя', 15064, '', ''),
+(9497, 'Гофры воздушных фильтров', 15065, '', ''),
+(9498, 'Крышки маслозаливной горловины', 15066, '', ''),
+(9499, 'Защиты двигателей', 15067, '', ''),
+(9500, 'Прокладки крышек ГРМ', 15068, '', ''),
+(9502, 'Прочее', 15070, '', ''),
+(9503, 'Втулки линков', 15071, '', ''),
+(9504, 'Втулки амортизаторов', 15072, '', ''),
+(9505, 'Втулки запорные', 15073, '', ''),
+(9506, 'Втулки рулевых механизмов', 15074, '', ''),
+(9507, 'Втулки рессорные', 15075, '', ''),
+(9508, 'Втулка поворотного кулака', 15076, '', ''),
+(9509, 'Датчики ABS', 15077, '', ''),
+(9510, 'Клапана VVT-I', 15078, '', ''),
+(9511, 'Датчики кислородные', 15079, '', ''),
+(9512, 'Датчики давления масла', 15080, '', ''),
+(9513, 'Датчики положения дроссельной заслонки', 15081, '', ''),
+(9514, 'Клапана холостого хода', 15082, '', ''),
+(9515, 'Амортизаторы капотов, пятых дверей', 15083, '', ''),
+(9516, 'Брызговики', 15084, '', ''),
+(9517, 'Клипсы, заклепки, саморезы', 15085, '', ''),
+(9518, 'Замки', 15086, '', ''),
+(9519, 'Крышки багажника', 15087, '', ''),
+(9520, 'Крышки бензобака', 15088, '', ''),
+(9521, 'Планки фар, фонарей', 15089, '', ''),
+(9522, 'Крыльчатки', 15090, '', ''),
+(9523, 'Корпусы воздушного фильтра', 15091, '', ''),
+(9524, 'Прокладки КПП', 15092, '', ''),
+(9525, 'Фильтры АКПП', 15093, '', ''),
+(9526, 'Поворотные кулаки цапфы', 15094, '', ''),
+(9527, 'Ступицы, полуступицы', 15095, '', ''),
 (9528, 'VW POLO SEDAN 10-', 15096, 'http://autotrade.su/picw.php?model=15096&amp;state=1&amp;size=716.537', 'http://autotrade.su/files/photo/models/preview/15096.jpg'),
-(9532101, '????? ????????????????', 15100, '', ''),
+(9532101, 'Щетки стеклоочистителя', 15100, '', ''),
 (9534101, 'TOYOTA CROWN GRS20# 08-', 15102, 'http://autotrade.su/picw.php?model=15102&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15102.jpg'),
 (9535101, 'SSANGYONG ACTYON SPORTS 12-', 15103, 'http://autotrade.su/picw.php?model=15103&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15103.jpg'),
 (9536101, 'SCANIA 3 R-series 1989-1995', 15104, 'http://autotrade.su/picw.php?model=15104&amp;state=1&amp;size=800.778', 'http://autotrade.su/files/photo/models/preview/15104.jpg'),
@@ -4068,20 +4181,20 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (9614101, 'LEXUS CT200H 10-', 15182, 'http://autotrade.su/picw.php?model=15182&amp;state=1&amp;size=799.599', 'http://autotrade.su/files/photo/models/preview/15182.jpg'),
 (9615101, 'CHRYSLER TOWN COUNTRY/VOYAGER 96-01', 15183, 'http://autotrade.su/picw.php?model=15183&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15183.jpg'),
 (9616101, 'GREAT WALL SAFE 02-10', 15184, 'http://autotrade.su/picw.php?model=15184&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15184.jpg'),
-(9617101, '?????? ????', 15185, '', ''),
+(9617101, 'Шланги ГУРа', 15185, '', ''),
 (9618101, 'TOYOTA LAND CRUISER ##J7# 87-09 5D', 15186, 'http://autotrade.su/picw.php?model=15186&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15186.jpg'),
 (9619101, 'TOYOTA LAND CRUISER ##J7# 87-09 3D', 15187, 'http://autotrade.su/picw.php?model=15187&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15187.jpg'),
 (9620101, 'TOYOTA LAND CRUISER FJ7# 09- 5D', 15188, 'http://autotrade.su/picw.php?model=15188&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15188.jpg'),
 (9623101, 'HOWO EXPO 04-', 15191, 'http://autotrade.su/picw.php?model=15191&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15191.jpg'),
-(9625101, 'NORD BENZ ND3252BJ 6?4 ND3250FJ 6?6 06-', 15193, 'http://autotrade.su/picw.php?model=15193&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15193.jpg'),
-(9626101, 'NORD BENZ ND3315DJ 8?4 06-', 15194, 'http://autotrade.su/picw.php?model=15194&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15194.jpg'),
+(9625101, 'NORD BENZ ND3252BJ 6х4 ND3250FJ 6х6 06-', 15193, 'http://autotrade.su/picw.php?model=15193&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15193.jpg'),
+(9626101, 'NORD BENZ ND3315DJ 8х4 06-', 15194, 'http://autotrade.su/picw.php?model=15194&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15194.jpg'),
 (9627101, 'FAW J5P (CA3252#) 04', 15195, 'http://autotrade.su/picw.php?model=15195&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15195.jpg'),
 (9628101, 'TOYOTA LAND CRUISER #J7# 07-', 15196, 'http://autotrade.su/picw.php?model=15196&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15196.jpg'),
 (9630101, 'MERCEDES-BENZ T2 VAN 86-96', 15198, 'http://autotrade.su/picw.php?model=15198&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15198.jpg'),
 (9631101, 'MERCEDES-BENZ VARIO VAN 96-', 15199, 'http://autotrade.su/picw.php?model=15199&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15199.jpg'),
-(9633101, '????', 15201, '', ''),
-(9634101, '??????? ????', 15202, '', ''),
-(9635101, '????????? ?????????', 15203, '', ''),
+(9633101, 'Цепи', 15201, '', ''),
+(9634101, 'Подушки АКПП', 15202, '', ''),
+(9635101, 'Прокладки глушителя', 15203, '', ''),
 (9638101, 'SUZUKI SWIFT 01-04', 15206, 'http://autotrade.su/picw.php?model=15206&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15206.jpg'),
 (9639101, 'SUZUKI WAGON R SOLIO 99-08', 15207, 'http://autotrade.su/picw.php?model=15207&amp;state=1&amp;size=800.542', 'http://autotrade.su/files/photo/models/preview/15207.jpg'),
 (9640101, 'VORTEX ESTINA 08-', 15208, 'http://autotrade.su/picw.php?model=15208&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15208.jpg'),
@@ -4094,7 +4207,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (9647101, 'MUDAN MD 4015/5820/ 06-', 15215, 'http://autotrade.su/picw.php?model=15215&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15215.jpg'),
 (9648101, 'GREAT WALL SOCOOL C3 06-', 15216, 'http://autotrade.su/picw.php?model=15216&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15216.jpg'),
 (9649101, 'GREAT WALL  RUV SING 06-', 15217, 'http://autotrade.su/picw.php?model=15217&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15217.jpg'),
-(9650101, '??????????', 15218, '', ''),
+(9650101, 'Инструмент', 15218, '', ''),
 (9651101, 'VOLKSWAGEN JETTA 10- 4D', 15219, 'http://autotrade.su/picw.php?model=15219&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/15219.jpg'),
 (9963101, 'RDX', 15531, '', ''),
 (10047101, 'SIENNA', 15615, '', ''),
@@ -4107,11 +4220,18 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (10793101, '206', 16361, '', ''),
 (10797101, '306', 16365, '', ''),
 (10883101, 'MODUS', 16451, '', ''),
+(10906101, '600', 16474, '', ''),
+(10907101, '618', 16475, '', ''),
+(10908101, '620', 16476, '', ''),
+(10909101, '623', 16477, '', ''),
 (10952101, 'IBIZA', 16520, '', ''),
 (10954101, 'LEON', 16522, '', ''),
+(10980101, 'ACTYON', 16548, '', ''),
+(10985101, 'KORANDO', 16553, '', ''),
 (10996101, 'BORA', 16564, '', ''),
 (11021101, 'NEW BEETLE', 16589, '', ''),
 (11029101, 'TARO', 16597, '', ''),
+(11064101, 'C70', 16632, '', ''),
 (11265101, 'ENTOURAGE', 16833, '', ''),
 (11391101, 'TREVIS', 16959, '', ''),
 (11424101, 'KUGA', 16992, '', ''),
@@ -4141,9 +4261,9 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (11784101, 'LIFAN SMILY 08-', 17352, 'http://autotrade.su/picw.php?model=17352&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17352.jpg'),
 (11790101, 'NISSAN VANETTE 90-99', 17358, 'http://autotrade.su/picw.php?model=17358&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17358.jpg'),
 (11791101, 'SHAANXI SHACMAN 06-', 17359, 'http://autotrade.su/picw.php?model=17359&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17359.jpg'),
-(11792101, '??????? ???????????', 17360, '', ''),
-(11793101, '??????? ?????????', 17361, '', ''),
-(11794101, '??????? ??????? ???????', 17362, '', ''),
+(11792101, 'Датчики температуры', 17360, '', ''),
+(11793101, 'Датчики детонации', 17361, '', ''),
+(11794101, 'Датчики расхода воздуха', 17362, '', ''),
 (11795101, 'VW CRAFTER 06-', 17363, 'http://autotrade.su/picw.php?model=17363&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17363.jpg'),
 (11796101, 'VW ROUTAN 08-', 17364, 'http://autotrade.su/picw.php?model=17364&amp;state=1&amp;size=799.599', 'http://autotrade.su/files/photo/models/preview/17364.jpg'),
 (11797101, 'VW TRANSPORTER T5 03-', 17365, 'http://autotrade.su/picw.php?model=17365&amp;state=1&amp;size=799.599', 'http://autotrade.su/files/photo/models/preview/17365.jpg'),
@@ -4175,8 +4295,8 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (11828101, 'ZAZ VIDA 12- 5D HBK', 17396, 'http://autotrade.su/picw.php?model=17396&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17396.jpg'),
 (11829101, 'BMW 1-SERIES F20 12- 5D HBK', 17397, 'http://autotrade.su/picw.php?model=17397&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17397.jpg'),
 (11830101, 'BMW 1-SERIES F20 12- 3D HBK', 17398, 'http://autotrade.su/picw.php?model=17398&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17398.jpg'),
-(11831101, '????????? ??????? ????????', 17399, '', ''),
-(11832101, '?????? ????????', 17400, '', ''),
+(11831101, 'Прокладки свечных колодцев', 17399, '', ''),
+(11832101, 'Поршни суппорта', 17400, '', ''),
 (11834101, 'DODGE RAM 02-09', 17402, 'http://autotrade.su/picw.php?model=17402&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17402.jpg'),
 (11835101, 'FORD EXPLORER 90-95', 17403, 'http://autotrade.su/picw.php?model=17403&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17403.jpg'),
 (11837101, 'FORD FIESTA 08-', 17405, 'http://autotrade.su/picw.php?model=17405&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17405.jpg'),
@@ -4197,9 +4317,9 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (11853101, 'NISSAN SKYLINE E#34 98-02', 17421, 'http://autotrade.su/picw.php?model=17421&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17421.jpg'),
 (11854101, 'LEXUS IS200/300 ##E1# 98-05', 17422, 'http://autotrade.su/picw.php?model=17422&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17422.jpg'),
 (11855101, 'ROVER 600 93-99', 17423, 'http://autotrade.su/picw.php?model=17423&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17423.jpg'),
-(11857101, '??????? ??????? ???? ??????? ????????????? ????', 17425, '', ''),
-(11858101, '??????? ??????? ???? ??????? ????????????? ??????', 17426, '', ''),
-(11859101, '??????? ?????????????  120?40', 17427, '', ''),
+(11857101, 'Дневные ходовые огни диодные универсальные хром', 17425, '', ''),
+(11858101, 'Дневные ходовые огни диодные универсальные темные', 17426, '', ''),
+(11859101, 'Решетка универсальная  120х40', 17427, '', ''),
 (11860101, 'HONDA CIVIC 12-', 17428, 'http://autotrade.su/picw.php?model=17428&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17428.jpg'),
 (11862101, 'LEXUS LS430 01-05', 17430, 'http://autotrade.su/picw.php?model=17430&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17430.jpg'),
 (11863101, 'RENAULT KOLEOS 08-', 17431, 'http://autotrade.su/picw.php?model=17431&amp;state=1&amp;size=754.442', 'http://autotrade.su/files/photo/models/preview/17431.jpg'),
@@ -4212,7 +4332,8 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (11870101, 'VOLVO S60 10-', 17438, 'http://autotrade.su/picw.php?model=17438&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17438.jpg'),
 (11871101, 'HONDA CR-V RM1/RM4 12-', 17439, 'http://autotrade.su/picw.php?model=17439&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17439.jpg'),
 (11872101, 'LAND ROVER DISCOVERY IV 09-', 17440, 'http://autotrade.su/picw.php?model=17440&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17440.jpg'),
-(11873101, 'TOYOTA DYNA TOYOACE 11-', 17441, 'http://autotrade.su/picw.php?model=17441&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17441.jpg'),
+(11873101, 'TOYOTA DYNA TOYOACE 11-', 17441, 'http://autotrade.su/picw.php?model=17441&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17441.jpg');
+INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
 (11874101, 'HINO DUTRO WIDE CAB 00-', 17442, 'http://autotrade.su/picw.php?model=17442&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17442.jpg'),
 (11875101, 'LEXUS CT200H 11- 5D WGN', 17443, 'http://autotrade.su/picw.php?model=17443&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17443.jpg'),
 (11876101, 'HYUNDAI I40 11- 5D WGN', 17444, 'http://autotrade.su/picw.php?model=17444&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17444.jpg'),
@@ -4223,9 +4344,11 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (11881101, 'DONG FENG DF47 06-', 17449, 'http://autotrade.su/picw.php?model=17449&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17449.jpg'),
 (11882101, 'FOTON BJ3251 05-', 17450, 'http://autotrade.su/picw.php?model=17450&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17450.jpg'),
 (11883101, 'FAW CA3253/CA3310 08-', 17451, 'http://autotrade.su/picw.php?model=17451&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17451.jpg'),
-(11886101, '??????? ?????????', 17454, '', ''),
-(11887101, '????????? ??????', 17455, '', ''),
-(11888101, '???????????? ????????', 17456, '', ''),
+(11884101, 'TOYOTA TOYO ACE 95-99', 17452, 'http://autotrade.su/picw.php?model=17452&amp;state=1&amp;size=799.599', 'http://autotrade.su/files/photo/models/preview/17452.jpg'),
+(11885101, 'TOYOTA TOYO ACE 99-11', 17453, 'http://autotrade.su/picw.php?model=17453&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17453.jpg'),
+(11886101, 'Бегунки трамблера', 17454, '', ''),
+(11887101, 'Прокладки прочее', 17455, '', ''),
+(11888101, 'Направляющие суппорта', 17456, '', ''),
 (11889101, 'LEXUS GS250/350/450 12-', 17457, 'http://autotrade.su/picw.php?model=17457&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17457.jpg'),
 (11890101, 'NISSAN FUGA #Y51 10-', 17458, 'http://autotrade.su/picw.php?model=17458&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17458.jpg'),
 (11891101, 'INFINITI M25/35/37/45 #Y51 10-', 17459, 'http://autotrade.su/picw.php?model=17459&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17459.jpg'),
@@ -4243,19 +4366,20 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (11903101, 'HYUNDAI GRANDEUR 11-', 17471, 'http://autotrade.su/picw.php?model=17471&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17471.jpg'),
 (11904101, 'KIA CERATO/FORTE 09-13 5D HBK', 17472, 'http://autotrade.su/picw.php?model=17472&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17472.jpg'),
 (11905101, 'SUBARU EXIGA 2008-', 17473, 'http://autotrade.su/picw.php?model=17473&amp;state=1&amp;size=799.599', 'http://autotrade.su/files/photo/models/preview/17473.jpg'),
+(11906101, 'HUANGHAI PLUTUS 07-', 17474, 'http://autotrade.su/picw.php?model=17474&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17474.jpg'),
 (11907101, 'DONG FENG DF40/DF47/1062/1064/1074/1091 05-', 17475, 'http://autotrade.su/picw.php?model=17475&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17475.jpg'),
 (11908101, 'FAW 3252 08-', 17476, 'http://autotrade.su/picw.php?model=17476&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17476.jpg'),
 (11909101, 'FOTON FORLAND 1046 05-', 17477, 'http://autotrade.su/picw.php?model=17477&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17477.jpg'),
 (11910101, 'DONG FENG 1051 05-', 17478, 'http://autotrade.su/picw.php?model=17478&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17478.jpg'),
 (11911101, 'JAC HFC 1040 05-', 17479, 'http://autotrade.su/picw.php?model=17479&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17479.jpg'),
 (11912101, 'FAW CA1083 05-', 17480, 'http://autotrade.su/picw.php?model=17480&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17480.jpg'),
-(11913101, '????? ?????????', 17481, '', ''),
+(11913101, 'Диски сцепления', 17481, '', ''),
 (11914101, 'KIA MAGENTIS 08-10', 17482, 'http://autotrade.su/picw.php?model=17482&amp;state=1&amp;size=800.486', 'http://autotrade.su/files/photo/models/preview/17482.jpg'),
-(11915101, '????? ???????', 17483, '', ''),
+(11915101, 'Сошка рулевая', 17483, '', ''),
 (11916101, 'TOYOTA bB QNC25 06- 4WD', 17484, 'http://autotrade.su/picw.php?model=17484&amp;state=1&amp;size=640.480', 'http://autotrade.su/files/photo/models/preview/17484.jpg'),
 (11917101, 'TOYOTA bB QNC2# 06- 2WD', 17485, 'http://autotrade.su/picw.php?model=17485&amp;state=1&amp;size=640.480', 'http://autotrade.su/files/photo/models/preview/17485.jpg'),
-(11918101, '??????', 17486, '', ''),
-(11919101, '?????? ?????????', 17487, '', ''),
+(11918101, 'Панели', 17486, '', ''),
+(11919101, 'Крышки трамблера', 17487, '', ''),
 (11920101, 'MAZDA CX-5 12-', 17488, 'http://autotrade.su/picw.php?model=17488&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17488.jpg'),
 (11921101, 'OPEL ASTRA J GTC 09- 3D HBK', 17489, 'http://autotrade.su/picw.php?model=17489&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17489.jpg'),
 (11922101, 'TOYOTA LITE/TOWNACE S402 07-', 17490, 'http://autotrade.su/picw.php?model=17490&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17490.jpg'),
@@ -4263,19 +4387,19 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (11924101, 'JAC REFINE 06-', 17492, 'http://autotrade.su/picw.php?model=17492&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17492.jpg'),
 (11925101, 'ROVER 45 99-04', 17493, 'http://autotrade.su/picw.php?model=17493&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17493.jpg'),
 (11926101, 'TOYOTA SPACIA 96-07', 17494, 'http://autotrade.su/picw.php?model=17494&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17494.jpg'),
-(11928101, '??????? ????????', 17496, '', ''),
+(11928101, 'Пружины подвески', 17496, '', ''),
 (11930101, 'LADA LARGUS 12-', 17498, 'http://autotrade.su/picw.php?model=17498&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17498.jpg'),
 (11931101, 'LAND ROVER DISCOVERY III 05-', 17499, 'http://autotrade.su/picw.php?model=17499&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17499.jpg'),
 (11932101, 'TOYOTA HILUX 4-RUNNER/SURF ##N13# 89-95', 17500, 'http://autotrade.su/picw.php?model=17500&amp;state=1&amp;size=799.599', 'http://autotrade.su/files/photo/models/preview/17500.jpg'),
-(11934101, '?????? ?????????', 17502, '', ''),
+(11934101, 'Гильзы двигателя', 17502, '', ''),
 (11935101, 'CITROEN JUMPER II PICK UP 06-', 17503, 'http://autotrade.su/picw.php?model=17503&amp;state=1&amp;size=800.677', 'http://autotrade.su/files/photo/models/preview/17503.jpg'),
-(11936101, 'FIAT DUCATO II PICK UP 06-', 17504, 'http://autotrade.su/picw.php?model=17504&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17504.jpg');
-INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
+(11936101, 'FIAT DUCATO II PICK UP 06-', 17504, 'http://autotrade.su/picw.php?model=17504&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17504.jpg'),
 (11937101, 'PEUGEOT BOXER II PICK UP 06-', 17505, 'http://autotrade.su/picw.php?model=17505&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17505.jpg'),
 (11938101, 'SSANYONG NEW ACTYON 11-', 17506, 'http://autotrade.su/picw.php?model=17506&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17506.jpg'),
 (11939101, 'SSANYONG NEW KORANDO 11-', 17507, 'http://autotrade.su/picw.php?model=17507&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17507.jpg'),
-(11941102, '??? ??????', 17509, '', ''),
-(11942102, '??? ??????', 17510, '', ''),
+(11940102, 'Все модели', 17508, '', ''),
+(11941102, 'Все модели', 17509, '', ''),
+(11942102, 'Все модели', 17510, '', ''),
 (11943102, 'TOYOTA', 17511, '', ''),
 (11944102, 'HONDA', 17512, '', ''),
 (11945102, 'RENAULT', 17513, '', ''),
@@ -4283,7 +4407,8 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (11947102, 'SUZUKI', 17515, '', ''),
 (11948102, 'SUBARU', 17516, '', ''),
 (11949102, 'HONDA', 17517, '', ''),
-(11950102, '????????? ??????????? ????????', 17518, '', ''),
+(11950102, 'Прокладки дроссельной заслонки', 17518, '', ''),
+(11951102, 'VW TIGUAN 07-11', 17519, 'http://autotrade.su/picw.php?model=17519&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17519.jpg'),
 (11952102, 'CITROEN C5 08-10', 17520, 'http://autotrade.su/picw.php?model=17520&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17520.jpg'),
 (11953102, 'CITROEN C3 10-', 17521, 'http://autotrade.su/picw.php?model=17521&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17521.jpg'),
 (11954102, 'SKODA  FABIA/ROOMSTER 10-', 17522, 'http://autotrade.su/picw.php?model=17522&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17522.jpg'),
@@ -4293,26 +4418,26 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (11958102, 'NISSAN NV200 VANETTE VAN 09-', 17526, 'http://autotrade.su/picw.php?model=17526&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17526.jpg'),
 (11959102, 'MITSUBISHI DELICA D:3 11-', 17527, 'http://autotrade.su/picw.php?model=17527&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17527.jpg'),
 (11960102, 'FORD EXPLORER 11-', 17528, 'http://autotrade.su/picw.php?model=17528&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17528.jpg'),
-(11961102, '??????', 17529, '', ''),
-(11962102, '????????', 17530, '', ''),
-(11963102, '?????????', 17531, '', ''),
+(11961102, 'Поршни', 17529, '', ''),
+(11962102, 'Суппорты', 17530, '', ''),
+(11963102, 'Ветровики', 17531, '', ''),
 (11964102, 'HONDA PARTNER EY# 96-05', 17532, 'http://autotrade.su/picw.php?model=17532&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17532.jpg'),
-(11965102, '???????????? ????', 17533, '', ''),
-(11966102, '?????? ????', 17534, '', ''),
-(11967102, '???????', 17535, '', ''),
-(11968102, '?????? ??????????', 17536, '', ''),
-(11969102, '?????????', 17537, '', ''),
-(11970102, '?????????', 17538, '', ''),
-(11971102, '???????', 17539, '', ''),
+(11965102, 'Направляющие цепи', 17533, '', ''),
+(11966102, 'Насосы ГУРа', 17534, '', ''),
+(11967102, 'Датчики', 17535, '', ''),
+(11968102, 'Кулаки поворотные', 17536, '', ''),
+(11969102, 'Диффузоры', 17537, '', ''),
+(11970102, 'Радиаторы', 17538, '', ''),
+(11971102, 'Тросики', 17539, '', ''),
 (11972102, 'CHERY QQ6 (S21) 06- 4D', 17540, 'http://autotrade.su/picw.php?model=17540&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17540.jpg'),
 (11973102, 'NISSAN WINGROAD Y10 90-99', 17541, 'http://autotrade.su/picw.php?model=17541&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17541.jpg'),
 (11975102, 'TOYOTA RACTIS NSP12# 10-', 17543, 'http://autotrade.su/picw.php?model=17543&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17543.jpg'),
 (11976102, 'MERCEDES-BENZ ML-CLASS W166 12-', 17544, 'http://autotrade.su/picw.php?model=17544&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17544.jpg'),
 (11977102, 'MERCEDES-BENZ CLS W218 11-', 17545, 'http://autotrade.su/picw.php?model=17545&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17545.jpg'),
-(11978102, '??????????', 17546, '', ''),
-(11979102, '????????', 17547, '', ''),
-(11980102, '????????', 17548, '', ''),
-(11981102, '????????', 17549, '', ''),
+(11978102, 'Дефлектора', 17546, '', ''),
+(11979102, 'Накладки', 17547, '', ''),
+(11980102, 'Рейлинги', 17548, '', ''),
+(11981102, 'Спойлера', 17549, '', ''),
 (11982102, 'HONDA', 17550, '', ''),
 (11983102, 'BMW X3 F25 10-', 17551, 'http://autotrade.su/picw.php?model=17551&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17551.jpg'),
 (11984102, 'HYUNDAI EQUUS 10-', 17552, 'http://autotrade.su/picw.php?model=17552&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17552.jpg'),
@@ -4329,7 +4454,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (11995102, 'KIA RIO 11-', 17563, 'http://autotrade.su/picw.php?model=17563&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17563.jpg'),
 (11997102, 'JEEP LIBERTY/CHEROKEE 02-07', 17565, 'http://autotrade.su/picw.php?model=17565&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17565.jpg'),
 (11998102, 'JEEP LIBERTY 08-', 17566, 'http://autotrade.su/picw.php?model=17566&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17566.jpg'),
-(11999102, '?????????', 17567, '', ''),
+(11999102, 'Подкрылки', 17567, '', ''),
 (12000102, 'MERCEDES AXOR 01-', 17568, 'http://autotrade.su/picw.php?model=17568&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17568.jpg'),
 (12001102, 'DAEWOO LE MANS 86-93', 17569, 'http://autotrade.su/picw.php?model=17569&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17569.jpg'),
 (12002102, 'DAEWOO LE MANS PENTA 5D HBK 86-93', 17570, 'http://autotrade.su/picw.php?model=17570&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17570.jpg'),
@@ -4343,7 +4468,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (12012102, 'DACIA DUSTER 10-', 17580, 'http://autotrade.su/picw.php?model=17580&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17580.jpg'),
 (12013102, 'TAGAZ ROAD PARTNER 08-11', 17581, 'http://autotrade.su/picw.php?model=17581&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17581.jpg'),
 (12014102, 'TAGAZ TAGER 2008-', 17582, 'http://autotrade.su/picw.php?model=17582&amp;state=1&amp;size=800.622', 'http://autotrade.su/files/photo/models/preview/17582.jpg'),
-(12015102, '?????????', 17583, '', ''),
+(12015102, 'Прокладки', 17583, '', ''),
 (12016102, 'TOYOTA HIACE/REGIUSACE LH/RZH1## 89-96', 17584, '', ''),
 (12018102, 'TOYOTA ESTIMA EMINA/LUCIDA CXR1# TCR1#/2# 93-99', 17586, '', ''),
 (12019102, 'TOYOTA CAMRY CRACIA SXV20 96-01', 17587, '', ''),
@@ -4403,7 +4528,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (12117102, 'TOYOTA ESTIMA #CR40 99-03', 17685, '', ''),
 (12118102, 'CHEVROLET MALIBU 12-', 17686, 'http://autotrade.su/picw.php?model=17686&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17686.jpg'),
 (12119102, 'FIAT DOBLO II 11-', 17687, 'http://autotrade.su/picw.php?model=17687&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17687.jpg'),
-(12120102, '?????', 17688, '', ''),
+(12120102, 'Муфты', 17688, '', ''),
 (12121102, 'NISSAN ELGRAND E51 02-10', 17689, 'http://autotrade.su/picw.php?model=17689&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17689.jpg'),
 (12122102, 'MAZDA PROCEED MARVIE 96-99', 17690, 'http://autotrade.su/picw.php?model=17690&amp;state=1&amp;size=799.599', 'http://autotrade.su/files/photo/models/preview/17690.jpg'),
 (12123102, 'JEEP CHEROKEE 02-07', 17691, 'http://autotrade.su/picw.php?model=17691&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17691.jpg'),
@@ -4414,6 +4539,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (12128102, 'G10', 17696, '', ''),
 (12129102, 'G13', 17697, '', ''),
 (12131102, 'G16', 17699, '', ''),
+(12132102, 'GEELY MK 4D SEDAN 06-', 17700, 'http://autotrade.su/picw.php?model=17700&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17700.jpg'),
 (12133102, 'VW GOLF VII 12-', 17701, 'http://autotrade.su/picw.php?model=17701&amp;state=1&amp;size=799.599', 'http://autotrade.su/files/photo/models/preview/17701.jpg'),
 (12134102, 'VW TOURAN 10-', 17702, 'http://autotrade.su/picw.php?model=17702&amp;state=1&amp;size=799.599', 'http://autotrade.su/files/photo/models/preview/17702.jpg'),
 (12135102, 'BENTLEY CONTINENTAL FLYING SPUR 05-', 17703, 'http://autotrade.su/picw.php?model=17703&amp;state=1&amp;size=778.583', 'http://autotrade.su/files/photo/models/preview/17703.jpg'),
@@ -4496,7 +4622,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (12226102, 'TOYOTA LEVIN/TRUENO AE111 95-00', 17794, '', ''),
 (12227102, 'TOYOTA SPRINTER CARIB AE111 96-02', 17795, '', ''),
 (12228102, 'TOYOTA HILUH SURF KDN185/KZN185/RZN185 98-02', 17796, '', ''),
-(12229102, 'TOYOTA PRADO ##J9# 95-02 (??? ????????) D=300 ??', 17797, '', ''),
+(12229102, 'TOYOTA PRADO ##J9# 95-02 (без расширит) D=300 мм', 17797, '', ''),
 (12230102, 'TOYOTA TACOMA RZN161/171/VZN170/RZN19#/VZN195 97-04', 17798, '', ''),
 (12231102, 'TOYOTA 4RUNNER RZN18#/VZN18# 98-', 17799, '', ''),
 (12232102, 'TOYOTA CAMRY HYBRID AVV50 11-', 17800, '', ''),
@@ -4541,30 +4667,30 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (12280102, 'MINI COOPER COUNTRYMAN 10-', 17848, 'http://autotrade.su/picw.php?model=17848&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17848.jpg'),
 (12281102, 'ACURA TL 04-08', 17849, 'http://autotrade.su/picw.php?model=17849&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17849.jpg'),
 (12282102, 'KIA RAY 11-', 17850, 'http://autotrade.su/picw.php?model=17850&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17850.jpg'),
-(12283102, '?????????', 17851, '', ''),
+(12283102, 'Моторчики', 17851, '', ''),
 (12284102, 'HONDA ACCORD (USA) 2D COUPE 03-08', 17852, 'http://autotrade.su/picw.php?model=17852&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17852.jpg'),
-(12285102, '???????', 17853, '', ''),
+(12285102, 'Датчики', 17853, '', ''),
 (12287102, 'SUZUKI', 17855, '', ''),
 (12288102, 'NISSAN', 17856, '', ''),
 (12289102, 'GREAT WALL WINGLE 07-', 17857, 'http://autotrade.su/picw.php?model=17857&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17857.jpg'),
 (12290102, 'INTERNATIONAL 9200/9400 98-', 17858, 'http://autotrade.su/picw.php?model=17858&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17858.jpg'),
 (12291102, 'RENAULT', 17859, '', ''),
-(12293102, '????????', 17861, '', ''),
+(12293102, 'Редуктор', 17861, '', ''),
 (12294102, 'BMW Z4 E89 09-', 17862, 'http://autotrade.su/picw.php?model=17862&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17862.jpg'),
 (12295102, 'BMW Z4 E85 06-09', 17863, 'http://autotrade.su/picw.php?model=17863&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17863.jpg'),
 (12296102, 'HONDA CIVIC IX 11- 5D HBK', 17864, 'http://autotrade.su/picw.php?model=17864&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17864.jpg'),
 (12297102, 'HONDA CIVIC IX 11- 4D', 17865, 'http://autotrade.su/picw.php?model=17865&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17865.jpg'),
 (12298102, 'TOYOTA ALPHARD #H20 08-', 17866, 'http://autotrade.su/picw.php?model=17866&amp;state=1&amp;size=799.599', 'http://autotrade.su/files/photo/models/preview/17866.jpg'),
 (12299102, 'TOYOTA NOAH/VOXY ZRR7# 08-', 17867, 'http://autotrade.su/picw.php?model=17867&amp;state=1&amp;size=799.599', 'http://autotrade.su/files/photo/models/preview/17867.jpg'),
-(12300102, 'MITSUBISHI FUSO CANTER FE8# (??????)  12-', 17868, 'http://autotrade.su/picw.php?model=17868&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17868.jpg'),
+(12300102, 'MITSUBISHI FUSO CANTER FE8# (РОССИЯ)  12-', 17868, 'http://autotrade.su/picw.php?model=17868&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17868.jpg'),
 (12301102, 'TOYOTA HIACE TRUCK LH8#,YH8#,LH9# 85-95', 17869, 'http://autotrade.su/picw.php?model=17869&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17869.jpg'),
-(12302102, '???? ????????', 17870, '', ''),
-(12303102, '????????', 17871, '', ''),
+(12302102, 'Реле стартера', 17870, '', ''),
+(12303102, 'Маятники', 17871, '', ''),
 (12304102, 'HONDA CIVIC VIII (USA) 06-11 2D CPE', 17872, 'http://autotrade.su/picw.php?model=17872&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17872.jpg'),
 (12305102, 'TOYOTA HIGHLANDER ##U4# 10-13', 17873, 'http://autotrade.su/picw.php?model=17873&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17873.jpg'),
-(12306102, '?????????? ?????????', 17874, '', ''),
-(12307102, '???????? ?????????', 17875, '', ''),
-(12308102, '?????', 17876, '', ''),
+(12306102, 'Кронштейны креплений', 17874, '', ''),
+(12307102, 'Форсунки омывателя', 17875, '', ''),
+(12308102, 'Цапфы', 17876, '', ''),
 (12309102, 'LADA GRANTA 11-', 17877, 'http://autotrade.su/picw.php?model=17877&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17877.jpg'),
 (12310102, 'LADA PRIORA 07-', 17878, 'http://autotrade.su/picw.php?model=17878&amp;state=1&amp;size=600.364', 'http://autotrade.su/files/photo/models/preview/17878.jpg'),
 (12311102, 'HONDA ASCOT CB# 89-93 4D', 17879, 'http://autotrade.su/picw.php?model=17879&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17879.jpg'),
@@ -4579,7 +4705,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (12320102, 'NISSAN PULSAR N16 QG15 99-', 17888, '', ''),
 (12321102, 'NISSAN SUNNY B15 QG15 98-04', 17889, '', ''),
 (12322102, 'NISSAN WINGROAD/AD Y11 QG15 99-02', 17890, '', ''),
-(12324102, 'RENAULT LOGAN ????  06- (8????????)', 17892, '', ''),
+(12324102, 'RENAULT LOGAN МКПП  06- (8клапанов)', 17892, '', ''),
 (12326102, 'TOYOTA LAND CRUISER 100 98-', 17894, '', ''),
 (12327102, 'LEXUS LX470', 17895, '', ''),
 (12328102, 'TOYOTA CORONA AT190 4AFE 92-96', 17896, '', ''),
@@ -4625,10 +4751,10 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (12368102, 'TOYOTA MARK 2 SXV20 97-01', 17936, '', ''),
 (12369102, 'LEXUS GX470 02-09', 17937, '', ''),
 (12371102, 'TOYOTA HIGHLANDER MCU25/28 00-07', 17939, '', ''),
-(12372102, '??????? ??????????', 17940, '', ''),
-(12373102, '?????????? ??????', 17941, '', ''),
+(12372102, 'Башмаки натяжителя', 17940, '', ''),
+(12373102, 'Контактные группы', 17941, '', ''),
 (12374102, 'LDV MAXUS 04-09', 17942, 'http://autotrade.su/picw.php?model=17942&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/17942.jpg'),
-(12375102, '????? ? ?????', 17943, '', ''),
+(12375102, 'Болты и гайки', 17943, '', ''),
 (12376102, 'INFINITI G37 #V36 07- 2D', 17944, 'http://autotrade.su/picw.php?model=17944&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17944.jpg'),
 (12377102, 'KIA RIO/PRIDE 4D (KOR) 11-', 17945, 'http://autotrade.su/picw.php?model=17945&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17945.jpg'),
 (12378102, 'KIA RIO 5D HBK (KOR) 11-', 17946, 'http://autotrade.su/picw.php?model=17946&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/17946.jpg'),
@@ -4705,6 +4831,9 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (12454102, 'TOYOTA COROLLA #ZE12# 00-06 LHD', 18022, '', ''),
 (12455102, 'AUDI S6/RS6 V8 01-04 5D', 18023, 'http://autotrade.su/picw.php?model=18023&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18023.jpg'),
 (12456102, 'AUDI S6/RS6 V8 01-04 4D', 18024, 'http://autotrade.su/picw.php?model=18024&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18024.jpg'),
+(12459102, 'GEELY EMGRAND 4D SED 09-', 18027, 'http://autotrade.su/picw.php?model=18027&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18027.jpg'),
+(12460102, 'GEELY EMGRAND 5D HBK 09-', 18028, 'http://autotrade.su/picw.php?model=18028&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18028.jpg');
+INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
 (12461102, 'HONDA CIVIC EK# 95-01', 18029, 'http://autotrade.su/picw.php?model=18029&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18029.jpg'),
 (12462102, 'HONDA CIVIC EU# 00-05', 18030, '', ''),
 (12463102, 'HONDA CIVIC EG# 92-95', 18031, '', ''),
@@ -4786,7 +4915,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (12550102, 'TOYOTA CARINA AT210 98-01', 18118, '', ''),
 (12551102, 'TOYOTA CELICA ST202/203 95-', 18119, '', ''),
 (12553102, 'TOYOTA COROLLA RUNX/ALLEX NZE124/ZZE122/124 00-04', 18121, '', ''),
-(12554102, 'TOYOTA COROLLA SPACIO NZE121/ZZE12# 01-03 (7 ????)', 18122, '', ''),
+(12554102, 'TOYOTA COROLLA SPACIO NZE121/ZZE12# 01-03 (7 мест)', 18122, '', ''),
 (12555102, 'TOYOTA PRIUS W11 00-03', 18123, '', ''),
 (12556102, 'TOYOTA COROLLA VERSO ZZE121 01-04', 18124, '', ''),
 (12557102, 'TOYOTA CROWN/CROWN MAJESTA UZS143/145 91-93', 18125, '', ''),
@@ -4816,21 +4945,21 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (12582102, 'MAZDA 6 4D 12-', 18150, 'http://autotrade.su/picw.php?model=18150&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18150.jpg'),
 (12583102, 'MERCEDES-BENZ SL-CLASS W230 01-11', 18151, 'http://autotrade.su/picw.php?model=18151&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18151.jpg'),
 (12584102, 'TOYOTA RAV4 #CA4# 13-', 18152, 'http://autotrade.su/picw.php?model=18152&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18152.jpg'),
+(12589102, 'HUANGHAI ANTELOPE SUV 06-', 18157, 'http://autotrade.su/picw.php?model=18157&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18157.jpg'),
 (12590102, 'FAW VITA 4D 08-', 18158, 'http://autotrade.su/picw.php?model=18158&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18158.jpg'),
 (12591102, 'FAW VITA 5D 08-', 18159, 'http://autotrade.su/picw.php?model=18159&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18159.jpg'),
-(12592102, '????????? ????????', 18160, '', ''),
-(12593102, '???????? ??????', 18161, '', ''),
-(12594102, '????????? ?????????', 18162, '', ''),
+(12592102, 'Тормозные цилиндры', 18160, '', ''),
+(12593102, 'Масляные насосы', 18161, '', ''),
+(12594102, 'Монтажные комплекты', 18162, '', ''),
 (12595102, 'HYUNDAI I30 12- 5D HBK', 18163, 'http://autotrade.su/picw.php?model=18163&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18163.jpg'),
 (12596102, 'PEUGEOT 408 11- 4D SED', 18164, 'http://autotrade.su/picw.php?model=18164&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18164.jpg'),
 (12597102, 'MERCEDES-BENZ GL-CLASS X166 12-', 18165, 'http://autotrade.su/picw.php?model=18165&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18165.jpg'),
 (12598102, 'KIA CERATO 12- 4D SED', 18166, 'http://autotrade.su/picw.php?model=18166&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18166.jpg'),
-(12599102, 'PEUGEOT 208 12- 3D HBK', 18167, 'http://autotrade.su/picw.php?model=18167&amp;state=1&amp;size=800.558', 'http://autotrade.su/files/photo/models/preview/18167.jpg');
-INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
+(12599102, 'PEUGEOT 208 12- 3D HBK', 18167, 'http://autotrade.su/picw.php?model=18167&amp;state=1&amp;size=800.558', 'http://autotrade.su/files/photo/models/preview/18167.jpg'),
 (12600102, 'PEUGEOT 208 12- 5D HBK', 18168, 'http://autotrade.su/picw.php?model=18168&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18168.jpg'),
 (12601102, 'VOLKSWAGEN POLO 01-08', 18169, 'http://autotrade.su/picw.php?model=18169&amp;state=1&amp;size=799.599', 'http://autotrade.su/files/photo/models/preview/18169.jpg'),
 (12602102, 'SKODA FABIA 01-07', 18170, 'http://autotrade.su/picw.php?model=18170&amp;state=1&amp;size=799.599', 'http://autotrade.su/files/photo/models/preview/18170.jpg'),
-(12603102, '?????????', 18171, '', ''),
+(12603102, 'Генератор', 18171, '', ''),
 (12605102, 'VOLKSWAGEN POLO 09- HBK', 18173, 'http://autotrade.su/picw.php?model=18173&amp;state=1&amp;size=799.599', 'http://autotrade.su/files/photo/models/preview/18173.jpg'),
 (12607102, 'SUZUKI WAGON R MH23S 09-', 18175, 'http://autotrade.su/picw.php?model=18175&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18175.jpg'),
 (12608102, 'MAZDA MX5 2D 05-', 18176, 'http://autotrade.su/picw.php?model=18176&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18176.jpg'),
@@ -4839,7 +4968,8 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (12611102, 'MAZDA AZ 08-', 18179, 'http://autotrade.su/picw.php?model=18179&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18179.jpg'),
 (12612102, 'HANIA SINOTRUCK 08-', 18180, 'http://autotrade.su/picw.php?model=18180&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18180.jpg'),
 (12613102, 'HANIA ZZ3255C 08-', 18181, 'http://autotrade.su/picw.php?model=18181&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18181.jpg'),
-(12614102, '?????', 18182, '', ''),
+(12614102, 'Болты', 18182, '', ''),
+(12615102, 'Топливная форсунка', 18183, '', ''),
 (12617102, 'MAZDA FAMILIA VAN #Y10 94-99', 18185, 'http://autotrade.su/picw.php?model=18185&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18185.jpg'),
 (12618102, 'MAZDA FAMILIA VAN #Y11 00-06', 18186, 'http://autotrade.su/picw.php?model=18186&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18186.jpg'),
 (12619102, 'SUZUKI GRAND VITARA TD54 06-', 18187, '', ''),
@@ -4857,28 +4987,32 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (12631102, 'TOYOTA KLUGER/HIGLANDER MHU28 05-07', 18199, '', ''),
 (12632102, 'TAGAZ HARDY 12-', 18200, 'http://autotrade.su/picw.php?model=18200&amp;state=1&amp;size=575.431', 'http://autotrade.su/files/photo/models/preview/18200.jpg'),
 (12633102, 'GAZ GAZELLE NEXT 12-', 18201, 'http://autotrade.su/picw.php?model=18201&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18201.jpg'),
-(12635102, '????????????? ????????????', 18203, '', ''),
+(12634102, 'Фильтр топливный (Дизель)', 18202, '', ''),
+(12635102, 'Пневмоподушка амортизатора', 18203, '', ''),
 (12636102, 'TOYOTA RAV4 ##A4# 13-', 18204, 'http://autotrade.su/picw.php?model=18204&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18204.jpg'),
 (12637102, 'GREAT WALL HOVER M2 2010-', 18205, 'http://autotrade.su/picw.php?model=18205&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18205.jpg'),
 (12638102, 'GREAT WALL HOVER H6 SUV 2011-', 18206, 'http://autotrade.su/picw.php?model=18206&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18206.jpg'),
 (12639102, 'TOYOTA RAV4 ACA31/33/36 2AZFE 05-12', 18207, '', ''),
-(12640102, 'NISSAN ALMERA (??????) #G1# 12-', 18208, 'http://autotrade.su/picw.php?model=18208&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18208.jpg'),
-(12641102, 'NISSAN ALMERA B17 (?? ??????) 12- 4D', 18209, 'http://autotrade.su/picw.php?model=18209&amp;state=1&amp;size=800.545', 'http://autotrade.su/files/photo/models/preview/18209.jpg'),
-(12642102, 'NISSAN VERSA B17 (?? ??????) 12- 4D', 18210, 'http://autotrade.su/picw.php?model=18210&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18210.jpg'),
-(12643102, 'NISSAN SUNNY B17 (?? ??????) 12- 4D', 18211, 'http://autotrade.su/picw.php?model=18211&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18211.jpg'),
-(12644102, '?????? ?????', 18212, '', ''),
-(12645102, '???????????? ?????????? ????????????', 18213, '', ''),
+(12640102, 'NISSAN ALMERA (Россия) #G1# 12-', 18208, 'http://autotrade.su/picw.php?model=18208&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18208.jpg'),
+(12641102, 'NISSAN ALMERA B17 (НЕ Россия) 12- 4D', 18209, 'http://autotrade.su/picw.php?model=18209&amp;state=1&amp;size=800.545', 'http://autotrade.su/files/photo/models/preview/18209.jpg'),
+(12642102, 'NISSAN VERSA B17 (НЕ Россия) 12- 4D', 18210, 'http://autotrade.su/picw.php?model=18210&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18210.jpg'),
+(12643102, 'NISSAN SUNNY B17 (НЕ Россия) 12- 4D', 18211, 'http://autotrade.su/picw.php?model=18211&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18211.jpg'),
+(12644102, 'Колпак диска', 18212, '', ''),
+(12645102, 'Стабилизатор поперечной устойчивости', 18213, '', ''),
+(12646102, 'Болт шатуна', 18214, '', ''),
 (12650102, 'TOYOTA RAV4 #CA2# 00-05 4WD', 18218, 'http://autotrade.su/picw.php?model=18218&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18218.jpg'),
 (12661102, 'TOYOTA IPSUM ACM2# 01-09', 18229, '', ''),
 (12662102, 'VW PASSAT B5 00-06', 18230, '', ''),
 (12663102, 'DAEWOO NUBIRA/LACETTI 04-', 18231, '', ''),
 (12664102, 'TOYOTA LAND CRUISER 105 98-07', 18232, '', ''),
 (12665102, 'LEXUS LX470  98-07', 18233, '', ''),
+(12666102, 'DAEWOO CIELO 95-00', 18234, '', ''),
 (12667102, 'PLYMOUTH BREEZ 96-00 4D', 18235, 'http://autotrade.su/picw.php?model=18235&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18235.jpg'),
 (12668102, 'CITROEN C4 L 12- 4D SED', 18236, 'http://autotrade.su/picw.php?model=18236&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18236.jpg'),
 (12669102, 'SUBARU TREZIA NCP#/NSP# 5D 11-', 18237, 'http://autotrade.su/picw.php?model=18237&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18237.jpg'),
 (12670102, 'CHEVROLET CRUZE 13- 5D STW', 18238, 'http://autotrade.su/picw.php?model=18238&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18238.jpg'),
 (12671102, 'CHEVROLET LACETTI 04- 5D HBK', 18239, 'http://autotrade.su/picw.php?model=18239&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18239.jpg'),
+(12672102, 'Шайба клапана регулировочная', 18240, '', ''),
 (12673102, 'SSANGYONG', 18241, '', ''),
 (12674102, 'OPEL ZAFIRA C 10-', 18242, 'http://autotrade.su/picw.php?model=18242&amp;state=1&amp;size=799.599', 'http://autotrade.su/files/photo/models/preview/18242.jpg'),
 (12675102, 'VOLVO V60 10-', 18243, 'http://autotrade.su/picw.php?model=18243&amp;state=1&amp;size=600.450', 'http://autotrade.su/files/photo/models/preview/18243.jpg'),
@@ -4921,6 +5055,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (12714102, 'SUBARU LEGACY BD#/BG#  93-98', 18282, '', ''),
 (12715102, 'SUBARU LEGACY BC#/BF#  89-93', 18283, '', ''),
 (12716102, 'SUBARU LEGACY/OUTBACK BE#/BH#  98-03', 18284, '', ''),
+(12717102, 'NISSAN AVENIR #W10  90-98', 18285, '', ''),
 (12718102, 'TOYOTA ESTIMA/EMINA/LUCIDA/PREVIA #CR1#  90-99', 18286, '', ''),
 (12719102, 'TOYOTA ESTIMA/EMINA/LUCIDA/PREVIA #CR2#  90-99', 18287, '', ''),
 (12720102, 'TOYOTA LITE/TOWNACE NOAH #R5#  96-07', 18288, '', ''),
@@ -4960,6 +5095,10 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (12754102, 'MITSUBISHI PAJERO PININ 98-07', 18322, '', ''),
 (12755102, 'TOYOTA CAMRY/SCEPTER #V1#  92-96 2WD', 18323, '', ''),
 (12756102, 'TOYOTA WINDOM VCV10/11 91-96', 18324, '', ''),
+(12757102, 'NISSAN SUNNY #B13  90-93 2WD', 18325, '', ''),
+(12758102, 'NISSAN SUNNY #B14  94-99 2WD', 18326, '', ''),
+(12759102, 'NISSAN PULSAR/SUNNY N14 90-95 2WD', 18327, '', ''),
+(12760102, 'NISSAN PULSAR N15 95-00 2WD', 18328, '', ''),
 (12761102, 'HONDA ODYSSEY RA9  99-03', 18329, '', ''),
 (12762102, 'HONDA ACCORD CM3  02-08', 18330, '', ''),
 (12763102, 'HONDA AVANCIER TA2  99-03', 18331, '', ''),
@@ -5185,12 +5324,26 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (12983102, 'HONDA ODYSSEY RA2  94-99', 18551, '', ''),
 (12984102, 'HONDA SABER/INSPIRE UA1/2  95-98', 18552, '', ''),
 (12985102, 'HONDA LOGO GA3  96-01', 18553, '', ''),
+(12986102, 'DAEWOO NEXIA  95-', 18554, '', ''),
 (12987102, 'LADA 2108/2109/2110/2111/2112/2113/2114', 18555, '', ''),
+(12988102, 'NISSAN MICRA/MARCH #K11  92-02 2WD', 18556, '', ''),
+(12989102, 'NISSAN MICRA/MARCH #K11  92-02 4WD', 18557, '', ''),
 (12990102, 'LEXUS IS200/300 #E1#  00-05 2WD', 18558, '', ''),
+(12991102, 'NISSAN AVENIR/EXPERT #W11  98-05 2WD', 18559, '', ''),
+(12992102, 'NISSAN AVENIR/EXPERT #W11  98-05 4WD', 18560, '', ''),
+(12993102, 'NISSAN BLUEBIRD #U13  91-95 2WD', 18561, '', ''),
+(12994102, 'NISSAN BLUEBIRD #U13  91-95 4WD', 18562, '', ''),
 (12995102, 'NISSAN BLUEBIRD #U14  96-01 2WD', 18563, '', ''),
+(12996102, 'NISSAN CEFIRO/MAXIMA #A32  94-98', 18564, '', ''),
+(12997102, 'NISSAN PRIMERA #P10  90-95 2WD', 18565, '', ''),
 (12998102, 'NISSAN PRIMERA #P11  95-01 2WD', 18566, '', ''),
 (13000102, 'TOYOTA HILUX SURF/4-RUNNER ##N18#  95-02', 18568, '', ''),
 (13001102, 'TOYOTA LAND CRUISER PRADO ##J9#  96-02', 18569, '', ''),
+(13002102, 'NISSAN LARGO #W30  93-99 2WD', 18570, '', ''),
+(13003102, 'NISSAN SKYLINE #R32  89-93 2WD', 18571, '', ''),
+(13004102, 'NISSAN SKYLINE #R33  93-98 2WD', 18572, '', ''),
+(13005102, 'NISSAN SKYLINE #R34  98-02 2WD', 18573, '', ''),
+(13006102, 'NISSAN SERENA #C23  91-99 2WD', 18574, '', ''),
 (13007102, 'MITSUBISHI DIAMANTE F2#A  90-94', 18575, '', ''),
 (13008102, 'MITSUBISHI RVR N2# SPORTS GEAR  91-97', 18576, '', ''),
 (13009102, 'TOYOTA SERA EXY10  90-94', 18577, '', ''),
@@ -5199,6 +5352,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (13012102, 'TOYOTA STARLET #P9#  96-99 2WD', 18580, '', ''),
 (13013102, 'TOYOTA STARLET #P9#  96-99 4WD', 18581, '', ''),
 (13014102, 'TOYOTA STARLET #P7#  84-89', 18582, '', ''),
+(13015102, 'NISSAN SUNNY #B12  85-90', 18583, '', ''),
 (13016102, 'TOYOTA CORSA/TERCEL/COROLLA II #L4#  90-94 2WD', 18584, '', ''),
 (13017102, 'TOYOTA CORSA/TERCEL/COROLLA II #L4#  90-94 4WD', 18585, '', ''),
 (13018102, 'TOYOTA CORSA/TERCEL/COROLLA II #L5#  94-99 2WD', 18586, '', ''),
@@ -5213,21 +5367,35 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (13027102, 'SUZUKI JIMNY JB23#  98-05', 18595, '', ''),
 (13028102, 'SUZUKI JIMNY JB3#  93-97', 18596, '', ''),
 (13029102, 'SUZUKI JIMNY JB43#  00-', 18597, '', ''),
+(13030102, 'NISSAN SKYLINE #R32  89-93 4WD', 18598, '', ''),
+(13031102, 'NISSAN SKYLINE #R33  93-98 4WD', 18599, '', ''),
+(13032102, 'NISSAN SKYLINE #R34  98-02 4WD', 18600, '', ''),
+(13033102, 'NISSAN CEFIRO #A31  88-94 4WD', 18601, '', ''),
+(13034102, 'NISSAN STAGEA #C34  96-01 4WD', 18602, '', ''),
+(13036102, 'NISSAN BASSARA #U30  99-03', 18604, '', ''),
+(13037102, 'NISSAN BLUEBIRD #U14  96-01 4WD', 18605, '', ''),
+(13038102, 'NISSAN PRIMERA #P10  90-95 4WD', 18606, '', ''),
+(13039102, 'NISSAN PRIMERA #P11  95-01 4WD', 18607, '', ''),
+(13040102, 'NISSAN PRESAGE #U30  98-03', 18608, '', ''),
 (13041102, 'HONDA ODYSSEY RA4  94-99', 18609, '', ''),
 (13042102, 'HONDA ODYSSEY RA5  94-99', 18610, '', ''),
+(13043102, 'NISSAN SERENA #C23  91-99 4WD', 18611, '', ''),
+(13044102, 'NISSAN LARGO #W30  93-99 4WD', 18612, '', ''),
 (13045102, 'TOYOTA CARINA E #T19#  92-02 2WD', 18613, '', ''),
 (13046102, 'TOYOTA CORONA SF #T19#  92-96 2WD', 18614, '', ''),
 (13047102, 'TOYOTA AVENSIS #T22#  97-03', 18615, '', ''),
 (13048102, 'TOYOTA CARINA ED ST20#  93-98 2WD', 18616, '', ''),
 (13049102, 'TOYOTA CURREN ST20#  94-99 2WD', 18617, '', ''),
 (13050102, 'TOYOTA CORONA EXIV ST20#  93-98 2WD', 18618, '', ''),
-(13051102, 'TOYOTA VITZ/YARIS #CP1# ??? ABS 99-05 2WD', 18619, '', ''),
+(13051102, 'TOYOTA VITZ/YARIS #CP1# без ABS 99-05 2WD', 18619, '', ''),
 (13052102, 'MITSUBISHI PAJERO V6#/V7#  99-06', 18620, '', ''),
 (13053102, 'DAIHATSU APPLAUSE A101/A111  89-99', 18621, '', ''),
 (13054102, 'DAIHATSU CHARADE G10#  90-93', 18622, '', ''),
 (13055102, 'DAIHATSU YRV M20#  00-05', 18623, '', ''),
 (13056102, 'TOYOTA SPARKY S221/231  00-03', 18624, '', ''),
 (13057102, 'HONDA ODYSSEY RA3  94-99', 18625, '', ''),
+(13058102, 'NISSAN BLUEBIRD SYLPHY #G10  00-05 2WD', 18626, '', ''),
+(13059102, 'NISSAN SUNNY #B15  98-04 2WD', 18627, '', ''),
 (13060102, 'HONDA ACCORD CL7  02-08', 18628, '', ''),
 (13061102, 'HONDA ACCORD CL8  02-08', 18629, '', ''),
 (13062102, 'HONDA ACCORD CL9  02-08', 18630, '', ''),
@@ -5238,6 +5406,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (13067102, 'HONDA ACCORD/INSPIRE UC1  03-07', 18635, '', ''),
 (13068102, 'HONDA CIVIC ES2  01-05', 18636, '', ''),
 (13069102, 'HONDA CIVIC FD2  05-09', 18637, '', ''),
+(13070102, 'NISSAN VANETTE SK#2  99- 4WD', 18638, '', ''),
 (13071102, 'MAZDA BONGO VAN SK8/SKF/SK22  99- 4WD', 18639, '', ''),
 (13072102, 'TOYOTA HIACE REGIUS/TOURING HIACE KCH4#/RCH41,47  97-02', 18640, '', ''),
 (13073102, 'TOYOTA GRANVIA/GRAND HIACE ##H1#  97-02', 18641, '', ''),
@@ -5256,6 +5425,8 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (13086102, 'MITSUBISHI DINGO CQ#A  98-02 2WD', 18654, '', ''),
 (13087102, 'MITSUBISHI DINGO CQ#A  98-02 4WD', 18655, '', ''),
 (13088102, 'MITSUBISHI MIRAGE/LANCER CK#/CM#  95-00 4WD', 18656, '', ''),
+(13089102, 'NISSAN AD/WINGROAD #Y11 4*114,3  99-06 2WD', 18657, '', ''),
+(13090102, 'NISSAN EXPERT #W11 4*114,3  98-05 2WD', 18658, '', ''),
 (13091102, 'TOYOTA IQ #GJ10#  08-', 18659, '', ''),
 (13092102, 'TOYOTA VITZ/YARIS ##P9#  05-10 2WD', 18660, '', ''),
 (13093102, 'TOYOTA VITZ/YARIS ##P9#  05-10 4WD', 18661, '', ''),
@@ -5281,7 +5452,15 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (13113102, 'TOYOTA CARINA ED ST202  93-98 SUPER STRUT', 18681, '', ''),
 (13114102, 'TOYOTA CARINA ED ST205  93-98 SUPER STRUT', 18682, '', ''),
 (13115102, 'TOYOTA CURREN ST206  94-99 SUPER STRUT', 18683, '', ''),
+(13116102, 'NISSAN CEDRIC/GLORIA #Y34  99-04', 18684, '', ''),
+(13117102, 'NISSAN PRIMERA #P12  01- 4WD', 18685, '', ''),
+(13118102, 'NISSAN X-TRAIL #T30  00-07 4WD', 18686, '', ''),
+(13119102, 'NISSAN AD/WINGROAD #Y11  99-06 4WD', 18687, '', ''),
+(13120102, 'NISSAN SUNNY #B15  98-04 4WD', 18688, '', ''),
+(13121102, 'NISSAN CUBE #Z10  98-02 4WD', 18689, '', ''),
+(13122102, 'NISSAN MICRA/MARCH #K11  99-02 4WD', 18690, '', ''),
 (13123102, 'MITSUBISHI LANCER/LANCER CEDIA CS2#  00-07 2WD', 18691, '', ''),
+(13124102, 'NISSAN BLUEBIRD SYLPHY #G10  00-05 4WD', 18692, '', ''),
 (13125102, 'TOYOTA WINDOM MCV30  03-06', 18693, '', ''),
 (13126102, 'TOYOTA CAMRY #CV3#  03-06 2WD', 18694, '', ''),
 (13127102, 'TOYOTA CAMRY #CV3#  03-06 4WD', 18695, '', ''),
@@ -5298,6 +5477,10 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (13138102, 'MAZDA 6/ATENZA GG#/GY#  02-07 4WD', 18706, '', ''),
 (13139102, 'MAZDA CX-7  06-', 18707, '', ''),
 (13140102, 'MAZDA CX-9  07-', 18708, '', ''),
+(13141102, 'NISSAN CEFIRO/MAXIMA #A33  98-03', 18709, '', ''),
+(13142102, 'NISSAN ALMERA/TINO #V10  98-03', 18710, '', ''),
+(13143102, 'NISSAN PRIMERA #P12  01- 2WD', 18711, '', ''),
+(13144102, 'NISSAN X-TRAIL #T30  00-07 2WD', 18712, '', ''),
 (13145102, 'TOYOTA FJ CRUISER ##J1#L  06-', 18713, '', ''),
 (13146102, 'TOYOTA HILUX SURF/4-RUNNER ##N21#  02-09', 18714, '', ''),
 (13147102, 'TOYOTA LAND CRUISER PRADO ##J12#  02-09', 18715, '', ''),
@@ -5340,29 +5523,54 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (13184102, 'MAZDA 323/FAMILIA BH#/BA#  94-98', 18752, '', ''),
 (13185102, 'MAZDA 323/FAMILIA BJ#  98-04', 18753, '', ''),
 (13186102, 'MAZDA PREMACY CP#  99-05', 18754, '', ''),
-(13188102, 'TOYOTA COROLLA RUMION/SCION XB #E15#  07-', 18756, '', ''),
+(13187102, 'NISSAN AD/WINGROAD #Y11  99-06 2WD', 18755, '', ''),
+(13188102, 'TOYOTA COROLLA RUMION/SCION XB #E15#  07-', 18756, '', '');
+INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
 (13189102, 'TOYOTA AURIS #ZE15#  06-', 18757, '', ''),
 (13190102, 'TOYOTA SAI AZK10  10-', 18758, '', ''),
 (13191102, 'TOYOTA MARK X ZIO ANA1#  07-', 18759, '', ''),
 (13192102, 'TOYOTA RAV4/VANGUARD ACA3#  07-12', 18760, '', ''),
+(13193102, 'NISSAN TEANA #J31 03-08 2WD', 18761, '', ''),
+(13194102, 'NISSAN TEANA #J31  03-08 4WD', 18762, '', ''),
 (13195102, 'NISSAN MURANO #Z50  03-08 4WD', 18763, '', ''),
+(13196102, 'NISSAN PRESAGE #U31  03-09 4WD', 18764, '', ''),
+(13197102, 'NISSAN ELGRAND #E51  02-10', 18765, '', ''),
 (13198102, 'INFINITI FX35/45  03-08', 18766, '', ''),
 (13199102, 'SUZUKI ESCUDO/VITARA TD62W  00-03', 18767, '', ''),
 (13200102, 'SUZUKI ESCUDO/VITARA TA52W  00-02', 18768, '', ''),
 (13201102, 'SUZUKI ESCUDO/VITARA TX92W  00-05', 18769, '', ''),
 (13202102, 'MITSUBISHI L200 KB#T  06-', 18770, '', ''),
 (13203102, 'MITSUBISHI PAJERO/MONTERO SPORT  08-', 18771, '', ''),
+(13204102, 'NISSAN SERENA #C24  99-05 2WD', 18772, '', ''),
+(13205102, 'NISSAN SERENA #C24  99-05 4WD', 18773, '', ''),
 (13206102, 'MAZDA BT50  06-11', 18774, '', ''),
 (13207102, 'MAZDA 2/DEMIO DY#  02-07', 18775, '', ''),
 (13208102, 'MAZDA 3/AXELA BK#  06-09', 18776, '', ''),
 (13209102, 'HONDA EDIX/FR-V BE#  04-', 18777, '', ''),
 (13210102, 'HONDA ELEMENT YH#  03-', 18778, '', ''),
+(13211102, 'NISSAN STAGEA #C34  96-01 2WD', 18779, '', ''),
+(13212102, 'NISSAN SILVIA/200SX #S14  93-98', 18780, '', ''),
+(13213102, 'NISSAN SILVIA/200SX #S15  99-02', 18781, '', ''),
+(13214102, 'NISSAN LAUREL #C33  88-92', 18782, '', ''),
+(13215102, 'NISSAN LAUREL #C34  93-97 4WD', 18783, '', ''),
+(13216102, 'NISSAN LAUREL #C34  93-97 2WD', 18784, '', ''),
+(13217102, 'NISSAN LAUREL #C35  97-02 4WD', 18785, '', ''),
+(13218102, 'NISSAN LAUREL #C35  97-02 2WD', 18786, '', ''),
+(13219102, 'NISSAN FAIRLADY Z/300Z #Z32  89-90', 18787, '', ''),
+(13220102, 'NISSAN CEFIRO #A31  88-94 2WD', 18788, '', ''),
 (13221102, 'SUZUKI ALTO HA#  98-08', 18789, '', ''),
 (13222102, 'SUZUKI WAGON R MA#/MH#  00-08', 18790, '', ''),
 (13223102, 'NISSAN ATLAS F23  92-07', 18791, '', ''),
+(13224102, 'NISSAN CARAVAN ##E24  93-01', 18792, '', ''),
+(13225102, 'NISSAN DATSUN #D21  89-96', 18793, '', ''),
+(13226102, 'NISSAN DATSUN #D22  97-02', 18794, '', ''),
+(13227102, 'NISSAN TERRANO #D21  89-95', 18795, '', ''),
 (13228102, 'HONDA AIRWAVE/PARTNER GJ#  05-', 18796, '', ''),
 (13229102, 'HONDA MOBILIO GB1  01-08 2WD', 18797, '', ''),
 (13230102, 'HONDA MOBILIO GB2  01-08 4WD', 18798, '', ''),
+(13231102, 'NISSAN CEDRIC/GLORIA ENY33  95-99 4WD', 18799, '', ''),
+(13232102, 'NISSAN CEDRIC/GLORIA ENY34  99-04 4WD', 18800, '', ''),
+(13233102, 'NISSAN CIMA FGNY33  96-00 4WD', 18801, '', ''),
 (13234102, 'TOYOTA LAND CRUISER ##J20#  07-', 18802, '', ''),
 (13235102, 'LEXUS LX570 ##J20#  07-', 18803, '', ''),
 (13236102, 'TOYOTA ESTIMA/EMINA/LUCIDA/PREVIA #CR40  02- 4WD', 18804, '', ''),
@@ -5388,18 +5596,27 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (13256102, 'MITSUBISHI ASX GA3W  10-', 18824, '', ''),
 (13257102, 'DODGE CALIBER  06-', 18825, '', ''),
 (13258102, 'CHRYSLER SEBRING  07-', 18826, '', ''),
+(13259102, 'NISSAN MICRA/MARCH #K12  02-10', 18827, '', ''),
 (13260102, 'NISSAN NOTE #E11  05-', 18828, '', ''),
 (13261102, 'RENAULT LOGAN  04-', 18829, '', ''),
 (13262102, 'RENAULT SANDERO  08-', 18830, '', ''),
 (13263102, 'TOYOTA PRIUS NHW20  03-11', 18831, '', ''),
+(13264102, 'NISSAN MURANO #Z50  03-08 2WD', 18832, '', ''),
+(13265102, 'NISSAN PRESAGE #U31  03-09 2WD', 18833, '', ''),
 (13266102, 'HONDA CIVIC EK2  95-00', 18834, '', ''),
 (13267102, 'HONDA CIVIC EK3  95-00', 18835, '', ''),
 (13268102, 'HONDA CIVIC EK8  95-00', 18836, '', ''),
 (13269102, 'HONDA SABER/INSPIRE UA4/5  98-03', 18837, '', ''),
+(13270102, 'NISSAN AD/WINGROAD #Y12  06-', 18838, '', ''),
+(13271102, 'NISSAN BLUEBIRD SYLPHY #G11  05- 2WD', 18839, '', ''),
+(13272102, 'NISSAN BLUEBIRD SYLPHY #G11  05- 4WD', 18840, '', ''),
 (13273102, 'NISSAN CUBE #Z12  08-', 18841, '', ''),
 (13274102, 'NISSAN TIIDA #C11  04-', 18842, '', ''),
 (13275102, 'SUZUKI SX4  06-', 18843, '', ''),
 (13276102, 'MITSUBISHI PAJERO V97  06-', 18844, '', ''),
+(13277102, 'NISSAN QASHQAI  2  09- 2WD', 18845, '', ''),
+(13278102, 'NISSAN X-TRAIL #T31  07- 2WD', 18846, '', ''),
+(13279102, 'NISSAN QASHQAI #J10  06- 2WD', 18847, '', ''),
 (13280102, 'NISSAN QASHQAI  2  09- 4WD', 18848, '', ''),
 (13281102, 'NISSAN X-TRAIL #T31  07- 4WD', 18849, '', ''),
 (13282102, 'NISSAN QASHQAI #J10  06- 4WD', 18850, '', ''),
@@ -5407,7 +5624,11 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (13284102, 'TOYOTA PASSO ##C1#  04-10 4WD', 18852, 'http://autotrade.su/picw.php?model=18852&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18852.jpg'),
 (13285102, 'DAIHATSU BOON/SIRION M30#  04-', 18853, '', ''),
 (13286102, 'TOYOTA COROLLA #E10#  91-95 2WD', 18854, '', ''),
+(13287102, 'NISSAN TEANA PJ32  08- 2WD', 18855, '', ''),
 (13288102, 'NISSAN TEANA J32  08- 2WD', 18856, '', ''),
+(13289102, 'NISSAN TEANA TNJ32  08- 4WD', 18857, '', ''),
+(13290102, 'NISSAN MURANO PNZ51  08-', 18858, '', ''),
+(13291102, 'NISSAN MURANO TNZ51  08-', 18859, '', ''),
 (13292102, 'TOYOTA MARK II QUALIS #V2#  97-02 2WD', 18860, '', ''),
 (13293102, 'TOYOTA MARK II QUALIS #V2#  97-02 4WD', 18861, '', ''),
 (13294102, 'TOYOTA HARRIER ##U1#  97-03 2WD', 18862, '', ''),
@@ -5421,6 +5642,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (13302102, 'HONDA PRELUDE BB8  96-00', 18870, '', ''),
 (13303102, 'FORD FLEX 4D UTILITY 2009-', 18871, 'http://autotrade.su/picw.php?model=18871&amp;state=1&amp;size=700.525', 'http://autotrade.su/files/photo/models/preview/18871.jpg'),
 (13304102, 'HONDA ACCORD 13- 4D', 18872, 'http://autotrade.su/picw.php?model=18872&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18872.jpg'),
+(13305102, 'VOLKSWAGEN  POLO V 10-', 18873, '', ''),
 (13306102, 'VOLKSWAGEN POLO 10-', 18874, '', ''),
 (13307102, 'AUDI A1 11-', 18875, '', ''),
 (13308102, 'SKODA FABIA 00-', 18876, '', ''),
@@ -5443,6 +5665,9 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (13325102, 'FORD FIESTA 95-', 18893, '', ''),
 (13326102, 'FORD FUSION 01-', 18894, '', ''),
 (13327102, 'HYUNDAI ACCENT 95-', 18895, '', ''),
+(13328102, 'PEUGEOT 206 03-', 18896, '', ''),
+(13329102, 'PEUGEOT 307 02-', 18897, '', ''),
+(13330102, 'PEUGEOT 308 07-', 18898, '', ''),
 (13331102, 'CITROEN BERLINGO 99-', 18899, '', ''),
 (13332102, 'CITROEN C3 02-', 18900, '', ''),
 (13333102, 'CITROEN C4 04-', 18901, '', ''),
@@ -5522,7 +5747,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (13407102, 'SEAT IBIZA 01-08', 18975, 'http://autotrade.su/picw.php?model=18975&amp;state=1&amp;size=799.599', 'http://autotrade.su/files/photo/models/preview/18975.jpg'),
 (13408102, '3CE', 18976, '', ''),
 (13409102, 'HONDA ORTHIA/PARTNER EL#/EY#  96-05', 18977, 'http://autotrade.su/picw.php?model=18977&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/18977.jpg'),
-(13410102, '???? ????? ?????????', 18978, '', ''),
+(13410102, 'Ключ замка зажигания', 18978, '', ''),
 (13411102, 'MITSUBISHI OUTLANDER XL 13-', 18979, 'http://autotrade.su/picw.php?model=18979&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/18979.jpg'),
 (13412102, 'ZAZ CHANCE 09-', 18980, 'http://autotrade.su/picw.php?model=18980&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18980.jpg'),
 (13413102, 'VOLKSWAGEN PASSAT NMS/ B7 (USA) 11- 4D', 18981, 'http://autotrade.su/picw.php?model=18981&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/18981.jpg'),
@@ -5534,8 +5759,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (13419102, 'IVECO EUROCARGO 00-', 18987, '', ''),
 (13420102, 'IVECO STRALIS/TRAKKER 02-', 18988, '', ''),
 (13421102, 'FIAT EUROCARGO 03-', 18989, '', ''),
-(13422102, 'IVECO TURBOSTAR SUPER 82-', 18990, '', '');
-INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
+(13422102, 'IVECO TURBOSTAR SUPER 82-', 18990, '', ''),
 (13423102, 'FORD CARGO CABOVER TRUCK 03-', 18991, '', ''),
 (13424102, 'FIAT F190/CM190`82-', 18992, '', ''),
 (13425102, 'FREIGHTLINER CENTURY CLASS S/T/CORONADO/COLUMBIA 97-', 18993, '', ''),
@@ -5586,6 +5810,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (13471102, 'MITSUBISHI CANTER FE5##', 19039, '', ''),
 (13472102, 'MITSUBISHI CANTER FB501/FA523/FA580', 19040, '', ''),
 (13473102, 'MITSUBISHI CANTER FE331/FE435', 19041, '', ''),
+(13474102, 'VW TOUAREG 11-', 19042, 'http://autotrade.su/picw.php?model=19042&amp;state=1&amp;size=800.601', 'http://autotrade.su/files/photo/models/preview/19042.jpg'),
 (13475102, 'WL', 19043, '', ''),
 (13476102, 'TOYOTA TOYOTA SEQUOIA UCK6# 07-', 19044, '', ''),
 (13477102, 'CHERY BONUS/FULWIN (A13) 5D LBK 09-', 19045, 'http://autotrade.su/picw.php?model=19045&amp;state=1&amp;size=700.525', 'http://autotrade.su/files/photo/models/preview/19045.jpg'),
@@ -5601,6 +5826,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (13487102, 'SEAT CORDOBA 93-99 5D', 19055, 'http://autotrade.su/picw.php?model=19055&amp;state=1&amp;size=700.525', 'http://autotrade.su/files/photo/models/preview/19055.jpg'),
 (13488102, 'NISSAN ALMERA N16 00-', 19056, 'http://autotrade.su/picw.php?model=19056&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19056.jpg'),
 (13489102, 'TOYOTA HIACE/QUANTUM ##H2## 04- 4WD', 19057, 'http://autotrade.su/picw.php?model=19057&amp;state=1&amp;size=640.480', 'http://autotrade.su/files/photo/models/preview/19057.jpg'),
+(13490102, 'TOYOTA', 19058, '', ''),
 (13491102, 'LEXUS ES250/350 13-', 19059, 'http://autotrade.su/picw.php?model=19059&amp;state=1&amp;size=662.497', 'http://autotrade.su/files/photo/models/preview/19059.jpg'),
 (13492102, 'HYUNDAI', 19060, '', ''),
 (13493102, 'KIA', 19061, '', ''),
@@ -5627,10 +5853,10 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (13514102, 'FIAT FREEMONT 11-', 19082, 'http://autotrade.su/picw.php?model=19082&amp;state=1&amp;size=600.450', 'http://autotrade.su/files/photo/models/preview/19082.jpg'),
 (13516102, 'FORD EDGE 2006-', 19084, 'http://autotrade.su/picw.php?model=19084&amp;state=1&amp;size=600.450', 'http://autotrade.su/files/photo/models/preview/19084.jpg'),
 (13517102, 'AUDI A1 11- 5D HBK', 19085, 'http://autotrade.su/picw.php?model=19085&amp;state=1&amp;size=600.450', 'http://autotrade.su/files/photo/models/preview/19085.jpg'),
-(13518102, 'TATA 613 ???? 04-', 19086, 'http://autotrade.su/picw.php?model=19086&amp;state=1&amp;size=546.409', 'http://autotrade.su/files/photo/models/preview/19086.jpg'),
+(13518102, 'TATA 613 АМУР 04-', 19086, 'http://autotrade.su/picw.php?model=19086&amp;state=1&amp;size=546.409', 'http://autotrade.su/files/photo/models/preview/19086.jpg'),
 (13519102, 'LADA KALINA 04-', 19087, 'http://autotrade.su/picw.php?model=19087&amp;state=1&amp;size=700.595', 'http://autotrade.su/files/photo/models/preview/19087.jpg'),
 (13520102, 'NISSAN', 19088, '', ''),
-(13521102, '?????? ????????? ??????', 19089, '', ''),
+(13521102, 'Моторы отопителя салона', 19089, '', ''),
 (13522102, 'DAEWOO GENTRA 2013-  4D', 19090, 'http://autotrade.su/picw.php?model=19090&amp;state=1&amp;size=607.455', 'http://autotrade.su/files/photo/models/preview/19090.jpg'),
 (13523102, 'CHEVROLET SILVERADO 99-07', 19091, 'http://autotrade.su/picw.php?model=19091&amp;state=1&amp;size=600.450', 'http://autotrade.su/files/photo/models/preview/19091.jpg'),
 (13524102, 'ZXAUTO LANDMARK 06-', 19092, 'http://autotrade.su/picw.php?model=19092&amp;state=1&amp;size=600.450', 'http://autotrade.su/files/photo/models/preview/19092.jpg'),
@@ -5661,7 +5887,8 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (13550102, 'TOYOTA MARK X 09-', 19118, 'http://autotrade.su/picw.php?model=19118&amp;state=1&amp;size=600.450', 'http://autotrade.su/files/photo/models/preview/19118.jpg'),
 (13551102, 'LEXUS GS250/350/450H 12-', 19119, 'http://autotrade.su/picw.php?model=19119&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19119.jpg'),
 (13552102, '4D68', 19120, '', ''),
-(13554102, 'RENAULT LOGAN ????  06- (16????????)', 19122, '', ''),
+(13553102, 'NISSAN TIIDA #C11  04- LHD', 19121, '', ''),
+(13554102, 'RENAULT LOGAN МКПП  06- (16клапанов)', 19122, '', ''),
 (13555102, 'GMC ENVOY 02-08', 19123, 'http://autotrade.su/picw.php?model=19123&amp;state=1&amp;size=600.450', 'http://autotrade.su/files/photo/models/preview/19123.jpg'),
 (13556102, 'FIAT DUCATO 06-', 19124, '', ''),
 (13557102, 'OPEL ASTRA J 09-', 19125, '', ''),
@@ -5672,9 +5899,10 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (13566102, 'MITSUBISHI FUSO SUPERGREAT 96-', 19134, 'http://autotrade.su/picw.php?model=19134&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19134.jpg'),
 (13567102, 'MITSUBISHI FUSO GREAT 84-96', 19135, 'http://autotrade.su/picw.php?model=19135&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19135.jpg'),
 (13572102, 'MITSUBISHI', 19140, '', ''),
-(13573102, 'ISUZU ELF ??. ?????? 3.5/5.2/NMR## 07-', 19141, 'http://autotrade.su/picw.php?model=19141&amp;state=1&amp;size=574.431', 'http://autotrade.su/files/photo/models/preview/19141.jpg'),
-(13574102, 'ISUZU ELF ??. ?????? 3.5 S/NLR## 07-', 19142, 'http://autotrade.su/picw.php?model=19142&amp;state=1&amp;size=337.245', 'http://autotrade.su/files/photo/models/preview/19142.jpg'),
-(13575102, 'ISUZU ELF ??. ?????? 7.5/9.5/NPR##/NQR## 07-', 19143, 'http://autotrade.su/picw.php?model=19143&amp;state=1&amp;size=574.431', 'http://autotrade.su/files/photo/models/preview/19143.jpg'),
+(13573102, 'ISUZU ELF сб. Россия 3.5/5.2/NMR## 07-', 19141, 'http://autotrade.su/picw.php?model=19141&amp;state=1&amp;size=574.431', 'http://autotrade.su/files/photo/models/preview/19141.jpg'),
+(13574102, 'ISUZU ELF сб. Россия 3.5 S/NLR## 07-', 19142, 'http://autotrade.su/picw.php?model=19142&amp;state=1&amp;size=337.245', 'http://autotrade.su/files/photo/models/preview/19142.jpg'),
+(13575102, 'ISUZU ELF сб. Россия 7.5/9.5/NPR##/NQR## 07-', 19143, 'http://autotrade.su/picw.php?model=19143&amp;state=1&amp;size=574.431', 'http://autotrade.su/files/photo/models/preview/19143.jpg'),
+(13576102, 'DAEWOO NEXIA  08-', 19144, '', ''),
 (13577102, 'CHEVROLET AVEO 08- 5D HBK', 19145, 'http://autotrade.su/picw.php?model=19145&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19145.jpg'),
 (13578102, 'NISSAN NOTE E12 5D HBK 13-', 19146, 'http://autotrade.su/picw.php?model=19146&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19146.jpg'),
 (13579102, 'MERCEDES-BENZ C-CLASS CLA C117 13- 4D', 19147, 'http://autotrade.su/picw.php?model=19147&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19147.jpg'),
@@ -5683,9 +5911,10 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (13582102, 'HYUNDAI SANTA FE 13-', 19150, 'http://autotrade.su/picw.php?model=19150&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19150.jpg'),
 (13583102, 'NISSAN INTERSTAR 97-10', 19151, 'http://autotrade.su/picw.php?model=19151&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19151.jpg'),
 (13586102, 'MERCEDES-BENZ S-CLASS W222 4D 13-', 19154, 'http://autotrade.su/picw.php?model=19154&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19154.jpg'),
-(13587102, 'FIAT DUCATO (??. ??????) 08-', 19155, 'http://autotrade.su/picw.php?model=19155&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19155.jpg'),
-(13588102, 'VOLKSWAGEN BEETLE (?5) 11-', 19156, 'http://autotrade.su/picw.php?model=19156&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19156.jpg'),
+(13587102, 'FIAT DUCATO (сб. Россия) 08-', 19155, 'http://autotrade.su/picw.php?model=19155&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19155.jpg'),
+(13588102, 'VOLKSWAGEN BEETLE (А5) 11-', 19156, 'http://autotrade.su/picw.php?model=19156&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19156.jpg'),
 (13589102, 'CHEVROLET AVEO 07-10 5D HBK', 19157, 'http://autotrade.su/picw.php?model=19157&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19157.jpg'),
+(13591102, 'FIAT DUCATO ( SOLLERS) 10-', 19159, 'http://autotrade.su/picw.php?model=19159&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19159.jpg'),
 (13592102, 'MITSUBISHI FUSO CANTER (RUSSIA) 07-', 19160, 'http://autotrade.su/picw.php?model=19160&amp;state=1&amp;size=500.375', 'http://autotrade.su/files/photo/models/preview/19160.jpg'),
 (13593102, 'HINO 700 PRROFIA 03-', 19161, 'http://autotrade.su/picw.php?model=19161&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19161.jpg'),
 (13594102, 'TAGAZ HYUNDAI SONATA IV 04-12', 19162, 'http://autotrade.su/picw.php?model=19162&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19162.jpg'),
@@ -5693,7 +5922,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (13596102, 'HINO 700 03-', 19164, 'http://autotrade.su/picw.php?model=19164&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19164.jpg'),
 (13597102, 'HINO 500 08-', 19165, 'http://autotrade.su/picw.php?model=19165&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19165.jpg'),
 (13598102, 'NISSAN KIX 2008-', 19166, 'http://autotrade.su/picw.php?model=19166&amp;state=1&amp;size=2048.1536', 'http://autotrade.su/files/photo/models/preview/19166.jpg'),
-(13599102, 'HYUNDAI H1-STAREX 97-07  12-????', 19167, 'http://autotrade.su/picw.php?model=19167&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19167.jpg'),
+(13599102, 'HYUNDAI H1-STAREX 97-07  12-мест', 19167, 'http://autotrade.su/picw.php?model=19167&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19167.jpg'),
 (13600102, 'AUDI A3/S3 13- 4D', 19168, 'http://autotrade.su/picw.php?model=19168&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19168.jpg'),
 (13601102, 'SKODA OCTAVIA A7 5D WGN 13-', 19169, 'http://autotrade.su/picw.php?model=19169&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19169.jpg'),
 (13602102, 'MAN TGA-SERIES 00-', 19170, 'http://autotrade.su/picw.php?model=19170&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19170.jpg'),
@@ -5757,7 +5986,8 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (13660102, 'TOYOTA 4RUNNER ##N13# 89-95', 19228, 'http://autotrade.su/picw.php?model=19228&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19228.jpg'),
 (13661102, 'TOYOTA HILUX SURF ##N18# 95-02', 19229, 'http://autotrade.su/picw.php?model=19229&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19229.jpg'),
 (13662102, 'TOYOTA 4RUNNER ##N18# 95-02', 19230, 'http://autotrade.su/picw.php?model=19230&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19230.jpg'),
-(13663102, 'TOYOTA 4RUNNER ##N21# 02-09', 19231, 'http://autotrade.su/picw.php?model=19231&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19231.jpg'),
+(13663102, 'TOYOTA 4RUNNER ##N21# 02-09', 19231, 'http://autotrade.su/picw.php?model=19231&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19231.jpg');
+INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
 (13664102, 'TOYOTA PICNIC ##M2# 01-09', 19232, 'http://autotrade.su/picw.php?model=19232&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19232.jpg'),
 (13665102, 'TOYOTA AVENSIS VERSO ##M2# 01-09', 19233, 'http://autotrade.su/picw.php?model=19233&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19233.jpg'),
 (13666102, 'TOYOTA SCION XA NCP6# 02-07', 19234, 'http://autotrade.su/picw.php?model=19234&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19234.jpg'),
@@ -5792,6 +6022,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (13699102, 'VOLKSWAGEN GOLF VII 14- 5D STW', 19267, 'http://autotrade.su/picw.php?model=19267&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19267.jpg'),
 (13700102, 'DAEWOO GENTRA 13-', 19268, 'http://autotrade.su/picw.php?model=19268&amp;state=1&amp;size=607.455', 'http://autotrade.su/files/photo/models/preview/19268.jpg'),
 (13701102, 'MITSUBISHI FUSOCANTER 87-05', 19269, '', ''),
+(13702102, 'HINO RANGERDUTRO 87-05', 19270, '', ''),
 (13703102, 'NISSAN ATLAS F22 87-95', 19271, '', ''),
 (13704102, 'NISSAN ATLAS H41 93-99', 19272, '', ''),
 (13705102, 'HYUNDAI EXCEL 89-95', 19273, 'http://autotrade.su/picw.php?model=19273&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19273.jpg'),
@@ -5817,6 +6048,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (13725102, 'HINO', 19293, '', ''),
 (13726102, 'HINO 500 01-', 19294, 'http://autotrade.su/picw.php?model=19294&amp;state=1&amp;size=2048.1536', 'http://autotrade.su/files/photo/models/preview/19294.jpg'),
 (13727102, 'HONDA ACCORD CU#/CW#  08-13', 19295, '', ''),
+(13728102, 'GEELY MK CROSS 10-', 19296, 'http://autotrade.su/picw.php?model=19296&amp;state=1&amp;size=2048.1536', 'http://autotrade.su/files/photo/models/preview/19296.jpg'),
 (13729102, 'RENAULT GRAND MODUS 07-', 19297, 'http://autotrade.su/picw.php?model=19297&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19297.jpg'),
 (13733102, 'NISSAN ATLAS 93-99', 19301, '', ''),
 (13734102, 'NISSAN DIESELUD', 19302, '', ''),
@@ -5843,6 +6075,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (13755102, 'INFINITI G35/37 #V35 01-07', 19323, '', ''),
 (13756102, 'NISSAN VANETTE II C22 86-95', 19324, '', ''),
 (13757102, 'KIA MAGENTIS 06-10', 19325, '', ''),
+(13758102, 'HINO DUTRO/300 99-11', 19326, 'http://autotrade.su/picw.php?model=19326&amp;state=1&amp;size=640.480', 'http://autotrade.su/files/photo/models/preview/19326.jpg'),
 (13759102, 'J08E', 19327, '', ''),
 (13760102, 'J08C', 19328, '', ''),
 (13761102, '6HK1', 19329, '', ''),
@@ -5881,6 +6114,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (13794102, 'VOLKSWAGEN BEETLE (A5) 11-', 19362, 'http://autotrade.su/picw.php?model=19362&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19362.jpg'),
 (13795102, 'N04C', 19363, '', ''),
 (13796102, 'PEUGEOT 408 11-', 19364, '', ''),
+(13797102, 'SEAT TOLEDO 12', 19365, '', ''),
 (13799102, 'TOYOTA HIACE/REGIUSACE 04-', 19367, '', ''),
 (13802102, 'JAGUAR X-TYPE 01-09', 19370, '', ''),
 (13803102, 'ACURA SLX 96-99', 19371, 'http://autotrade.su/picw.php?model=19371&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19371.jpg'),
@@ -5899,8 +6133,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (13816102, 'PEUGEOT 308 14- 5D HBK', 19384, 'http://autotrade.su/picw.php?model=19384&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19384.jpg'),
 (13817102, 'PEUGEOT 308 14- 5D STW', 19385, 'http://autotrade.su/picw.php?model=19385&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19385.jpg'),
 (13818102, 'TOYOTA LAND CRUISER CYGNUS ##J10# 98-07', 19386, 'http://autotrade.su/picw.php?model=19386&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19386.jpg'),
-(13819102, 'FORD RANGER (THAILAND) 99-06', 19387, 'http://autotrade.su/picw.php?model=19387&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19387.jpg');
-INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
+(13819102, 'FORD RANGER (THAILAND) 99-06', 19387, 'http://autotrade.su/picw.php?model=19387&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19387.jpg'),
 (13820102, 'FAW BESTURN B50 SEDAN 12-', 19388, 'http://autotrade.su/picw.php?model=19388&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19388.jpg'),
 (13823102, 'NISSAN SERENA #C26 11-', 19391, 'http://autotrade.su/picw.php?model=19391&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19391.jpg'),
 (13824102, 'SUZUKI LANDY SC26/SNC26 11-', 19392, 'http://autotrade.su/picw.php?model=19392&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19392.jpg'),
@@ -6065,6 +6298,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (13992102, 'NISSAN PULSAR/SUNNY #N14 90-95', 19560, '', ''),
 (13993102, 'OPEL', 19561, '', ''),
 (13994102, 'DAEWOO', 19562, '', ''),
+(13996102, 'ISUZU ELF NQR## 07-', 19564, '', ''),
 (13997102, 'HYUNDAI GALLOPER 91-03', 19565, '', ''),
 (13998102, 'HOWO A7 12-', 19566, 'http://autotrade.su/picw.php?model=19566&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19566.jpg'),
 (14007102, 'TOYOTA ISIS ANM1# 04-09', 19575, '', ''),
@@ -6078,7 +6312,10 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (14056102, 'MAZDA 3/AXELA BK#  05-08 2WD', 19624, '', ''),
 (14057102, 'CHEVROLET LACETTI  04-', 19625, '', ''),
 (14058102, 'CHEVROLET EPICA  05-11', 19626, '', ''),
+(14059102, 'DAEWOO NUBIRA  03-', 19627, '', ''),
+(14060102, 'DAEWOO NEXIA  03-', 19628, '', ''),
 (14061102, 'CHEVROLET AVEO  06-', 19629, '', ''),
+(14062102, 'NISSAN SUNNY B15  98-04', 19630, '', ''),
 (14063102, 'TOYOTA AURIS ZRE186  12-', 19631, '', ''),
 (14064102, 'TOYOTA BLADE AZE156  06-', 19632, '', ''),
 (14065102, 'TOYOTA RAV4/VANGUARD ACA3#  05-12 2WD', 19633, '', ''),
@@ -6105,6 +6342,10 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (14086102, 'SUBARU LEGACY BR#  09-', 19654, '', ''),
 (14087102, 'SUBARU BRZ  11-', 19655, '', ''),
 (14088102, 'TOYOTA GT86  12-', 19656, '', ''),
+(14089102, 'NISSAN JUKE  10- 4WD', 19657, '', ''),
+(14090102, 'NISSAN X-PATHFINDER R51  05-', 19658, '', ''),
+(14091102, 'NISSAN MICRA/MARCH #K11  99-02 2WD', 19659, '', ''),
+(14092102, 'NISSAN CUBE #Z10  98-02 2WD', 19660, '', ''),
 (14093102, 'MITSUBISHI ASX GA#W  10- 2WD', 19661, '', ''),
 (14094102, 'MITSUBISHI ASX GA#W  10- 4WD', 19662, '', ''),
 (14095102, 'MITSUBISHI LANCER/LANCER CEDIA CS5#  04-07 2WD', 19663, '', ''),
@@ -6142,6 +6383,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (14136102, 'MERCEDES-BENZ C-CLASS W205 14- 5D WGN', 19704, 'http://autotrade.su/picw.php?model=19704&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19704.jpg'),
 (14137102, 'PEUGEOT 2008 SUV 14-', 19705, 'http://autotrade.su/picw.php?model=19705&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19705.jpg'),
 (14138102, 'MACAN 14-', 19706, 'http://autotrade.su/picw.php?model=19706&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19706.jpg'),
+(14139102, 'GEELY MK 5D HBK 10-', 19707, 'http://autotrade.su/picw.php?model=19707&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19707.jpg'),
 (14140102, 'FIAT DOBLO 06-', 19708, 'http://autotrade.su/picw.php?model=19708&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19708.jpg'),
 (14141102, 'TOYOTA HIGHLANDER 13-', 19709, 'http://autotrade.su/picw.php?model=19709&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19709.jpg'),
 (14142102, 'SKODA OCTAVIA 13-', 19710, 'http://autotrade.su/picw.php?model=19710&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19710.jpg'),
@@ -6169,6 +6411,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (14164102, 'RENAULT DUSTER  10-', 19732, '', ''),
 (14165102, 'RENAULT FLUENCE  10-', 19733, '', ''),
 (14166102, 'RENAULT MEGANE  09-', 19734, '', ''),
+(14167102, 'NISSAN ALMERA CLASSIC (RUS) N17  06-12', 19735, '', ''),
 (14168102, 'TOYOTA CELSIOR UCF#  03-06', 19736, '', ''),
 (14169102, 'NISSAN JUKE  10- 2WD', 19737, '', ''),
 (14170102, 'PEUGEOT BOXER III  06-', 19738, '', ''),
@@ -6206,7 +6449,8 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (14202102, 'FORD ECOSPORT 13-', 19770, 'http://autotrade.su/picw.php?model=19770&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19770.jpg'),
 (14203102, 'NISSAN PATHFINDER R52 14-', 19771, 'http://autotrade.su/picw.php?model=19771&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19771.jpg'),
 (14210102, 'TOYOTA HILUX 12-', 19778, 'http://autotrade.su/picw.php?model=19778&amp;state=1&amp;size=800.421', 'http://autotrade.su/files/photo/models/preview/19778.jpg'),
-(14211102, '?????? ?? ???????? ??????????', 19779, '', ''),
+(14211102, 'Оптика на грузовые автомобили', 19779, '', '');
+INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
 (14212102, 'GREAT WALL HOVER H3 10-', 19780, 'http://autotrade.su/picw.php?model=19780&amp;state=1&amp;size=600.400', 'http://autotrade.su/files/photo/models/preview/19780.jpg'),
 (14217102, 'NISSAN TIIDA/VERSA #C11 04-', 19785, '', ''),
 (14219102, '4S-FE', 19787, '', ''),
@@ -6278,9 +6522,11 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (14285102, 'DAIHATSU CUORE 07-', 19853, '', ''),
 (14286102, 'SUBARU BRZ 12-', 19854, '', ''),
 (14287102, 'TOYOTA GT 86 12-', 19855, '', ''),
-(14288102, 'ISUZU ELF ?????? 3.5 NKR## 07-', 19856, 'http://autotrade.su/picw.php?model=19856&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19856.jpg'),
+(14288102, 'ISUZU ELF Россия 3.5 NKR## 07-', 19856, 'http://autotrade.su/picw.php?model=19856&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19856.jpg'),
 (14289102, 'FAW CA1041 06-', 19857, '', ''),
 (14290102, 'OPEL CORSA/VITA 93-00', 19858, '', ''),
+(14291102, 'SEAT CORDOBA 99-02', 19859, '', ''),
+(14292102, 'SEAT IBIZA 93-01', 19860, '', ''),
 (14293102, 'VOLKSWAGEN POLO III 94-01', 19861, '', ''),
 (14294102, 'HYUNDAI GENESIS 08-13', 19862, '', ''),
 (14295102, 'HONDA ACCORD CR# 13-', 19863, 'http://autotrade.su/picw.php?model=19863&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19863.jpg'),
@@ -6290,6 +6536,9 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (14299102, 'F22B', 19867, '', ''),
 (14300102, 'F18B', 19868, '', ''),
 (14301102, 'B20B', 19869, '', ''),
+(14302102, '4G15', 19870, '', ''),
+(14303102, '4G92', 19871, '', ''),
+(14304102, '4G18', 19872, '', ''),
 (14305102, 'SR20DE', 19873, '', ''),
 (14306102, 'GA16DE', 19874, '', ''),
 (14307102, 'GA14DE', 19875, '', ''),
@@ -6301,16 +6550,22 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (14313102, 'VQ40DE', 19881, '', ''),
 (14314102, 'F23A', 19882, '', ''),
 (14315102, 'F20B', 19883, '', ''),
+(14316102, 'VW POLO 01-09', 19884, 'http://autotrade.su/picw.php?model=19884&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19884.jpg'),
 (14340102, 'NISSAN FRONTIER 97-05', 19908, '', ''),
 (14341102, 'NISSAN XTERRA 99-05', 19909, '', ''),
 (14342102, 'MAN TGL-SERIES 05-', 19910, 'http://autotrade.su/picw.php?model=19910&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19910.jpg'),
 (14343102, 'CITROEN C4 10-', 19911, 'http://autotrade.su/picw.php?model=19911&amp;state=1&amp;size=920.690', 'http://autotrade.su/files/photo/models/preview/19911.jpg'),
 (14344102, 'NISSAN NV400 11-', 19912, '', ''),
 (14345102, 'NISSAN NOTE E12 13-', 19913, '', ''),
+(14346102, 'MAZDA 5 10-', 19914, '', ''),
 (14347102, 'MERCEDES CL-CLASS R231 11-', 19915, '', ''),
 (14348102, 'MERCEDES SLS C197 10-', 19916, '', ''),
+(14349102, 'NISSAN ALMERA (RUS)  12-', 19917, '', ''),
+(14350102, 'NISSAN PATROL Y61  97-10', 19918, '', ''),
+(14351102, 'NISSAN PATROL Y62  10-', 19919, '', ''),
 (14352102, 'NISSAN PATROL Y61 97-10', 19920, '', ''),
 (14356102, 'LIFAN SOLANO', 19924, '', ''),
+(14357102, 'MAZDA MX-5 98-05', 19925, '', ''),
 (14358102, 'FORD FUSION 13-', 19926, '', ''),
 (14359102, 'CITROEN SAXO 96-04', 19927, '', ''),
 (14360102, 'BMW 3-SERIES F30 12-', 19928, '', ''),
@@ -6319,6 +6574,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (14363102, 'NISSAN PRIMERA #W10 90-98 WAGON', 19931, '', ''),
 (14364102, 'BMW 1-SERIES F20/F21 11-', 19932, '', ''),
 (14365102, 'AUDI A4/S4 15-', 19933, '', ''),
+(14366102, 'VW PASSAT B8 14-', 19934, '', ''),
 (14367102, 'PEUGEOT', 19935, '', ''),
 (14369102, 'FORD MONDEO V 14-', 19937, 'http://autotrade.su/picw.php?model=19937&amp;state=1&amp;size=800.600', 'http://autotrade.su/files/photo/models/preview/19937.jpg'),
 (14370102, 'FORD ORION 4D 90-95', 19938, '', ''),
@@ -6384,6 +6640,15 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (14430102, '4 RUNNER VZN210W', 19998, '', ''),
 (14431102, 'GX470 UZJ120', 19999, '', ''),
 (14432102, 'GX460 URJ150', 20000, '', ''),
+(14433102, 'PAJERO V98W', 20001, '', ''),
+(14434102, 'PAJERO V97W', 20002, '', ''),
+(14435102, 'PAJERO V88W', 20003, '', ''),
+(14436102, 'MONTERO (PAJERO) V98W', 20004, '', ''),
+(14437102, 'MONTERO (PAJERO) V97W', 20005, '', ''),
+(14438102, 'PAJERO IV V87W', 20006, '', ''),
+(14439102, 'PAJERO IV V97W', 20007, '', ''),
+(14440102, 'PAJERO IV V88W', 20008, '', ''),
+(14441102, 'PAJERO IV V98W', 20009, '', ''),
 (14442102, 'LAND CRUISER PRADO LJ71G', 20010, '', ''),
 (14443102, 'LAND CRUISER PRADO KDJ150G', 20011, '', ''),
 (14444102, 'LAND CRUISER PRADO KDJ150L', 20012, '', ''),
@@ -6601,8 +6866,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (14661102, 'SPRINTER AE101', 20229, '', ''),
 (14662102, 'SPRINTER TRUENO AE101', 20230, '', ''),
 (14663102, 'SPRINTER TRUENO AE111', 20231, '', ''),
-(14664102, 'WINDOM VCV11', 20232, '', '');
-INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
+(14664102, 'WINDOM VCV11', 20232, '', ''),
 (14665102, 'WINDOM VCV10', 20233, '', ''),
 (14666102, 'RX300 MCU35', 20234, '', ''),
 (14667102, 'RX300 MCU38', 20235, '', ''),
@@ -6641,8 +6905,158 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (14700102, 'PREMACY CREW', 20268, '', ''),
 (14701102, 'PREMACY CR3W', 20269, '', ''),
 (14702102, 'PREMACY CWEFW', 20270, '', ''),
+(14703102, 'C30 MK', 20271, '', ''),
+(14704102, 'S40 MS', 20272, '', ''),
 (14705102, 'C-CROSSER EP', 20273, '', ''),
 (14706102, 'STEALTH JZ16A', 20274, '', ''),
+(14707102, 'AIRTREK CU2W', 20275, '', ''),
+(14708102, 'AIRTREK CU5W', 20276, '', ''),
+(14709102, 'CHALLENGER  K94WG', 20277, '', ''),
+(14710102, 'CHALLENGER  K96W', 20278, '', ''),
+(14711102, 'CHALLENGER  K99W', 20279, '', ''),
+(14712102, 'CHALLENGER  K97WG', 20280, '', ''),
+(14713102, 'CHARIOT N33W', 20281, '', ''),
+(14714102, 'CHARIOT N43W', 20282, '', ''),
+(14715102, 'CHARIOT N83W', 20283, '', ''),
+(14716102, 'CHARIOT N84W', 20284, '', ''),
+(14717102, 'CHARIOT N94W', 20285, '', ''),
+(14718102, 'CHARIOT V23V', 20286, '', ''),
+(14719102, 'CHARIOT V43W', 20287, '', ''),
+(14720102, 'CHARIOT V64V', 20288, '', ''),
+(14721102, 'CHARIOT V74W', 20289, '', ''),
+(14722102, 'DEBONAIR S12A', 20290, '', ''),
+(14723102, 'DEBONAIR S22A', 20291, '', ''),
+(14724102, 'DEBONAIR S26A', 20292, '', ''),
+(14725102, 'DEBONAIR S27A', 20293, '', ''),
+(14726102, 'DELICA PD4W', 20294, '', ''),
+(14727102, 'DELICA P25T', 20295, '', ''),
+(14728102, 'DELICA PD5V', 20296, '', ''),
+(14729102, 'DELICA PD8W', 20297, '', ''),
+(14730102, 'DELICA PD6W', 20298, '', ''),
+(14731102, 'DELICA PF6W', 20299, '', ''),
+(14732102, 'DELICA PE8W', 20300, '', ''),
+(14733102, 'DELICA PF8W', 20301, '', ''),
+(14734102, 'DIAMANTE F15A', 20302, '', ''),
+(14735102, 'DIAMANTE F25A', 20303, '', ''),
+(14736102, 'DIAMANTE F13A', 20304, '', ''),
+(14737102, 'DIAMANTE F31A', 20305, '', ''),
+(14738102, 'DIAMANTE F41A', 20306, '', ''),
+(14739102, 'DIAMANTE F34A', 20307, '', ''),
+(14740102, 'DIAMANTE F17A', 20308, '', ''),
+(14741102, 'DIAMANTE F27A', 20309, '', ''),
+(14742102, 'DIAMANTE K45', 20310, '', ''),
+(14743102, 'DIAMANTE F36A', 20311, '', ''),
+(14744102, 'DIAMANTE F46A', 20312, '', ''),
+(14745102, 'DIAMANTE F36W', 20313, '', ''),
+(14746102, 'DIAMANTE F47A', 20314, '', ''),
+(14747102, 'ECLIPSE D27A', 20315, '', ''),
+(14748102, 'EMERAUDE E77A', 20316, '', ''),
+(14749102, 'EMERAUDE E84A', 20317, '', ''),
+(14750102, 'EMERAUDE E74A', 20318, '', ''),
+(14751102, 'EMERAUDE E64A', 20319, '', ''),
+(14752102, 'EMERAUDE E54A', 20320, '', ''),
+(14753102, 'ETERNA E39A', 20321, '', ''),
+(14754102, 'FTO DE3A', 20322, '', ''),
+(14755102, 'GALANT CX4A', 20323, '', ''),
+(14756102, 'GALANT E33A', 20324, '', ''),
+(14757102, 'GALANT E38A', 20325, '', ''),
+(14758102, 'GALANT E39A', 20326, '', ''),
+(14759102, 'GALANT E54A', 20327, '', ''),
+(14760102, 'GALANT E74A', 20328, '', ''),
+(14761102, 'GALANT E84A', 20329, '', ''),
+(14762102, 'GALANT E88A', 20330, '', ''),
+(14763102, 'GALANT EA2A', 20331, '', ''),
+(14764102, 'GALANT EA2W', 20332, '', ''),
+(14765102, 'GALANT EA3A', 20333, '', ''),
+(14766102, 'GALANT EA3W', 20334, '', ''),
+(14767102, 'GALANT EA5A', 20335, '', ''),
+(14768102, 'GALANT EA5W', 20336, '', ''),
+(14769102, 'GALANT EC3A', 20337, '', ''),
+(14770102, 'GALANT EC5A', 20338, '', ''),
+(14771102, 'GALANT FORTIS CX4A', 20339, '', ''),
+(14772102, 'L200 K75T', 20340, '', ''),
+(14773102, 'L200 K34T', 20341, '', ''),
+(14774102, 'L200 K74T', 20342, '', ''),
+(14775102, 'L400 PD4V', 20343, '', ''),
+(14776102, 'L400 PB5V', 20344, '', ''),
+(14777102, 'L400 PA5W', 20345, '', ''),
+(14778102, 'L400 PB5W', 20346, '', ''),
+(14779102, 'LANCER CE9A', 20347, '', ''),
+(14780102, 'LANCER CD9A', 20348, '', ''),
+(14781102, 'LANCER CN9A', 20349, '', ''),
+(14782102, 'LANCER CP9A', 20350, '', ''),
+(14783102, 'LANCER CT9A', 20351, '', ''),
+(14784102, 'LANCER CZ4A', 20352, '', ''),
+(14785102, 'LANCER EVOLUTION CN9A', 20353, '', ''),
+(14786102, 'LANCER EVOLUTION CX4A', 20354, '', ''),
+(14787102, 'LANCER EVOLUTION CP9A', 20355, '', ''),
+(14788102, 'LANCER EVOLUTION CT9A', 20356, '', ''),
+(14789102, 'LEGNUM EA3W', 20357, '', ''),
+(14790102, 'LEGNUM EC5W', 20358, '', ''),
+(14791102, 'LEGNUM EC3W', 20359, '', ''),
+(14792102, 'MIRAGE CJ4A', 20360, '', ''),
+(14793102, 'MIRAGE CD9A', 20361, '', ''),
+(14794102, 'OUTLANDER CU2W', 20362, '', ''),
+(14795102, 'PAJERO V24C', 20363, '', ''),
+(14796102, 'PAJERO V24W', 20364, '', ''),
+(14797102, 'PAJERO V24WG', 20365, '', ''),
+(14798102, 'PAJERO V44W', 20366, '', ''),
+(14799102, 'PAJERO V44WG', 20367, '', ''),
+(14800102, 'MONTERO (PAJERO) V21C', 20368, '', ''),
+(14801102, 'MONTERO (PAJERO) K94W', 20369, '', ''),
+(14802102, 'MONTERO (PAJERO) K96W', 20370, '', ''),
+(14803102, 'MONTERO (PAJERO) L044G', 20371, '', ''),
+(14804102, 'MONTERO (PAJERO) L049G', 20372, '', ''),
+(14805102, 'MONTERO (PAJERO) V21W', 20373, '', ''),
+(14806102, 'MONTERO (PAJERO) V21WG', 20374, '', ''),
+(14807102, 'MONTERO (PAJERO) V23C', 20375, '', ''),
+(14808102, 'MONTERO (PAJERO) V23W', 20376, '', ''),
+(14809102, 'MONTERO (PAJERO) V24C', 20377, '', ''),
+(14810102, 'MONTERO (PAJERO) V25C', 20378, '', ''),
+(14811102, 'MONTERO (PAJERO) V25W', 20379, '', ''),
+(14812102, 'MONTERO (PAJERO) V26W', 20380, '', ''),
+(14813102, 'MONTERO (PAJERO) V26WG', 20381, '', ''),
+(14814102, 'MONTERO (PAJERO) V43W', 20382, '', ''),
+(14815102, 'MONTERO (PAJERO) V45W', 20383, '', ''),
+(14816102, 'MONTERO (PAJERO) V45WG', 20384, '', ''),
+(14817102, 'MONTERO (PAJERO) V46V', 20385, '', ''),
+(14818102, 'MONTERO (PAJERO) V46W', 20386, '', ''),
+(14819102, 'MONTERO (PAJERO) V46WG', 20387, '', ''),
+(14820102, 'MONTERO (PAJERO) V47WG', 20388, '', ''),
+(14821102, 'PAJERO IO H67W', 20389, '', ''),
+(14822102, 'RVR N23W', 20390, '', ''),
+(14823102, 'RVR N28W', 20391, '', ''),
+(14824102, 'RVR N23WG', 20392, '', ''),
+(14825102, 'RVR N28WG', 20393, '', ''),
+(14826102, 'SHOGUN V24W', 20394, '', ''),
+(14827102, 'SHOGUN K94W', 20395, '', ''),
+(14828102, 'SHOGUN V23C', 20396, '', ''),
+(14829102, 'SHOGUN V23W', 20397, '', ''),
+(14830102, 'SHOGUN V24WG', 20398, '', ''),
+(14831102, 'SHOGUN V25W', 20399, '', ''),
+(14832102, 'SHOGUN V26W', 20400, '', ''),
+(14833102, 'SHOGUN V43W', 20401, '', ''),
+(14834102, 'SHOGUN V45W', 20402, '', ''),
+(14835102, 'SHOGUN V46W', 20403, '', ''),
+(14836102, 'SIGMA ESTATE WAGON F07W', 20404, '', ''),
+(14837102, 'SIGMA ESTATE WAGON F13A', 20405, '', ''),
+(14838102, 'SIGMA ESTATE WAGON F13AK', 20406, '', ''),
+(14839102, 'SIGMA ESTATE WAGON F15A', 20407, '', ''),
+(14840102, 'SIGMA ESTATE WAGON F16A', 20408, '', ''),
+(14841102, 'SIGMA ESTATE WAGON F17A', 20409, '', ''),
+(14842102, 'SIGMA ESTATE WAGON F25A', 20410, '', ''),
+(14843102, 'SIGMA ESTATE WAGON F27A', 20411, '', ''),
+(14844102, 'SPACE GEAR PD4W', 20412, '', ''),
+(14845102, 'SPACE GEAR PD5W', 20413, '', ''),
+(14846102, 'SPACE GEAR PA5W', 20414, '', ''),
+(14847102, 'SPACE RUNNER N63W', 20415, '', ''),
+(14848102, 'SPACE RUNNER N64W', 20416, '', ''),
+(14849102, 'SPORT WAGON K94W', 20417, '', ''),
+(14850102, 'STRADA K74T', 20418, '', ''),
+(14851102, 'LANCER EVOLUTION X EX RS', 20419, '', ''),
+(14852102, 'LANCER CEDIA CZ4A', 20420, '', ''),
+(14853102, 'NIMBUS N5W', 20421, '', ''),
+(14854102, 'LANCER EVOLUTION X CZ4A', 20422, '', ''),
 (14855102, 'DUALIS J10', 20423, '', ''),
 (14856102, 'DUALIS NJ10', 20424, '', ''),
 (14857102, 'MAXIMA A36', 20425, '', ''),
@@ -7161,7 +7575,8 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (15373102, 'TOWNACE KM70', 20941, '', ''),
 (15374102, 'TOWNACE KM75', 20942, '', ''),
 (15375102, 'TOWNACE KR41V', 20943, '', ''),
-(15376102, 'TOWNACE KR42V', 20944, '', ''),
+(15376102, 'TOWNACE KR42V', 20944, '', '');
+INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
 (15377102, 'ZACE RF80', 20945, '', ''),
 (15378102, 'ZACE KF82', 20946, '', ''),
 (15379102, 'VISTA  AZV50', 20947, '', ''),
@@ -7193,6 +7608,41 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (15405102, 'ASTRAJ D', 20973, '', ''),
 (15406102, 'COMPASS MK49', 20974, '', ''),
 (15407102, 'PATRIOT MK74', 20975, '', ''),
+(15408102, 'AIRTREK CU4W', 20976, '', ''),
+(15409102, 'DELICA D:5 CV5W', 20977, '', ''),
+(15410102, 'DELICA D:6 CV4W', 20978, '', ''),
+(15411102, 'DION CR5W', 20979, '', ''),
+(15412102, 'ECLIPSE D53A', 20980, '', ''),
+(15413102, 'GALANT DJ1A', 20981, '', ''),
+(15414102, 'GALANT FORTIS CY4A', 20982, '', ''),
+(15415102, 'GRANDIS NA4W', 20983, '', ''),
+(15416102, 'GRANDIS NA8W', 20984, '', ''),
+(15417102, 'LANCER CS3A', 20985, '', ''),
+(15418102, 'LANCER CS3W', 20986, '', ''),
+(15419102, 'LANCER CS5A', 20987, '', ''),
+(15420102, 'LANCER CS5W', 20988, '', ''),
+(15421102, 'LANCER CS9W', 20989, '', ''),
+(15422102, 'LANCER CY2A', 20990, '', ''),
+(15423102, 'LANCER GTS (USA) GS41', 20991, '', ''),
+(15424102, 'OUTLANDER CW4W', 20992, '', ''),
+(15425102, 'OUTLANDER CW5W', 20993, '', ''),
+(15426102, 'OUTLANDER CW6W', 20994, '', ''),
+(15427102, 'OUTLANDER GF7W', 20995, '', ''),
+(15428102, 'OUTLANDER GG2W', 20996, '', ''),
+(15429102, 'SPACE RUNNER N18W', 20997, '', ''),
+(15430102, 'ASX GA1W', 20998, '', ''),
+(15431102, 'ASX GA2W', 20999, '', ''),
+(15432102, 'ASX GA3W', 21000, '', ''),
+(15433102, 'LANCER SPORTBACK CX3A', 21001, '', ''),
+(15434102, 'LANCER SPORTBACK CY2A', 21002, '', ''),
+(15435102, 'LANCER SPORTBACK CZ4A', 21003, '', ''),
+(15436102, 'LANCER SPORTBACK GS44S', 21004, '', ''),
+(15437102, 'LANCER EVOLUTION X EX CY2A', 21005, '', ''),
+(15438102, 'LANCER EVOLUTION X EX CY3A', 21006, '', ''),
+(15439102, 'LANCER EVOLUTION X EX CZ4A', 21007, '', ''),
+(15440102, 'RVR GA3W', 21008, '', ''),
+(15441102, 'LANCER EX CY4AS', 21009, '', ''),
+(15442102, 'LANCER EX CY1AS', 21010, '', ''),
 (15443102, 'TRANSIT CONNECT TT9', 21011, '', ''),
 (15444102, 'ACCORD CE1', 21012, '', ''),
 (15445102, 'ACCORD CD7', 21013, '', ''),
@@ -7687,6 +8137,14 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (15934102, 'TITAN SYF4T', 21502, '', ''),
 (15935102, 'TITAN SYF6L', 21503, '', ''),
 (15936102, 'TITAN SYF6T', 21504, '', ''),
+(15937102, 'DELICA SK56M', 21505, '', ''),
+(15938102, 'DELICA SK56V', 21506, '', ''),
+(15939102, 'DELICA SKE6V', 21507, '', ''),
+(15940102, 'DELICA SKE6VM', 21508, '', ''),
+(15941102, 'DELICA SKE6W', 21509, '', ''),
+(15942102, 'DELICA SKF6M', 21510, '', ''),
+(15943102, 'DELICA SKF6V', 21511, '', ''),
+(15944102, 'DELICA SKF6W', 21512, '', ''),
 (15945102, '626 COUPE GE', 21513, '', ''),
 (15946102, '626 COUPE GE1', 21514, '', ''),
 (15947102, '626 COUPE GE6', 21515, '', ''),
@@ -7755,6 +8213,48 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (16010102, 'MPV LV', 21578, '', ''),
 (16011102, 'MPV LV321', 21579, '', ''),
 (16012102, 'MPV LV521', 21580, '', ''),
+(16013102, 'CHARIOT NA4W', 21581, '', ''),
+(16014102, 'DELICA SK22L', 21582, '', ''),
+(16015102, 'DELICA SK22LM', 21583, '', ''),
+(16016102, 'DELICA SK22M', 21584, '', ''),
+(16017102, 'DELICA SK22MM', 21585, '', ''),
+(16018102, 'DELICA SK22T', 21586, '', ''),
+(16019102, 'DELICA SK22TM', 21587, '', ''),
+(16020102, 'DELICA SK22V', 21588, '', ''),
+(16021102, 'DELICA SK22VM', 21589, '', ''),
+(16022102, 'DELICA SK82L', 21590, '', ''),
+(16023102, 'DELICA SK82M', 21591, '', ''),
+(16024102, 'DELICA SK82T', 21592, '', ''),
+(16025102, 'DELICA SK82TM', 21593, '', ''),
+(16026102, 'DELICA SK82V', 21594, '', ''),
+(16027102, 'DELICA SK82VM', 21595, '', ''),
+(16028102, 'DELICA SKF2L', 21596, '', ''),
+(16029102, 'DELICA SKF2M', 21597, '', ''),
+(16030102, 'DELICA SKF2T', 21598, '', ''),
+(16031102, 'DELICA SKF2V', 21599, '', ''),
+(16032102, 'PAJERO V65W', 21600, '', ''),
+(16033102, 'PAJERO V68W', 21601, '', ''),
+(16034102, 'MONTERO (PAJERO) V55W', 21602, '', ''),
+(16035102, 'MONTERO (PAJERO) V55WG', 21603, '', ''),
+(16036102, 'MONTERO (PAJERO) V63W', 21604, '', ''),
+(16037102, 'MONTERO (PAJERO) V64W', 21605, '', ''),
+(16038102, 'MONTERO (PAJERO) V65W', 21606, '', ''),
+(16039102, 'MONTERO (PAJERO) V68W', 21607, '', ''),
+(16040102, 'MONTERO (PAJERO) V73W', 21608, '', ''),
+(16041102, 'MONTERO (PAJERO) V74W', 21609, '', ''),
+(16042102, 'MONTERO (PAJERO) V75W', 21610, '', ''),
+(16043102, 'MONTERO (PAJERO) V77W', 21611, '', ''),
+(16044102, 'MONTERO (PAJERO) V78W', 21612, '', ''),
+(16045102, 'MONTERO (PAJERO) V83W', 21613, '', ''),
+(16046102, 'MONTERO (PAJERO) V93W', 21614, '', ''),
+(16047102, 'PROUDIA S32A', 21615, '', ''),
+(16048102, 'PROUDIA S33A', 21616, '', ''),
+(16049102, 'PROUDIA S43A', 21617, '', ''),
+(16050102, 'SHOGUN V64W', 21618, '', ''),
+(16051102, 'SHOGUN V68W', 21619, '', ''),
+(16052102, 'SHOGUN V65W', 21620, '', ''),
+(16053102, 'SHOGUN V75W', 21621, '', ''),
+(16054102, 'SHOGUN V78W', 21622, '', ''),
 (16055102, 'VANETTE C25', 21623, '', ''),
 (16056102, 'VANETTE NC25', 21624, '', ''),
 (16057102, 'VANETTE S21', 21625, '', ''),
@@ -7769,6 +8269,26 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (16066102, 'VANETTE SKF2MN', 21634, '', ''),
 (16067102, 'VANETTE SKF2TN', 21635, '', ''),
 (16068102, 'VANETTE SKF2VN', 21636, '', ''),
+(16069102, 'PAJERO IO H57A', 21637, '', ''),
+(16070102, 'PAJERO IO H61W', 21638, '', ''),
+(16071102, 'PAJERO IO H62W', 21639, '', ''),
+(16072102, 'PAJERO IO H66W', 21640, '', ''),
+(16073102, 'PAJERO IO H71W', 21641, '', ''),
+(16074102, 'PAJERO IO H72W', 21642, '', ''),
+(16075102, 'PAJERO IO H76W', 21643, '', ''),
+(16076102, 'PAJERO IO H77W', 21644, '', ''),
+(16077102, 'PAJERO MINI H51A', 21645, '', ''),
+(16078102, 'PAJERO MINI H53A', 21646, '', ''),
+(16079102, 'PAJERO MINI H56A', 21647, '', ''),
+(16080102, 'PAJERO MINI H58A', 21648, '', ''),
+(16081102, 'SHOGUN H66W', 21649, '', ''),
+(16082102, 'SHOGUN H77W', 21650, '', ''),
+(16083102, 'L200 KB4', 21651, '', ''),
+(16084102, 'L200 KB4T', 21652, '', ''),
+(16085102, 'TRITON KB7T', 21653, '', ''),
+(16086102, 'TRITON KB9T', 21654, '', ''),
+(16087102, 'PAJERO SPORT KH4W', 21655, '', ''),
+(16088102, 'PAJERO SPORT KH6W', 21656, '', ''),
 (16089102, 'NV VANETTE M20', 21657, '', ''),
 (16090102, 'NV VANETTE VM20', 21658, '', ''),
 (16091102, 'NV200 VAN M20', 21659, '', ''),
@@ -7803,8 +8323,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (16120102, 'SUNNY QB15', 21688, '', ''),
 (16121102, 'SUNNY SB15', 21689, '', ''),
 (16122102, 'WINGROAD WFY11', 21690, '', ''),
-(16123102, 'WINGROAD WHNY11', 21691, '', '');
-INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
+(16123102, 'WINGROAD WHNY11', 21691, '', ''),
 (16124102, 'WINGROAD WHY11', 21692, '', ''),
 (16125102, 'WINGROAD WRY11', 21693, '', ''),
 (16126102, 'ALMERA B10RS', 21694, '', ''),
@@ -7814,6 +8333,8 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (16130102, 'FAMILIA BVY11', 21698, '', ''),
 (16131102, 'FAMILIA BWFY11', 21699, '', ''),
 (16132102, 'FAMILIA BWHNY11', 21700, '', ''),
+(16133102, 'LANCER CS2V', 21701, '', ''),
+(16134102, 'LANCER CARGO CS2V', 21702, '', ''),
 (16135102, 'LEONE CVENY11', 21703, '', ''),
 (16136102, 'LEONE CVFY11', 21704, '', ''),
 (16137102, 'LEONE CVHNY11', 21705, '', ''),
@@ -7939,6 +8460,13 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (16257102, 'WINGROAD NY12', 21825, '', ''),
 (16258102, 'SYLPHY G11', 21826, '', ''),
 (16259102, 'SYLPHY NG11', 21827, '', ''),
+(16260102, 'LANCER CARGO CVAY12', 21828, '', ''),
+(16261102, 'LANCER CARGO CVJY12', 21829, '', ''),
+(16262102, 'LANCER CARGO CVY12', 21830, '', ''),
+(16263102, 'LANCER CARGO CVZNY12', 21831, '', ''),
+(16264102, 'LANCER CVY12', 21832, '', ''),
+(16265102, 'LANCER CEDIA CVY12', 21833, '', ''),
+(16266102, 'LANCER CEDIA CVAY12', 21834, '', ''),
 (16267102, 'MURANO NZ51', 21835, '', ''),
 (16268102, 'MURANO PZ50', 21836, '', ''),
 (16269102, 'MURANO TZ50', 21837, '', ''),
@@ -8261,7 +8789,8 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (16586102, 'GRANVIA VCH28K', 22154, '', ''),
 (16587102, 'HIACE KDH200K', 22155, '', ''),
 (16588102, 'HIACE KLH12', 22156, '', ''),
-(16589102, 'HIACE KLH18', 22157, '', ''),
+(16589102, 'HIACE KLH18', 22157, '', '');
+INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
 (16590102, 'HIACE KLH22', 22158, '', ''),
 (16591102, 'HIACE KLH28', 22159, '', ''),
 (16592102, 'HIACE KZH100G', 22160, '', ''),
@@ -8700,6 +9229,15 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (17025102, 'FORWARD FRR35', 22593, '', ''),
 (17026102, 'FORWARD FRR35##S', 22594, '', ''),
 (17027102, 'FORWARD FRD35', 22595, '', ''),
+(17028102, 'CANTER FB700A', 22596, '', ''),
+(17029102, 'CANTER FD70A', 22597, '', ''),
+(17030102, 'CANTER FE70B', 22598, '', ''),
+(17031102, 'CANTER FE70D', 22599, '', ''),
+(17032102, 'CANTER FE71B', 22600, '', ''),
+(17033102, 'CANTER FE71D', 22601, '', ''),
+(17034102, 'CANTER FE72B', 22602, '', ''),
+(17035102, 'CANTER FE72D', 22603, '', ''),
+(17036102, 'CANTER FE88D', 22604, '', ''),
 (17037102, 'DYNA XZU324D', 22605, '', ''),
 (17038102, 'DYNA XZU368', 22606, '', ''),
 (17039102, 'DYNA XZU368D', 22607, '', ''),
@@ -8774,6 +9312,10 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (17108102, 'FAMILIA BJEP', 22676, '', ''),
 (17109102, 'LASER BJ3PF', 22677, '', ''),
 (17110102, 'LASER BJEPF', 22678, '', ''),
+(17111102, 'L400 PA5V', 22679, '', ''),
+(17112102, 'MONTERO (PAJERO) V24V', 22680, '', ''),
+(17113102, 'SPACE GEAR  PD4W', 22681, '', ''),
+(17114102, 'SPACE GEAR  PD5W', 22682, '', ''),
 (17115102, 'MICRA K12', 22683, '', ''),
 (17116102, 'CLIO MK II BR0', 22684, '', ''),
 (17117102, 'CLIO MK II BR1', 22685, '', ''),
@@ -8992,8 +9534,7 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (17330102, 'SCENIC RX4 JA0C', 22898, '', ''),
 (17331102, 'SCENIC RX4 JA1U', 22899, '', ''),
 (17332102, 'SPORT SPIDER EF0H', 22900, '', ''),
-(17333102, 'EXIGA YA4', 22901, '', '');
-INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
+(17333102, 'EXIGA YA4', 22901, '', ''),
 (17334102, 'EXIGA YA5', 22902, '', ''),
 (17335102, 'EXIGA YA9', 22903, '', ''),
 (17336102, 'FORESTER SG5', 22904, '', ''),
@@ -9444,7 +9985,8 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (17783102, 'SWIFT HT81S', 23351, '', ''),
 (17784102, 'BB QNC21', 23352, '', ''),
 (17785102, 'BB QNC20', 23353, '', ''),
-(17786102, 'BB QNC25', 23354, '', ''),
+(17786102, 'BB QNC25', 23354, '', '');
+INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo`, `photo_preview`) VALUES
 (17787102, 'DUET M101S', 23355, '', ''),
 (17788102, 'DUET M111S', 23356, '', ''),
 (17789102, 'DEX M401F', 23357, '', ''),
@@ -9460,11 +10002,119 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (17799102, 'TERIOS J210E', 23367, '', ''),
 (17800102, 'TERIOS KID J111G', 23368, '', ''),
 (17801102, 'TERIOS KID J131G', 23369, '', ''),
+(17802102, 'COLT  C52A', 23370, '', ''),
+(17803102, 'COLT  C54A', 23371, '', ''),
+(17804102, 'COLT  CA1A', 23372, '', ''),
+(17805102, 'COLT  CA2A', 23373, '', ''),
+(17806102, 'COLT  CA3A', 23374, '', ''),
+(17807102, 'COLT  CA4A', 23375, '', ''),
+(17808102, 'COLT  CB2A', 23376, '', ''),
+(17809102, 'COLT  CB3A', 23377, '', ''),
+(17810102, 'COLT  CC4A', 23378, '', ''),
+(17811102, 'COLT  CJ1A', 23379, '', ''),
+(17812102, 'COLT  CJ4A', 23380, '', ''),
+(17813102, 'ETERNA E34A', 23381, '', ''),
+(17814102, 'GALANT E12A', 23382, '', ''),
+(17815102, 'GALANT E19A', 23383, '', ''),
+(17816102, 'GALANT E32AR', 23384, '', ''),
+(17817102, 'GALANT E34A', 23385, '', ''),
+(17818102, 'GALANT E34AR', 23386, '', ''),
+(17819102, 'LANCER C11V', 23387, '', ''),
+(17820102, 'LANCER C12V', 23388, '', ''),
+(17821102, 'LANCER C12W', 23389, '', ''),
+(17822102, 'LANCER C14V', 23390, '', ''),
+(17823102, 'LANCER C14W', 23391, '', ''),
+(17824102, 'LANCER C32V', 23392, '', ''),
+(17825102, 'LANCER C34V', 23393, '', ''),
+(17826102, 'LANCER C34W', 23394, '', ''),
+(17827102, 'LANCER C37W', 23395, '', ''),
+(17828102, 'LANCER C61A', 23396, '', ''),
+(17829102, 'LANCER C62V', 23397, '', ''),
+(17830102, 'LANCER C64A', 23398, '', ''),
+(17831102, 'LANCER C66A', 23399, '', ''),
+(17832102, 'LANCER C72A', 23400, '', ''),
+(17833102, 'LANCER C74A', 23401, '', ''),
+(17834102, 'LANCER C76A', 23402, '', ''),
+(17835102, 'LANCER C82A', 23403, '', ''),
+(17836102, 'LANCER CA2A', 23404, '', ''),
+(17837102, 'LANCER CA3A', 23405, '', ''),
+(17838102, 'LANCER CB1A', 23406, '', ''),
+(17839102, 'LANCER CB2A', 23407, '', ''),
+(17840102, 'LANCER CB3A', 23408, '', ''),
+(17841102, 'LANCER CB4A', 23409, '', ''),
+(17842102, 'LANCER CB4W', 23410, '', ''),
+(17843102, 'LANCER CB5AR', 23411, '', ''),
+(17844102, 'LANCER CB7A', 23412, '', ''),
+(17845102, 'LANCER CB8A', 23413, '', ''),
+(17846102, 'LANCER CB8AR', 23414, '', ''),
+(17847102, 'LANCER CB8W', 23415, '', ''),
+(17848102, 'LANCER CC3A', 23416, '', ''),
+(17849102, 'LANCER CD3A', 23417, '', ''),
+(17850102, 'LANCER CD4A', 23418, '', ''),
+(17851102, 'LANCER CD7A', 23419, '', ''),
+(17852102, 'LANCER CD8A', 23420, '', ''),
+(17853102, 'LANCER CJ2A', 23421, '', ''),
+(17854102, 'LANCER CK1A', 23422, '', ''),
+(17855102, 'LANCER CK2A', 23423, '', ''),
+(17856102, 'LANCER CK4A', 23424, '', ''),
+(17857102, 'LANCER CK5AR', 23425, '', ''),
+(17858102, 'LANCER CK8A', 23426, '', ''),
+(17859102, 'LANCER CL2A', 23427, '', ''),
+(17860102, 'LANCER CM2A', 23428, '', ''),
+(17861102, 'LANCER CM8A', 23429, '', ''),
+(17862102, 'LIBERO CB1V', 23430, '', ''),
+(17863102, 'LIBERO CD2V', 23431, '', ''),
+(17864102, 'LIBERO CB2V', 23432, '', ''),
+(17865102, 'LIBERO CB4W', 23433, '', ''),
+(17866102, 'LIBERO CB5W', 23434, '', ''),
+(17867102, 'LIBERO CD8V', 23435, '', ''),
+(17868102, 'LIBERO CB8V', 23436, '', ''),
+(17869102, 'LIBERO CB2W', 23437, '', ''),
+(17870102, 'LIBERO CB8W', 23438, '', ''),
+(17871102, 'MIRAGE C11V', 23439, '', ''),
+(17872102, 'MIRAGE C51A', 23440, '', ''),
+(17873102, 'MIRAGE C52A', 23441, '', ''),
+(17874102, 'MIRAGE C61A', 23442, '', ''),
+(17875102, 'MIRAGE C62A', 23443, '', ''),
+(17876102, 'MIRAGE C64A', 23444, '', ''),
+(17877102, 'MIRAGE C72A', 23445, '', ''),
+(17878102, 'MIRAGE C74A', 23446, '', ''),
+(17879102, 'MIRAGE C82A', 23447, '', ''),
+(17880102, 'MIRAGE CA1A', 23448, '', ''),
+(17881102, 'MIRAGE CA2A', 23449, '', ''),
+(17882102, 'MIRAGE CA3A', 23450, '', ''),
+(17883102, 'MIRAGE CA4A', 23451, '', ''),
+(17884102, 'MIRAGE CB1A', 23452, '', ''),
+(17885102, 'MIRAGE CB2A', 23453, '', ''),
+(17886102, 'MIRAGE CB3A', 23454, '', ''),
+(17887102, 'MIRAGE CB5AR', 23455, '', ''),
+(17888102, 'MIRAGE CB7A', 23456, '', ''),
+(17889102, 'MIRAGE CB8A', 23457, '', ''),
+(17890102, 'MIRAGE CB8AR', 23458, '', ''),
+(17891102, 'MIRAGE CC3A', 23459, '', ''),
+(17892102, 'MIRAGE CD3A', 23460, '', ''),
+(17893102, 'MIRAGE CD7A', 23461, '', ''),
+(17894102, 'MIRAGE CD8A', 23462, '', ''),
+(17895102, 'MIRAGE CJ1A', 23463, '', ''),
+(17896102, 'MIRAGE CJ2A', 23464, '', ''),
+(17897102, 'MIRAGE CK1A', 23465, '', ''),
+(17898102, 'MIRAGE CK2A', 23466, '', ''),
+(17899102, 'MIRAGE CK8A', 23467, '', ''),
+(17900102, 'MIRAGE CL2A', 23468, '', ''),
+(17901102, 'MIRAGE CM2A', 23469, '', ''),
+(17902102, 'MIRAGE CM8A', 23470, '', ''),
 (17903102, 'CAMI J100E', 23471, '', ''),
 (17904102, 'CAMI J102E', 23472, '', ''),
 (17905102, 'CAMI J122E', 23473, '', ''),
 (17906102, 'RUSH J200E', 23474, '', ''),
 (17907102, 'RUSH J210E', 23475, '', ''),
+(17908102, 'A3 8P1', 23476, '', ''),
+(17909102, 'A3 8P5', 23477, '', ''),
+(17910102, 'A1 8X', 23478, '', ''),
+(17911102, 'A1 8X2', 23479, '', ''),
+(17912102, 'A1 8X1', 23480, '', ''),
+(17913102, 'A2 8Z0', 23481, '', ''),
+(17914102, 'A3 8PA', 23482, '', ''),
 (17915102, 'ALTEA 5P', 23483, '', ''),
 (17916102, 'ALTEA 5P1', 23484, '', ''),
 (17917102, 'ALTEA 5P5', 23485, '', ''),
@@ -9634,6 +10284,13 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (18081102, 'LAGUNA DT1', 23649, '', ''),
 (18082102, '508 508', 23650, '', ''),
 (18083102, 'C4 AIRCROSS', 23651, '', ''),
+(18084102, 'DELICA D:5 CV4W', 23652, '', ''),
+(18085102, 'ENDEAVOR (USA)', 23653, '', ''),
+(18086102, 'MONTERO (USA)', 23654, '', ''),
+(18087102, 'OUTLANDER CR9W', 23655, '', ''),
+(18088102, 'OUTLANDER (USA)', 23656, '', ''),
+(18089102, 'PAJERO V76W', 23657, '', ''),
+(18090102, 'LANCER (USA)', 23658, '', ''),
 (18091102, 'BLUEBIRD HNU14', 23659, '', ''),
 (18092102, 'BLUEBIRD QU14', 23660, '', ''),
 (18093102, 'BLUEBIRD SU14', 23661, '', ''),
@@ -9890,6 +10547,10 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 (18348102, 'LAND CRUISER BJ71V', 23916, '', ''),
 (18349102, 'LAND CRUISER BJ73V', 23917, '', ''),
 (18350102, 'LAND CRUISER BJ74V', 23918, '', ''),
+(18351102, 'CANTER BSZ1F24', 23919, '', ''),
+(18352102, 'CANTER BSZ2F24', 23920, '', ''),
+(18353102, 'CANTER BSZ4F24', 23921, '', ''),
+(18354102, 'CANTER BSZ5F24', 23922, '', ''),
 (18355102, '4 RUNNER RZN215W', 23923, '', ''),
 (18356102, '4 RUNNER RZN210W', 23924, '', ''),
 (18357102, 'CROWN COMFORT TSS10', 23925, '', ''),
@@ -10092,7 +10753,8 @@ INSERT INTO `oc_category_subsection_auto` (`category_id`, `name`, `code`, `photo
 CREATE TABLE IF NOT EXISTS `oc_category_to_layout` (
   `category_id` int(11) NOT NULL,
   `store_id` int(11) NOT NULL,
-  `layout_id` int(11) NOT NULL
+  `layout_id` int(11) NOT NULL,
+  PRIMARY KEY (`category_id`,`store_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -10126,7 +10788,8 @@ INSERT INTO `oc_category_to_layout` (`category_id`, `store_id`, `layout_id`) VAL
 
 CREATE TABLE IF NOT EXISTS `oc_category_to_section_auto` (
   `category_section_id` int(11) NOT NULL,
-  `parent_id` int(11) NOT NULL
+  `parent_id` int(11) NOT NULL,
+  PRIMARY KEY (`category_section_id`,`parent_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -10897,7 +11560,8 @@ INSERT INTO `oc_category_to_section_auto` (`category_section_id`, `parent_id`) V
 
 CREATE TABLE IF NOT EXISTS `oc_category_to_store` (
   `category_id` int(11) NOT NULL,
-  `store_id` int(11) NOT NULL
+  `store_id` int(11) NOT NULL,
+  PRIMARY KEY (`category_id`,`store_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -10932,7 +11596,8 @@ INSERT INTO `oc_category_to_store` (`category_id`, `store_id`) VALUES
 CREATE TABLE IF NOT EXISTS `oc_category_to_subsection_auto` (
   `category_subsection_id` int(11) NOT NULL DEFAULT '0',
   `parent_id` int(11) NOT NULL DEFAULT '0',
-  `catalog_id` int(11) NOT NULL
+  `catalog_id` int(11) NOT NULL,
+  PRIMARY KEY (`category_subsection_id`,`parent_id`,`catalog_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -10955,12 +11620,14 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (2, 2, 55),
 (2, 2, 62),
 (2, 2, 63),
+(2, 2, 70),
 (2, 2, 73),
 (2, 2, 86102),
 (2, 2, 88102),
 (2, 2, 96102),
 (3, 3, 23),
 (3, 3, 36),
+(3, 3, 63),
 (3, 3, 73),
 (3, 3, 86102),
 (3, 3, 96102),
@@ -10969,6 +11636,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (34, 17, 36),
 (34, 17, 55),
 (34, 17, 70),
+(34, 17, 73),
 (34, 17, 91102),
 (34, 17, 96102),
 (34, 17, 99102),
@@ -11000,18 +11668,24 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (46, 1, 96102),
 (46, 1, 99102),
 (47, 3, 23),
+(47, 3, 62),
+(47, 3, 63),
 (47, 3, 73),
 (47, 3, 77),
 (47, 3, 96102),
 (47, 3, 99102),
 (48, 3, 5),
 (48, 3, 23),
+(48, 3, 62),
+(48, 3, 63),
 (48, 3, 73),
 (48, 3, 86102),
 (48, 3, 89102),
 (48, 3, 96102),
 (48, 3, 99102),
 (49, 3, 23),
+(49, 3, 62),
+(49, 3, 63),
 (49, 3, 73),
 (49, 3, 76),
 (49, 3, 86102),
@@ -11021,12 +11695,15 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (49, 3, 99102),
 (50, 3, 23),
 (50, 3, 55),
+(50, 3, 62),
+(50, 3, 63),
 (50, 3, 73),
 (50, 3, 77),
 (50, 3, 86102),
 (50, 3, 96102),
 (50, 3, 99102),
 (51, 3, 23),
+(51, 3, 63),
 (51, 3, 73),
 (51, 3, 86102),
 (51, 3, 96102),
@@ -11036,6 +11713,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (56, 23, 55),
 (56, 23, 63),
 (56, 23, 70),
+(56, 23, 73),
 (56, 23, 86102),
 (56, 23, 88102),
 (56, 23, 99102),
@@ -11049,6 +11727,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (57, 14, 99102),
 (58, 3, 23),
 (58, 3, 55),
+(58, 3, 63),
 (58, 3, 73),
 (58, 3, 76),
 (58, 3, 99102),
@@ -11059,9 +11738,12 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (59, 24, 73),
 (59, 24, 86102),
 (59, 24, 88102),
+(59, 24, 96102),
 (59, 24, 99102),
 (61, 3, 5),
 (61, 3, 23),
+(61, 3, 62),
+(61, 3, 63),
 (61, 3, 73),
 (61, 3, 86102),
 (61, 3, 90102),
@@ -11069,6 +11751,8 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (61, 3, 99102),
 (62, 3, 23),
 (62, 3, 55),
+(62, 3, 62),
+(62, 3, 63),
 (62, 3, 73),
 (62, 3, 76),
 (62, 3, 77),
@@ -11084,16 +11768,20 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (63, 2, 96102),
 (63, 2, 99102),
 (64, 3, 23),
+(64, 3, 62),
+(64, 3, 63),
 (64, 3, 86102),
 (64, 3, 90102),
 (64, 3, 99102),
 (65, 3, 23),
+(65, 3, 63),
 (65, 3, 73),
 (65, 3, 77),
 (65, 3, 86102),
 (65, 3, 96102),
 (65, 3, 99102),
 (66, 3, 23),
+(66, 3, 63),
 (66, 3, 73),
 (66, 3, 86102),
 (66, 3, 90102),
@@ -11101,6 +11789,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (66, 3, 99102),
 (67, 2, 23),
 (67, 2, 63),
+(67, 2, 70),
 (67, 2, 73),
 (67, 2, 76),
 (67, 2, 86102),
@@ -11109,6 +11798,8 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (67, 2, 99102),
 (68, 3, 23),
 (68, 3, 55),
+(68, 3, 62),
+(68, 3, 63),
 (68, 3, 73),
 (68, 3, 76),
 (68, 3, 86102),
@@ -11117,18 +11808,21 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (68, 3, 99102),
 (69, 3, 23),
 (69, 3, 36),
+(69, 3, 63),
 (69, 3, 73),
 (69, 3, 86102),
 (69, 3, 96102),
 (69, 3, 99102),
 (70, 3, 23),
 (70, 3, 36),
+(70, 3, 63),
 (70, 3, 73),
 (70, 3, 86102),
 (70, 3, 96102),
 (70, 3, 99102),
 (83, 3, 5),
 (83, 3, 23),
+(83, 3, 63),
 (83, 3, 73),
 (83, 3, 86102),
 (83, 3, 96102),
@@ -11142,6 +11836,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (85, 23, 55),
 (85, 23, 63),
 (85, 23, 70),
+(85, 23, 73),
 (85, 23, 86102),
 (85, 23, 88102),
 (85, 23, 91102),
@@ -11152,6 +11847,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (86, 20, 63),
 (87, 3, 23),
 (87, 3, 55),
+(87, 3, 63),
 (87, 3, 73),
 (87, 3, 76),
 (87, 3, 77),
@@ -11162,29 +11858,37 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (88, 23, 55),
 (88, 23, 63),
 (88, 23, 70),
+(88, 23, 73),
 (88, 23, 86102),
 (88, 23, 88102),
 (88, 23, 96102),
 (88, 23, 99102),
 (89, 3, 23),
 (89, 3, 36),
+(89, 3, 62),
+(89, 3, 63),
 (89, 3, 73),
 (89, 3, 86102),
 (89, 3, 96102),
 (89, 3, 99102),
 (90, 3, 23),
+(90, 3, 63),
 (90, 3, 73),
 (90, 3, 96102),
 (90, 3, 99102),
+(91, 3, 63),
 (91, 3, 73),
 (91, 3, 99102),
 (92, 3, 23),
 (92, 3, 36),
+(92, 3, 63),
 (92, 3, 73),
 (92, 3, 96102),
 (92, 3, 99102),
 (93, 3, 23),
 (93, 3, 55),
+(93, 3, 62),
+(93, 3, 63),
 (93, 3, 73),
 (93, 3, 96102),
 (93, 3, 99102),
@@ -11192,6 +11896,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (94, 26, 23),
 (94, 26, 63),
 (94, 26, 70),
+(94, 26, 99102),
 (95, 4, 5),
 (95, 4, 23),
 (95, 4, 36),
@@ -11203,6 +11908,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (97, 28, 63),
 (97, 28, 86102),
 (97, 28, 99102),
+(98, 5, 23),
 (98, 5, 63),
 (98, 5, 99102),
 (99, 19, 23),
@@ -11210,11 +11916,15 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (99, 19, 73),
 (100, 3, 5),
 (100, 3, 23),
+(100, 3, 62),
+(100, 3, 63),
 (100, 3, 73),
 (100, 3, 86102),
 (100, 3, 99102),
 (101, 3, 5),
 (101, 3, 23),
+(101, 3, 62),
+(101, 3, 63),
 (101, 3, 73),
 (101, 3, 86102),
 (101, 3, 89102),
@@ -11223,12 +11933,14 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (101, 3, 99102),
 (102, 3, 23),
 (102, 3, 55),
+(102, 3, 63),
 (102, 3, 73),
 (102, 3, 86102),
 (102, 3, 90102),
 (102, 3, 96102),
 (102, 3, 99102),
 (103, 3, 23),
+(103, 3, 63),
 (103, 3, 86102),
 (103, 3, 96102),
 (103, 3, 99102),
@@ -11241,25 +11953,32 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (105, 2, 23),
 (105, 2, 55),
 (105, 2, 63),
+(105, 2, 70),
 (105, 2, 73),
 (105, 2, 86102),
 (105, 2, 96102),
 (105, 2, 99102),
 (106, 3, 23),
+(106, 3, 62),
+(106, 3, 63),
 (106, 3, 96102),
 (106, 3, 99102),
 (107, 3, 23),
 (107, 3, 36),
+(107, 3, 63),
 (107, 3, 73),
 (107, 3, 99102),
 (108, 3, 5),
 (108, 3, 23),
+(108, 3, 62),
+(108, 3, 63),
 (108, 3, 86102),
 (108, 3, 99102),
 (109, 26, 23),
 (109, 26, 63),
 (109, 26, 70),
 (109, 26, 88102),
+(109, 26, 99102),
 (110, 26, 23),
 (110, 26, 63),
 (110, 26, 70),
@@ -11277,10 +11996,13 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (112, 30, 73),
 (112, 30, 91102),
 (112, 30, 96102),
+(112, 30, 99102),
 (113, 30, 23),
 (113, 30, 63),
 (113, 30, 70),
 (113, 30, 86102),
+(113, 30, 99102),
+(114, 30, 5),
 (114, 30, 23),
 (114, 30, 62),
 (114, 30, 63),
@@ -11290,6 +12012,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (114, 30, 86102),
 (114, 30, 88102),
 (114, 30, 91102),
+(115, 30, 5),
 (115, 30, 23),
 (115, 30, 55),
 (115, 30, 62),
@@ -11300,23 +12023,29 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (115, 30, 88102),
 (115, 30, 91102),
 (115, 30, 96102),
+(115, 30, 99102),
 (116, 3, 23),
 (116, 3, 55),
+(116, 3, 63),
 (116, 3, 91102),
 (116, 3, 99102),
 (117, 3, 23),
 (117, 3, 36),
+(117, 3, 63),
 (117, 3, 99102),
 (118, 3, 5),
 (118, 3, 23),
 (118, 3, 36),
+(118, 3, 63),
 (118, 3, 99102),
 (119, 3, 23),
 (119, 3, 36),
+(119, 3, 63),
 (119, 3, 73),
 (119, 3, 96102),
 (119, 3, 99102),
 (121, 3, 23),
+(121, 3, 63),
 (121, 3, 73),
 (121, 3, 86102),
 (121, 3, 99102),
@@ -11349,11 +12078,15 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (125, 30, 73),
 (125, 30, 86102),
 (125, 30, 88102),
+(125, 30, 99102),
 (127, 3, 23),
+(127, 3, 63),
 (127, 3, 73),
 (127, 3, 86102),
 (127, 3, 99102),
 (156, 3, 23),
+(156, 3, 62),
+(156, 3, 63),
 (156, 3, 73),
 (156, 3, 86102),
 (156, 3, 96102),
@@ -11372,18 +12105,22 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (158, 1, 99102),
 (159, 3, 23),
 (159, 3, 36),
+(159, 3, 63),
 (159, 3, 86102),
 (159, 3, 99102),
 (171, 3, 23),
+(171, 3, 63),
 (171, 3, 76),
 (171, 3, 99102),
 (172, 26, 23),
+(172, 26, 55),
 (172, 26, 62),
 (172, 26, 63),
 (172, 26, 70),
 (172, 26, 73),
 (172, 26, 77),
 (172, 26, 86102),
+(172, 26, 99102),
 (173, 29, 5),
 (173, 29, 23),
 (173, 29, 36),
@@ -11397,6 +12134,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (174, 3, 5),
 (174, 3, 23),
 (174, 3, 55),
+(174, 3, 63),
 (174, 3, 73),
 (174, 3, 76),
 (174, 3, 86102),
@@ -11405,6 +12143,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (175, 23, 23),
 (175, 23, 63),
 (175, 23, 70),
+(175, 23, 73),
 (175, 23, 88102),
 (175, 23, 96102),
 (175, 23, 99102),
@@ -11412,37 +12151,48 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (176, 23, 55),
 (176, 23, 63),
 (176, 23, 70),
+(176, 23, 73),
 (176, 23, 86102),
 (176, 23, 88102),
 (176, 23, 96102),
 (176, 23, 99102),
 (177, 3, 23),
+(177, 3, 63),
 (177, 3, 91102),
 (177, 3, 99102),
 (178, 3, 23),
+(178, 3, 62),
+(178, 3, 63),
 (178, 3, 73),
 (179, 3, 23),
+(179, 3, 63),
 (179, 3, 73),
 (179, 3, 96102),
 (179, 3, 99102),
 (180, 3, 23),
+(180, 3, 63),
 (180, 3, 73),
 (180, 3, 96102),
 (180, 3, 99102),
 (181, 3, 23),
+(181, 3, 63),
 (181, 3, 73),
 (181, 3, 86102),
 (181, 3, 96102),
 (181, 3, 99102),
 (182, 3, 23),
+(182, 3, 63),
 (182, 3, 99102),
 (183, 3, 5),
 (183, 3, 23),
+(183, 3, 62),
+(183, 3, 63),
 (183, 3, 73),
 (183, 3, 77),
 (183, 3, 86102),
 (183, 3, 96102),
 (183, 3, 99102),
+(184, 30, 5),
 (184, 30, 23),
 (184, 30, 55),
 (184, 30, 63),
@@ -11450,8 +12200,10 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (184, 30, 73),
 (184, 30, 88102),
 (184, 30, 91102),
+(184, 30, 99102),
 (185, 3, 23),
 (185, 3, 55),
+(185, 3, 63),
 (185, 3, 73),
 (185, 3, 76),
 (185, 3, 99102),
@@ -11474,13 +12226,16 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (187, 21, 99102),
 (188, 26, 23),
 (188, 26, 36),
+(188, 26, 55),
 (188, 26, 62),
 (188, 26, 63),
 (188, 26, 70),
 (188, 26, 73),
 (188, 26, 86102),
 (188, 26, 88102),
+(188, 26, 99102),
 (189, 3, 23),
+(189, 3, 63),
 (189, 3, 99102),
 (190, 30, 23),
 (190, 30, 63),
@@ -11488,12 +12243,15 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (190, 30, 88102),
 (190, 30, 91102),
 (191, 26, 23),
+(191, 26, 55),
 (191, 26, 62),
 (191, 26, 63),
 (191, 26, 70),
 (191, 26, 88102),
 (191, 26, 91102),
+(191, 26, 99102),
 (192, 31, 23),
+(192, 31, 55),
 (192, 31, 63),
 (192, 31, 70),
 (193, 26, 5),
@@ -11501,15 +12259,18 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (193, 26, 63),
 (193, 26, 70),
 (193, 26, 88102),
+(193, 26, 99102),
 (194, 3, 5),
 (194, 3, 6),
 (194, 3, 23),
 (194, 3, 55),
+(194, 3, 63),
 (194, 3, 73),
 (194, 3, 76),
 (194, 3, 96102),
 (194, 3, 99102),
 (195, 3, 23),
+(195, 3, 63),
 (195, 3, 73),
 (195, 3, 90102),
 (195, 3, 91102),
@@ -11525,6 +12286,8 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (196, 1, 91102),
 (197, 3, 23),
 (197, 3, 55),
+(197, 3, 62),
+(197, 3, 63),
 (197, 3, 73),
 (197, 3, 76),
 (197, 3, 86102),
@@ -11540,6 +12303,8 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (199, 3, 5),
 (199, 3, 23),
 (199, 3, 55),
+(199, 3, 62),
+(199, 3, 63),
 (199, 3, 73),
 (199, 3, 76),
 (199, 3, 86102),
@@ -11558,6 +12323,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (201, 30, 88102),
 (201, 30, 91102),
 (202, 3, 23),
+(202, 3, 63),
 (202, 3, 73),
 (202, 3, 77),
 (202, 3, 86102),
@@ -11590,6 +12356,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (206, 23, 23),
 (206, 23, 62),
 (206, 23, 63),
+(206, 23, 73),
 (207, 23, 23),
 (207, 23, 55),
 (207, 23, 63),
@@ -11606,6 +12373,8 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (208, 1, 99102),
 (209, 3, 5),
 (209, 3, 23),
+(209, 3, 62),
+(209, 3, 63),
 (209, 3, 73),
 (209, 3, 86102),
 (209, 3, 96102),
@@ -11621,6 +12390,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (211, 26, 63),
 (211, 26, 70),
 (211, 26, 73),
+(211, 26, 99102),
 (212, 26, 23),
 (212, 26, 63),
 (212, 26, 70),
@@ -11638,6 +12408,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (214, 30, 86102),
 (214, 30, 91102),
 (214, 30, 96102),
+(214, 30, 99102),
 (215, 30, 23),
 (215, 30, 55),
 (215, 30, 62),
@@ -11647,6 +12418,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (215, 30, 86102),
 (215, 30, 88102),
 (215, 30, 91102),
+(215, 30, 99102),
 (216, 23, 23),
 (216, 23, 63),
 (216, 23, 70),
@@ -11659,12 +12431,16 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (217, 1, 88102),
 (217, 1, 99102),
 (218, 3, 23),
+(218, 3, 62),
+(218, 3, 63),
 (218, 3, 73),
 (218, 3, 86102),
 (218, 3, 96102),
 (218, 3, 99102),
 (219, 3, 23),
+(219, 3, 63),
 (219, 3, 99102),
+(220, 30, 5),
 (220, 30, 23),
 (220, 30, 55),
 (220, 30, 62),
@@ -11675,6 +12451,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (220, 30, 88102),
 (220, 30, 91102),
 (220, 30, 96102),
+(220, 30, 99102),
 (221, 30, 23),
 (221, 30, 55),
 (221, 30, 63),
@@ -11682,6 +12459,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (221, 30, 73),
 (221, 30, 86102),
 (221, 30, 91102),
+(222, 30, 5),
 (222, 30, 23),
 (222, 30, 55),
 (222, 30, 62),
@@ -11736,6 +12514,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (228, 1, 99102),
 (229, 23, 23),
 (229, 23, 63),
+(229, 23, 73),
 (229, 23, 77),
 (229, 23, 86102),
 (229, 23, 96102),
@@ -11744,6 +12523,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (230, 23, 63),
 (230, 23, 70),
 (231, 3, 23),
+(231, 3, 63),
 (231, 3, 99102),
 (232, 29, 5),
 (232, 29, 23),
@@ -11755,12 +12535,14 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (232, 29, 99102),
 (233, 26, 23),
 (233, 26, 36),
+(233, 26, 55),
 (233, 26, 62),
 (233, 26, 63),
 (233, 26, 70),
 (233, 26, 73),
 (233, 26, 86102),
 (233, 26, 88102),
+(233, 26, 99102),
 (234, 1, 23),
 (234, 1, 63),
 (234, 1, 70),
@@ -11772,11 +12554,14 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (235, 23, 62),
 (235, 23, 63),
 (235, 23, 70),
+(235, 23, 73),
 (235, 23, 86102),
 (235, 23, 88102),
 (235, 23, 99102),
 (237, 3, 23),
 (237, 3, 36),
+(237, 3, 62),
+(237, 3, 63),
 (237, 3, 73),
 (237, 3, 86102),
 (237, 3, 91102),
@@ -11787,22 +12572,29 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (246, 21, 86102),
 (246, 21, 99102),
 (247, 3, 23),
+(247, 3, 63),
 (247, 3, 73),
 (247, 3, 86102),
 (247, 3, 96102),
 (247, 3, 99102),
 (248, 3, 23),
+(248, 3, 62),
+(248, 3, 63),
 (248, 3, 73),
 (248, 3, 86102),
 (248, 3, 96102),
 (248, 3, 99102),
 (249, 3, 5),
 (249, 3, 23),
+(249, 3, 62),
+(249, 3, 63),
 (249, 3, 73),
 (249, 3, 86102),
 (249, 3, 96102),
 (249, 3, 99102),
 (250, 3, 23),
+(250, 3, 62),
+(250, 3, 63),
 (250, 3, 73),
 (250, 3, 86102),
 (250, 3, 96102),
@@ -11824,6 +12616,8 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (264, 29, 86102),
 (264, 29, 99102),
 (265, 3, 23),
+(265, 3, 62),
+(265, 3, 63),
 (265, 3, 86102),
 (265, 3, 99102),
 (266, 1, 23),
@@ -11838,17 +12632,21 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (267, 30, 70),
 (267, 30, 73),
 (267, 30, 88102),
+(267, 30, 99102),
 (268, 23, 23),
 (268, 23, 63),
 (268, 23, 70),
 (268, 23, 88102),
 (269, 3, 23),
+(269, 3, 62),
+(269, 3, 63),
 (269, 3, 73),
 (269, 3, 86102),
 (269, 3, 96102),
 (269, 3, 99102),
 (270, 3, 5),
 (270, 3, 23),
+(270, 3, 63),
 (270, 3, 73),
 (270, 3, 77),
 (270, 3, 86102),
@@ -11863,10 +12661,14 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (271, 30, 77),
 (271, 30, 88102),
 (271, 30, 91102),
+(271, 30, 99102),
 (272, 3, 23),
+(272, 3, 63),
 (272, 3, 86102),
 (272, 3, 99102),
 (273, 3, 23),
+(273, 3, 62),
+(273, 3, 63),
 (273, 3, 73),
 (273, 3, 99102),
 (298, 35, 23),
@@ -11885,14 +12687,17 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (320, 35, 70),
 (320, 35, 99102),
 (364, 3, 23),
+(364, 3, 63),
 (364, 3, 73),
 (364, 3, 96102),
 (365, 3, 23),
+(365, 3, 63),
 (365, 3, 73),
 (365, 3, 96102),
 (366, 3, 5),
 (366, 3, 23),
 (366, 3, 36),
+(366, 3, 63),
 (366, 3, 73),
 (366, 3, 86102),
 (366, 3, 96102),
@@ -11909,13 +12714,17 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (367, 1, 99102),
 (368, 3, 23),
 (368, 3, 36),
+(368, 3, 63),
 (368, 3, 73),
 (368, 3, 96102),
 (368, 3, 99102),
 (369, 3, 23),
+(369, 3, 62),
+(369, 3, 63),
 (369, 3, 73),
 (369, 3, 99102),
 (370, 3, 23),
+(370, 3, 63),
 (370, 3, 73),
 (370, 3, 96102),
 (370, 3, 99102),
@@ -11924,24 +12733,29 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (385, 21, 63),
 (385, 21, 86102),
 (385, 21, 99102),
+(419, 30, 5),
 (419, 30, 23),
 (419, 30, 62),
 (419, 30, 63),
 (419, 30, 70),
 (419, 30, 86102),
 (419, 30, 91102),
+(419, 30, 99102),
 (420, 26, 23),
+(420, 26, 55),
 (420, 26, 62),
 (420, 26, 63),
 (420, 26, 70),
 (420, 26, 86102),
 (420, 26, 88102),
+(420, 26, 99102),
 (462, 23, 23),
 (462, 23, 63),
 (462, 23, 70),
 (462, 23, 88102),
 (463, 3, 23),
 (463, 3, 36),
+(463, 3, 63),
 (463, 3, 73),
 (463, 3, 99102),
 (487, 24, 23),
@@ -12000,8 +12814,10 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (497, 1, 91102),
 (497, 1, 99102),
 (498, 3, 23),
+(498, 3, 63),
 (498, 3, 99102),
 (499, 3, 23),
+(499, 3, 63),
 (499, 3, 86102),
 (499, 3, 99102),
 (501, 8, 23),
@@ -12026,6 +12842,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (506, 17, 6),
 (506, 17, 23),
 (506, 17, 63),
+(506, 17, 73),
 (507, 32, 5),
 (507, 32, 23),
 (507, 32, 63),
@@ -12078,6 +12895,8 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (522, 34, 23),
 (522, 34, 63),
 (552, 3, 23),
+(552, 3, 62),
+(552, 3, 63),
 (552, 3, 73),
 (552, 3, 96102),
 (552, 3, 99102),
@@ -12089,6 +12908,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (554, 1, 88102),
 (554, 1, 91102),
 (584, 1, 5),
+(586, 24, 5),
 (586, 24, 6),
 (586, 24, 23),
 (586, 24, 63),
@@ -12111,6 +12931,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (593, 3, 23),
 (593, 3, 36),
 (593, 3, 55),
+(593, 3, 63),
 (593, 3, 73),
 (593, 3, 86102),
 (593, 3, 99102),
@@ -12119,6 +12940,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (594, 17, 62),
 (594, 17, 63),
 (594, 17, 70),
+(594, 17, 73),
 (594, 17, 86102),
 (594, 17, 96102),
 (594, 17, 99102),
@@ -12131,6 +12953,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (596, 30, 86102),
 (596, 30, 90102),
 (596, 30, 91102),
+(596, 30, 99102),
 (597, 23, 23),
 (597, 23, 55),
 (597, 23, 62),
@@ -12142,9 +12965,12 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (597, 23, 99102),
 (598, 3, 5),
 (598, 3, 23),
+(598, 3, 63),
 (598, 3, 86102),
 (598, 3, 99102),
 (599, 3, 23),
+(599, 3, 62),
+(599, 3, 63),
 (599, 3, 86102),
 (599, 3, 99102),
 (600, 26, 23),
@@ -12155,41 +12981,52 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (646, 2, 23),
 (646, 2, 55),
 (646, 2, 63),
+(646, 2, 70),
 (646, 2, 73),
 (646, 2, 88102),
 (646, 2, 96102),
 (646, 2, 99102),
 (653, 3, 23),
+(653, 3, 63),
 (653, 3, 73),
 (653, 3, 99102),
 (654, 3, 23),
 (654, 3, 55),
+(654, 3, 63),
 (654, 3, 73),
 (654, 3, 77),
 (654, 3, 86102),
 (654, 3, 99102),
 (655, 26, 23),
+(655, 26, 55),
 (655, 26, 62),
 (655, 26, 63),
 (655, 26, 70),
 (655, 26, 73),
 (655, 26, 88102),
+(655, 26, 99102),
 (657, 3, 23),
+(657, 3, 63),
 (657, 3, 76),
 (657, 3, 86102),
 (657, 3, 96102),
 (657, 3, 99102),
 (658, 3, 23),
+(658, 3, 62),
+(658, 3, 63),
 (658, 3, 73),
 (658, 3, 86102),
 (658, 3, 96102),
 (658, 3, 99102),
 (659, 3, 5),
 (659, 3, 23),
+(659, 3, 62),
+(659, 3, 63),
 (659, 3, 73),
 (659, 3, 96102),
 (659, 3, 99102),
 (660, 3, 23),
+(660, 3, 63),
 (660, 3, 99102),
 (661, 1, 23),
 (661, 1, 63),
@@ -12207,6 +13044,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (663, 23, 99102),
 (664, 3, 23),
 (664, 3, 55),
+(664, 3, 63),
 (664, 3, 70),
 (664, 3, 86102),
 (664, 3, 88102),
@@ -12214,9 +13052,11 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (664, 3, 99102),
 (665, 3, 23),
 (665, 3, 36),
+(665, 3, 63),
 (665, 3, 99102),
 (666, 3, 23),
 (666, 3, 55),
+(666, 3, 63),
 (666, 3, 99102),
 (702, 30, 23),
 (702, 30, 55),
@@ -12224,15 +13064,22 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (702, 30, 70),
 (702, 30, 88102),
 (702, 30, 91102),
+(702, 30, 99102),
 (710, 3, 23),
+(710, 3, 62),
+(710, 3, 63),
 (710, 3, 73),
 (710, 3, 86102),
 (710, 3, 96102),
 (710, 3, 99102),
 (711, 3, 23),
+(711, 3, 62),
+(711, 3, 63),
 (711, 3, 76),
 (711, 3, 99102),
 (712, 3, 23),
+(712, 3, 62),
+(712, 3, 63),
 (712, 3, 73),
 (712, 3, 96102),
 (712, 3, 99102),
@@ -12260,23 +13107,32 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (739, 8, 70),
 (739, 8, 73),
 (740, 5, 5),
+(740, 5, 23),
 (740, 5, 55),
 (740, 5, 63),
+(740, 5, 73),
 (741, 5, 5),
+(741, 5, 23),
 (741, 5, 55),
 (741, 5, 63),
+(741, 5, 73),
+(742, 5, 23),
 (742, 5, 55),
 (742, 5, 63),
+(742, 5, 73),
 (742, 5, 86102),
 (742, 5, 90102),
+(745, 5, 23),
 (745, 5, 63),
 (745, 5, 86102),
 (745, 5, 99102),
 (758, 3, 23),
 (758, 3, 36),
+(758, 3, 63),
 (758, 3, 99102),
 (759, 3, 23),
 (759, 3, 55),
+(759, 3, 63),
 (759, 3, 76),
 (759, 3, 86102),
 (759, 3, 99102),
@@ -12291,6 +13147,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (767, 4, 63),
 (767, 4, 86102),
 (783, 3, 23),
+(783, 3, 63),
 (783, 3, 86102),
 (783, 3, 99102),
 (784, 4, 5),
@@ -12301,6 +13158,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (784, 4, 99102),
 (785, 10, 5),
 (785, 10, 23),
+(785, 10, 55),
 (785, 10, 70),
 (786, 10, 5),
 (786, 10, 23),
@@ -12351,13 +13209,16 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (797, 24, 73),
 (797, 24, 86102),
 (797, 24, 99102),
+(799, 5, 23),
 (799, 5, 55),
 (799, 5, 63),
+(799, 5, 73),
 (799, 5, 86102),
 (799, 5, 90102),
 (800, 33, 23),
 (800, 33, 63),
 (801, 3, 23),
+(801, 3, 63),
 (802, 23, 6),
 (802, 23, 23),
 (802, 23, 63),
@@ -12373,20 +13234,26 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (806, 1, 70),
 (806, 1, 91102),
 (806, 1, 99102),
+(807, 38, 23),
 (807, 38, 63),
+(807, 38, 70),
 (808, 3, 23),
 (808, 3, 36),
 (808, 3, 55),
+(808, 3, 63),
 (808, 3, 76),
 (808, 3, 96102),
 (808, 3, 99102),
 (809, 3, 23),
 (809, 3, 55),
+(809, 3, 63),
 (809, 3, 73),
 (809, 3, 76),
 (809, 3, 96102),
 (809, 3, 99102),
 (811, 3, 23),
+(811, 3, 62),
+(811, 3, 63),
 (811, 3, 73),
 (811, 3, 76),
 (811, 3, 86102),
@@ -12394,26 +13261,31 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (811, 3, 99102),
 (813, 3, 5),
 (813, 3, 23),
+(813, 3, 63),
 (813, 3, 73),
 (813, 3, 86102),
 (813, 3, 91102),
 (813, 3, 96102),
 (813, 3, 99102),
 (814, 3, 23),
+(814, 3, 63),
 (814, 3, 70),
 (815, 3, 23),
 (815, 3, 36),
+(815, 3, 63),
 (815, 3, 73),
 (815, 3, 76),
 (815, 3, 99102),
 (816, 3, 23),
 (816, 3, 36),
+(816, 3, 63),
 (816, 3, 73),
 (816, 3, 86102),
 (816, 3, 91102),
 (816, 3, 99102),
 (817, 3, 23),
 (817, 3, 36),
+(817, 3, 63),
 (817, 3, 73),
 (817, 3, 86102),
 (817, 3, 91102),
@@ -12441,11 +13313,14 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (823, 20, 99102),
 (824, 34, 23),
 (824, 34, 63),
+(824, 34, 86102),
 (824, 34, 99102),
 (825, 34, 23),
+(825, 34, 86102),
 (826, 28, 23),
 (826, 28, 63),
 (826, 28, 86102),
+(826, 28, 91102),
 (826, 28, 99102),
 (827, 24, 23),
 (827, 24, 63),
@@ -12471,6 +13346,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (830, 8, 73),
 (831, 20, 23),
 (832, 3, 23),
+(832, 3, 63),
 (832, 3, 73),
 (832, 3, 86102),
 (832, 3, 96102),
@@ -12479,6 +13355,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (833, 26, 63),
 (833, 26, 70),
 (833, 26, 86102),
+(833, 26, 99102),
 (835, 14, 23),
 (835, 14, 55),
 (835, 14, 63),
@@ -12492,7 +13369,9 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (836, 30, 63),
 (836, 30, 70),
 (836, 30, 91102),
+(837, 5, 23),
 (837, 5, 63),
+(837, 5, 73),
 (837, 5, 99102),
 (838, 30, 23),
 (838, 30, 63),
@@ -12501,15 +13380,18 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (839, 31, 6),
 (839, 31, 23),
 (839, 31, 36),
+(839, 31, 55),
 (839, 31, 63),
 (839, 31, 76),
 (839, 31, 96102),
 (840, 26, 23),
+(840, 26, 55),
 (840, 26, 62),
 (840, 26, 63),
 (840, 26, 70),
 (840, 26, 73),
 (840, 26, 88102),
+(840, 26, 99102),
 (841, 23, 23),
 (841, 23, 36),
 (841, 23, 55),
@@ -12531,7 +13413,9 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (843, 1, 105102),
 (844, 51, 23),
 (844, 51, 55),
+(844, 51, 63),
 (845, 26, 23),
+(845, 26, 55),
 (845, 26, 63),
 (845, 26, 70),
 (845, 26, 73),
@@ -12543,6 +13427,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (846, 1, 76),
 (847, 3, 23),
 (847, 3, 55),
+(847, 3, 63),
 (847, 3, 73),
 (847, 3, 99102),
 (848, 52, 23),
@@ -12556,6 +13441,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (850, 23, 55),
 (850, 23, 63),
 (850, 23, 70),
+(850, 23, 73),
 (850, 23, 86102),
 (850, 23, 88102),
 (850, 23, 99102),
@@ -12567,6 +13453,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (851, 29, 73),
 (851, 29, 99102),
 (852, 3, 23),
+(852, 3, 63),
 (852, 3, 99102),
 (853, 17, 5),
 (853, 17, 23),
@@ -12576,23 +13463,32 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (853, 17, 86102),
 (853, 17, 99102),
 (858, 3, 23),
+(858, 3, 63),
 (858, 3, 73),
 (858, 3, 96102),
 (858, 3, 99102),
 (861, 3, 23),
+(861, 3, 62),
+(861, 3, 63),
 (861, 3, 73),
 (861, 3, 99102),
 (862, 3, 23),
+(862, 3, 62),
+(862, 3, 63),
 (862, 3, 73),
 (862, 3, 86102),
 (862, 3, 99102),
 (863, 3, 23),
 (863, 3, 36),
+(863, 3, 62),
+(863, 3, 63),
 (863, 3, 73),
 (863, 3, 76),
 (863, 3, 99102),
 (864, 3, 23),
 (864, 3, 36),
+(864, 3, 62),
+(864, 3, 63),
 (864, 3, 73),
 (864, 3, 76),
 (864, 3, 99102),
@@ -12608,6 +13504,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (1599, 63, 86102),
 (1599, 63, 99102),
 (1937, 3, 23),
+(1937, 3, 63),
 (1937, 3, 73),
 (1937, 3, 86102),
 (1937, 3, 96102),
@@ -12628,6 +13525,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (1940, 23, 62),
 (1940, 23, 63),
 (1940, 23, 70),
+(1940, 23, 73),
 (1940, 23, 77),
 (1940, 23, 86102),
 (1940, 23, 88102),
@@ -12650,27 +13548,35 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (1943, 1, 70),
 (1943, 1, 86102),
 (1944, 3, 23),
+(1944, 3, 63),
 (1945, 64, 6),
 (1945, 64, 23),
 (1946, 32, 23),
 (1946, 32, 55),
 (1946, 32, 63),
+(1947, 38, 23),
+(1947, 38, 55),
 (1947, 38, 63),
 (1948, 1, 23),
 (1948, 1, 63),
 (1948, 1, 88102),
 (1948, 1, 99102),
 (1949, 3, 23),
+(1949, 3, 63),
 (1949, 3, 73),
 (1950, 3, 23),
+(1950, 3, 63),
 (1950, 3, 99102),
 (1951, 3, 23),
+(1951, 3, 63),
 (1951, 3, 73),
 (1952, 3, 23),
+(1952, 3, 63),
 (1952, 3, 96102),
 (1952, 3, 99102),
 (1953, 3, 23),
 (1953, 3, 36),
+(1953, 3, 63),
 (1953, 3, 76),
 (1953, 3, 99102),
 (1954, 1, 23),
@@ -12730,19 +13636,24 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (1967, 1, 91102),
 (1968, 3, 23),
 (1968, 3, 36),
+(1968, 3, 63),
 (1968, 3, 76),
 (1968, 3, 96102),
 (1969, 3, 23),
 (1969, 3, 36),
+(1969, 3, 63),
 (1969, 3, 76),
 (1969, 3, 96102),
 (1970, 3, 23),
 (1970, 3, 36),
+(1970, 3, 63),
 (1970, 3, 76),
 (1970, 3, 96102),
 (1974, 3, 23),
+(1974, 3, 63),
 (1974, 3, 96102),
 (1975, 3, 23),
+(1975, 3, 63),
 (1975, 3, 96102),
 (1976, 2, 23),
 (1976, 2, 63),
@@ -12750,6 +13661,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (1977, 26, 63),
 (1977, 26, 70),
 (1977, 26, 88102),
+(1977, 26, 99102),
 (1978, 30, 23),
 (1978, 30, 63),
 (1978, 30, 70),
@@ -12767,10 +13679,12 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (1981, 30, 70),
 (1982, 3, 23),
 (1982, 3, 36),
+(1982, 3, 63),
 (1982, 3, 76),
 (1982, 3, 99102),
 (1983, 3, 23),
 (1983, 3, 36),
+(1983, 3, 63),
 (1983, 3, 99102),
 (1984, 1, 23),
 (1984, 1, 55),
@@ -12796,6 +13710,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (1986, 1, 90102),
 (1986, 1, 91102),
 (1987, 3, 23),
+(1987, 3, 63),
 (1987, 3, 96102),
 (1987, 3, 99102),
 (1988, 30, 23),
@@ -12827,6 +13742,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (1995, 22, 5),
 (1995, 22, 23),
 (1995, 22, 63),
+(1995, 22, 86102),
 (1995, 22, 91102),
 (1995, 22, 99102),
 (1996, 30, 23),
@@ -12844,13 +13760,16 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (1998, 29, 96102),
 (1998, 29, 99102),
 (1999, 3, 23),
+(1999, 3, 63),
 (1999, 3, 73),
 (1999, 3, 99102),
 (2000, 3, 23),
+(2000, 3, 63),
 (2000, 3, 73),
 (2000, 3, 99102),
 (2001, 26, 23),
 (2001, 26, 63),
+(2001, 26, 99102),
 (2002, 23, 23),
 (2002, 23, 63),
 (2002, 23, 99102),
@@ -12880,6 +13799,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (2009, 21, 70),
 (2009, 21, 86102),
 (2011, 3, 23),
+(2011, 3, 63),
 (2011, 3, 99102),
 (2013, 30, 23),
 (2013, 30, 63),
@@ -12889,25 +13809,31 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (2014, 30, 23),
 (2014, 30, 63),
 (2014, 30, 70),
+(2014, 30, 99102),
 (2021, 3, 23),
+(2021, 3, 63),
 (2021, 3, 90102),
 (2021, 3, 99102),
 (2034, 10, 5),
 (2035, 35, 5),
 (2041, 3, 23),
+(2041, 3, 63),
 (2041, 3, 73),
 (2041, 3, 99102),
 (2042, 24, 19),
 (2042, 24, 21),
 (2043, 30, 21),
 (2043, 30, 32),
+(2044, 1, 19),
 (2044, 1, 21),
 (2044, 1, 32),
 (2044, 1, 50),
 (2046, 32, 19),
 (2046, 32, 21),
+(2046, 32, 32),
 (2047, 3, 19),
 (2047, 3, 21),
+(2047, 3, 32),
 (2047, 3, 50),
 (2048, 17, 21),
 (2049, 20, 21),
@@ -12915,6 +13841,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (2050, 29, 21),
 (2051, 58, 6),
 (2052, 26, 19),
+(2052, 26, 21),
 (2052, 26, 32),
 (2052, 26, 50),
 (2053, 8, 21),
@@ -12926,8 +13853,10 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (2058, 23, 21),
 (2058, 23, 32),
 (2058, 23, 50),
+(2059, 33, 21),
 (2059, 33, 32),
 (2060, 21, 19),
+(2060, 21, 21),
 (2060, 21, 32),
 (2061, 31, 19),
 (2061, 31, 21),
@@ -13066,11 +13995,14 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (2128, 27, 63),
 (2128, 27, 99102),
 (2840, 3, 23),
+(2840, 3, 62),
+(2840, 3, 63),
 (2840, 3, 73),
 (2840, 3, 86102),
 (2840, 3, 90102),
 (2840, 3, 99102),
 (2934, 3, 23),
+(2934, 3, 63),
 (2934, 3, 73),
 (2934, 3, 86102),
 (2984, 3, 23),
@@ -13097,10 +14029,12 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (3128, 8, 99102),
 (3129, 3, 23),
 (3129, 3, 36),
+(3129, 3, 63),
 (3129, 3, 86102),
 (3129, 3, 99102),
 (3130, 3, 23),
 (3130, 3, 36),
+(3130, 3, 63),
 (3130, 3, 73),
 (3130, 3, 86102),
 (3130, 3, 99102),
@@ -13115,21 +14049,25 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (3137, 2, 23),
 (3137, 2, 55),
 (3137, 2, 63),
+(3137, 2, 70),
 (3137, 2, 88102),
 (3137, 2, 99102),
 (3140, 2, 23),
 (3140, 2, 55),
 (3140, 2, 62),
 (3140, 2, 63),
+(3140, 2, 70),
 (3140, 2, 73),
 (3140, 2, 86102),
 (3140, 2, 88102),
 (3140, 2, 89102),
 (3140, 2, 99102),
+(3141, 2, 5),
 (3141, 2, 23),
 (3141, 2, 55),
 (3141, 2, 62),
 (3141, 2, 63),
+(3141, 2, 70),
 (3141, 2, 73),
 (3141, 2, 86102),
 (3141, 2, 96102),
@@ -13139,12 +14077,35 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (3142, 19, 36),
 (3142, 19, 63),
 (3142, 19, 73),
+(3144, 3, 26),
+(3145, 3, 26),
+(3146, 3, 26),
 (3146, 3, 105102),
+(3147, 3, 26),
+(3148, 3, 26),
+(3149, 3, 26),
 (3149, 3, 93102),
 (3149, 3, 105102),
+(3150, 3, 26),
+(3151, 3, 26),
+(3152, 3, 26),
 (3152, 3, 105102),
+(3153, 3, 26),
+(3154, 3, 26),
+(3155, 3, 26),
+(3156, 3, 26),
+(3157, 3, 26),
 (3157, 3, 105102),
+(3158, 3, 26),
 (3158, 3, 105102),
+(3159, 3, 26),
+(3160, 3, 26),
+(3161, 3, 26),
+(3162, 3, 26),
+(3163, 3, 26),
+(3164, 3, 26),
+(3165, 3, 26),
+(3166, 3, 26),
 (3167, 30, 26),
 (3168, 30, 26),
 (3169, 30, 26),
@@ -13199,6 +14160,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (3196, 23, 93102),
 (3197, 23, 26),
 (3198, 23, 26),
+(3198, 23, 105102),
 (3199, 23, 26),
 (3200, 23, 26),
 (3201, 23, 26),
@@ -13209,21 +14171,64 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (3203, 23, 55),
 (3203, 23, 63),
 (3203, 23, 70),
+(3203, 23, 73),
 (3203, 23, 88102),
 (3203, 23, 99102),
 (3204, 23, 23),
 (3204, 23, 36),
 (3204, 23, 55),
+(3204, 23, 73),
+(3205, 3, 26),
+(3206, 3, 26),
 (3207, 84, 72),
+(3207, 84, 80),
+(3208, 84, 80),
+(3209, 84, 80),
+(3210, 84, 80),
+(3211, 84, 80),
 (3214, 84, 72),
+(3214, 84, 80),
+(3215, 84, 80),
 (3216, 84, 72),
+(3216, 84, 80),
+(3217, 84, 80),
 (3218, 84, 72),
+(3218, 84, 80),
+(3219, 84, 80),
+(3220, 84, 80),
+(3221, 84, 80),
+(3222, 84, 80),
+(3223, 84, 80),
+(3224, 84, 80),
+(3225, 84, 80),
 (3226, 84, 72),
+(3226, 84, 80),
+(3227, 84, 80),
+(3228, 84, 80),
+(3229, 84, 80),
+(3230, 84, 80),
+(3231, 84, 80),
 (3232, 84, 72),
+(3232, 84, 80),
+(3233, 84, 80),
 (3234, 84, 72),
+(3234, 84, 80),
 (3235, 84, 72),
+(3235, 84, 80),
+(3236, 84, 80),
 (3237, 84, 72),
+(3237, 84, 80),
+(3238, 84, 80),
+(3239, 84, 80),
+(3240, 84, 80),
 (3241, 84, 72),
+(3241, 84, 80),
+(3242, 84, 80),
+(3243, 84, 80),
+(3244, 84, 80),
+(3245, 84, 80),
+(3246, 84, 80),
+(3247, 84, 80),
 (3248, 83, 72),
 (3248, 83, 80),
 (3249, 83, 72),
@@ -13305,14 +14310,18 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (3301, 81, 72),
 (3301, 81, 80),
 (3303, 82, 80),
+(3306, 84, 80),
+(3307, 5, 23),
 (3307, 5, 55),
 (3307, 5, 63),
+(3307, 5, 73),
 (3314, 3, 36),
 (3315, 3, 36),
 (3315, 3, 76),
 (3319, 3, 36),
 (3320, 3, 36),
 (3321, 3, 36),
+(3321, 3, 63),
 (3321, 3, 96102),
 (3321, 3, 99102),
 (3326, 3, 36),
@@ -13334,10 +14343,13 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (3347, 3, 36),
 (3348, 3, 23),
 (3348, 3, 36),
+(3348, 3, 63),
 (3349, 3, 23),
 (3349, 3, 36),
+(3349, 3, 63),
 (3350, 3, 23),
 (3350, 3, 36),
+(3350, 3, 63),
 (3350, 3, 86102),
 (3350, 3, 99102),
 (3353, 3, 36),
@@ -13350,6 +14362,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (3363, 3, 36),
 (3364, 3, 36),
 (3365, 3, 36),
+(3365, 3, 63),
 (3365, 3, 73),
 (3367, 3, 36),
 (3370, 3, 36),
@@ -13364,6 +14377,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (3383, 3, 36),
 (3383, 3, 76),
 (3387, 3, 36),
+(3387, 3, 63),
 (3387, 3, 99102),
 (3388, 3, 91102),
 (3389, 3, 36),
@@ -13371,6 +14385,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (3395, 3, 5),
 (3395, 3, 23),
 (3395, 3, 36),
+(3395, 3, 63),
 (3395, 3, 73),
 (3395, 3, 76),
 (3395, 3, 86102),
@@ -13403,6 +14418,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (3423, 3, 36),
 (3423, 3, 104102),
 (3424, 3, 36),
+(3424, 3, 63),
 (3424, 3, 70),
 (3424, 3, 76),
 (3424, 3, 88102),
@@ -13432,6 +14448,8 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (3446, 3, 99102),
 (3447, 3, 36),
 (3448, 3, 23),
+(3448, 3, 62),
+(3448, 3, 63),
 (3448, 3, 86102),
 (3448, 3, 96102),
 (3448, 3, 99102),
@@ -13441,6 +14459,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (3465, 3, 36),
 (3470, 3, 36),
 (3478, 3, 36),
+(3478, 3, 63),
 (3478, 3, 99102),
 (3479, 3, 5),
 (3479, 3, 36),
@@ -13448,6 +14467,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (3480, 3, 23),
 (3480, 3, 36),
 (3480, 3, 55),
+(3480, 3, 63),
 (3480, 3, 70),
 (3480, 3, 86102),
 (3480, 3, 88102),
@@ -13457,6 +14477,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (3482, 3, 36),
 (3483, 3, 23),
 (3483, 3, 36),
+(3483, 3, 63),
 (3483, 3, 73),
 (3483, 3, 99102),
 (3485, 3, 36),
@@ -13469,6 +14490,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (3487, 3, 36),
 (3487, 3, 99102),
 (3488, 3, 36),
+(3488, 3, 63),
 (3488, 3, 99102),
 (3489, 3, 36),
 (3489, 3, 99102),
@@ -13485,6 +14507,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (3508, 3, 23),
 (3508, 3, 36),
 (3508, 3, 55),
+(3508, 3, 63),
 (3508, 3, 70),
 (3508, 3, 86102),
 (3508, 3, 88102),
@@ -13498,6 +14521,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (3519, 3, 36),
 (3520, 3, 36),
 (3524, 3, 23),
+(3524, 3, 63),
 (3524, 3, 86102),
 (3524, 3, 96102),
 (3524, 3, 99102),
@@ -13693,13 +14717,16 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (3901, 18, 36),
 (3902, 18, 36),
 (3903, 18, 36),
+(3906, 18, 23),
 (3906, 18, 36),
 (3906, 18, 63),
 (3906, 18, 99102),
 (3908, 18, 36),
 (3910, 18, 6),
+(3910, 18, 23),
 (3910, 18, 36),
 (3910, 18, 73),
+(3910, 18, 89102),
 (3910, 18, 96102),
 (3910, 18, 99102),
 (3910, 18, 104102),
@@ -13730,6 +14757,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (3969, 17, 36),
 (3993, 17, 36),
 (3993, 17, 63),
+(3993, 17, 73),
 (3999, 17, 36),
 (3999, 17, 63),
 (3999, 17, 70),
@@ -13857,6 +14885,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (4215, 22, 23),
 (4215, 22, 36),
 (4215, 22, 63),
+(4215, 22, 86102),
 (4215, 22, 96102),
 (4215, 22, 99102),
 (4216, 22, 36),
@@ -13877,6 +14906,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (4238, 31, 36),
 (4239, 31, 36),
 (4242, 31, 36),
+(4242, 31, 55),
 (4256, 31, 36),
 (4256, 31, 63),
 (4260, 42, 36),
@@ -13952,27 +14982,38 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (4345, 36, 36),
 (4345, 36, 63),
 (4345, 36, 99102),
+(4346, 2, 5),
 (4346, 2, 36),
 (4347, 2, 36),
 (4348, 2, 36),
 (4349, 2, 36),
 (4349, 2, 99102),
 (4350, 2, 36),
+(4350, 2, 70),
+(4351, 2, 5),
 (4351, 2, 36),
 (4352, 2, 36),
+(4352, 2, 70),
 (4352, 2, 99102),
+(4353, 2, 5),
 (4353, 2, 36),
+(4353, 2, 70),
 (4353, 2, 89102),
+(4354, 2, 5),
 (4354, 2, 36),
+(4358, 2, 5),
 (4358, 2, 36),
 (4359, 2, 36),
 (4360, 2, 23),
 (4360, 2, 36),
 (4361, 2, 36),
+(4363, 2, 5),
 (4363, 2, 36),
 (4364, 2, 36),
 (4364, 2, 99102),
+(4365, 2, 5),
 (4365, 2, 36),
+(4366, 2, 5),
 (4366, 2, 36),
 (4366, 2, 104102),
 (4367, 2, 36),
@@ -14021,6 +15062,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (4484, 26, 36),
 (4484, 26, 86102),
 (4486, 26, 36),
+(4486, 26, 55),
 (4486, 26, 70),
 (4486, 26, 88102),
 (4498, 26, 36),
@@ -14052,6 +15094,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (4539, 23, 36),
 (4539, 23, 63),
 (4539, 23, 70),
+(4539, 23, 73),
 (4539, 23, 76),
 (4539, 23, 88102),
 (4539, 23, 91102),
@@ -14068,6 +15111,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (4594, 23, 36),
 (4596, 23, 36),
 (4597, 34, 36),
+(4597, 34, 70),
 (4597, 34, 99102),
 (4598, 34, 36),
 (4598, 34, 99102),
@@ -14091,10 +15135,12 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (4635, 34, 55),
 (4635, 34, 63),
 (4635, 34, 73),
+(4635, 34, 86102),
 (4638, 34, 36),
 (4639, 34, 36),
 (4651, 28, 36),
 (4651, 28, 63),
+(4651, 28, 91102),
 (4651, 28, 99102),
 (4659, 28, 5),
 (4659, 28, 23),
@@ -14102,11 +15148,13 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (4659, 28, 55),
 (4659, 28, 63),
 (4659, 28, 70),
+(4659, 28, 88102),
 (4659, 28, 96102),
 (4659, 28, 99102),
 (4662, 28, 36),
 (4665, 28, 36),
 (4665, 28, 63),
+(4665, 28, 91102),
 (4665, 28, 99102),
 (4667, 28, 36),
 (4667, 28, 99102),
@@ -14120,10 +15168,12 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (4673, 28, 23),
 (4673, 28, 36),
 (4673, 28, 63),
+(4673, 28, 91102),
 (4674, 28, 36),
 (4674, 28, 99102),
 (4676, 28, 23),
 (4676, 28, 36),
+(4676, 28, 91102),
 (4677, 28, 36),
 (4680, 44, 36),
 (4694, 44, 36),
@@ -14177,6 +15227,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (4745, 71, 36),
 (4746, 71, 36),
 (4746, 71, 96102),
+(4746, 71, 99102),
 (4747, 71, 36),
 (4747, 71, 55),
 (4747, 71, 70),
@@ -14187,6 +15238,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (4757, 71, 36),
 (4757, 71, 55),
 (4757, 71, 70),
+(4757, 71, 99102),
 (4758, 71, 36),
 (4765, 35, 36),
 (4765, 35, 55),
@@ -14202,7 +15254,8 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (4773, 38, 36),
 (4774, 38, 36),
 (4775, 38, 36),
-(4776, 38, 36),
+(4776, 38, 36);
+INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_id`, `catalog_id`) VALUES
 (4779, 38, 36),
 (4779, 38, 99102),
 (4782, 29, 5),
@@ -14250,6 +15303,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (4890, 5, 63),
 (4891, 5, 36),
 (4891, 5, 63),
+(4891, 5, 73),
 (4891, 5, 99102),
 (4905, 5, 36),
 (4906, 5, 36),
@@ -14272,6 +15326,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (4938, 19, 70),
 (4938, 19, 73),
 (4938, 19, 91102),
+(4938, 19, 96102),
 (4938, 19, 99102),
 (4939, 19, 36),
 (4939, 19, 70),
@@ -14342,6 +15397,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (4996, 1, 55),
 (4996, 1, 70),
 (4996, 1, 88102),
+(4996, 1, 95102),
 (4997, 1, 36),
 (4998, 1, 36),
 (4999, 1, 36),
@@ -14436,6 +15492,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (5118, 1, 104102),
 (5119, 1, 36),
 (5123, 14, 36),
+(5123, 14, 90102),
 (5123, 14, 91102),
 (5126, 14, 36),
 (5127, 14, 36),
@@ -14514,6 +15571,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (5233, 11, 36),
 (5234, 10, 36),
 (5268, 49, 55),
+(5268, 49, 70),
 (5300, 89, 36),
 (5300, 89, 63),
 (5377, 32, 70),
@@ -14521,6 +15579,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (5394, 26, 70),
 (5405, 23, 19),
 (5405, 23, 70),
+(5438, 34, 70),
 (5455, 21, 76),
 (5557, 30, 55),
 (5618, 26, 70),
@@ -14538,6 +15597,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (5901, 3, 76),
 (5902, 3, 76),
 (5903, 3, 76),
+(5947, 3, 63),
 (5947, 3, 73),
 (5947, 3, 76),
 (5947, 3, 99102),
@@ -14549,20 +15609,24 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (6081, 31, 6),
 (6081, 31, 23),
 (6081, 31, 36),
+(6081, 31, 55),
 (6081, 31, 63),
 (6081, 31, 70),
+(6081, 31, 73),
 (6081, 31, 76),
 (6081, 31, 96102),
 (6082, 31, 6),
 (6082, 31, 23),
 (6082, 31, 36),
+(6082, 31, 55),
 (6082, 31, 63),
 (6082, 31, 70),
 (6083, 31, 23),
 (6083, 31, 36),
+(6083, 31, 55),
 (6083, 31, 63),
-(6083, 31, 70);
-INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_id`, `catalog_id`) VALUES
+(6083, 31, 70),
+(6083, 31, 73),
 (6084, 7, 36),
 (6085, 7, 36),
 (6089, 7, 36),
@@ -14577,6 +15641,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (6109, 13, 91102),
 (6109, 13, 99102),
 (6110, 18, 6),
+(6110, 18, 23),
 (6110, 18, 36),
 (6110, 18, 63),
 (6110, 18, 91102),
@@ -14587,11 +15652,13 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (6116, 24, 73),
 (6116, 24, 88102),
 (6116, 24, 91102),
+(6116, 24, 96102),
 (6116, 24, 99102),
 (6126, 24, 36),
 (6128, 24, 36),
 (6128, 24, 99102),
 (6131, 48, 36),
+(6131, 48, 63),
 (6132, 17, 36),
 (6133, 17, 36),
 (6134, 17, 36),
@@ -14785,7 +15852,9 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (6354, 5, 36),
 (6356, 19, 5),
 (6356, 19, 36),
+(6358, 2, 5),
 (6358, 2, 36),
+(6358, 2, 70),
 (6358, 2, 88102),
 (6358, 2, 89102),
 (6359, 71, 36),
@@ -14879,12 +15948,16 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (6453, 5, 36),
 (6454, 5, 36),
 (6455, 71, 36),
+(6455, 71, 63),
 (6455, 71, 73),
 (6456, 71, 23),
 (6456, 71, 36),
+(6456, 71, 63),
+(6456, 71, 99102),
 (6457, 5, 36),
 (6458, 5, 36),
 (6458, 5, 63),
+(6458, 5, 73),
 (6460, 5, 36),
 (6462, 5, 36),
 (6463, 5, 36),
@@ -14992,6 +16065,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (6614, 3, 106102),
 (6635, 3, 76),
 (6813, 30, 106102),
+(6878, 23, 106102),
 (6884, 33, 106102),
 (6963, 26, 106102),
 (7170, 3, 55),
@@ -15006,19 +16080,26 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (7479, 2, 106102),
 (7485, 17, 6),
 (7485, 17, 36),
+(7488, 5, 23),
 (7488, 5, 55),
+(7489, 5, 23),
 (7489, 5, 55),
 (7489, 5, 63),
 (7489, 5, 70),
+(7489, 5, 73),
 (7489, 5, 86102),
 (7489, 5, 99102),
+(7490, 5, 23),
 (7490, 5, 55),
 (7490, 5, 63),
 (7490, 5, 86102),
 (7490, 5, 99102),
+(7491, 5, 23),
 (7491, 5, 55),
 (7491, 5, 63),
+(7491, 5, 73),
 (7491, 5, 86102),
+(7493, 5, 23),
 (7493, 5, 86102),
 (7494, 26, 26),
 (7495, 26, 26),
@@ -15050,6 +16131,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (7537, 17, 36),
 (7538, 23, 68),
 (7538, 23, 77),
+(7539, 22, 70),
 (7545, 2, 23),
 (7545, 2, 63),
 (7549, 1, 70),
@@ -15192,6 +16274,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (7701, 3, 36),
 (7702, 3, 36),
 (7703, 3, 36),
+(7704, 2, 5),
 (7704, 2, 36),
 (7705, 3, 36),
 (7706, 3, 36),
@@ -15201,10 +16284,12 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (7711, 3, 76),
 (7712, 3, 36),
 (7714, 3, 5),
+(7715, 3, 63),
 (7715, 3, 73),
 (7715, 3, 86102),
 (7715, 3, 96102),
 (7715, 3, 99102),
+(7716, 3, 62),
 (7716, 3, 90102),
 (7717, 3, 36),
 (7718, 3, 36),
@@ -15234,6 +16319,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (7753, 23, 36),
 (7755, 30, 36),
 (7756, 30, 36),
+(7757, 80, 28),
 (7757, 80, 61),
 (7758, 51, 36),
 (7759, 76, 36),
@@ -15259,6 +16345,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (7777, 32, 36),
 (7777, 32, 86102),
 (7780, 30, 36),
+(7781, 30, 5),
 (7781, 30, 36),
 (7781, 30, 70),
 (7781, 30, 91102),
@@ -15506,6 +16593,8 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8007, 30, 36),
 (8009, 30, 36),
 (8010, 30, 36),
+(8011, 84, 80),
+(8012, 84, 80),
 (8013, 30, 36),
 (8014, 30, 36),
 (8015, 30, 36),
@@ -15668,6 +16757,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8166, 14, 36),
 (8166, 14, 55),
 (8166, 14, 70),
+(8167, 47, 36),
 (8168, 57, 36),
 (8169, 57, 36),
 (8170, 57, 36),
@@ -15749,6 +16839,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8238, 71, 36),
 (8238, 71, 55),
 (8238, 71, 70),
+(8238, 71, 99102),
 (8239, 35, 36),
 (8240, 35, 36),
 (8241, 35, 36),
@@ -15763,6 +16854,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8249, 35, 70),
 (8250, 35, 36),
 (8252, 38, 36),
+(8252, 38, 55),
 (8253, 75, 36),
 (8254, 75, 36),
 (8255, 29, 36),
@@ -15776,6 +16868,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8265, 31, 23),
 (8265, 31, 36),
 (8266, 10, 36),
+(8267, 14, 6),
 (8267, 14, 23),
 (8267, 14, 36),
 (8268, 41, 6),
@@ -15814,6 +16907,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8284, 32, 36),
 (8285, 32, 36),
 (8286, 31, 36),
+(8286, 31, 55),
 (8287, 48, 6),
 (8287, 48, 36),
 (8288, 59, 36),
@@ -15862,6 +16956,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8313, 2, 99102),
 (8314, 2, 23),
 (8314, 2, 63),
+(8314, 2, 70),
 (8314, 2, 86102),
 (8314, 2, 99102),
 (8316, 21, 36),
@@ -15889,6 +16984,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8331, 3, 99102),
 (8332, 3, 5),
 (8332, 3, 23),
+(8332, 3, 63),
 (8332, 3, 70),
 (8332, 3, 73),
 (8332, 3, 86102),
@@ -15900,11 +16996,14 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8336, 26, 36),
 (8338, 20, 23),
 (8338, 20, 63),
+(8339, 84, 80),
 (8340, 84, 72),
+(8340, 84, 80),
 (8341, 83, 72),
 (8341, 83, 80),
 (8343, 22, 36),
 (8351, 10, 23),
+(8351, 10, 55),
 (8351, 10, 63),
 (8351, 10, 73),
 (8351, 10, 86102),
@@ -15922,6 +17021,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8385, 2, 23),
 (8385, 2, 55),
 (8385, 2, 63),
+(8385, 2, 70),
 (8385, 2, 86102),
 (8385, 2, 88102),
 (8385, 2, 96102),
@@ -15935,10 +17035,13 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8402, 23, 23),
 (8402, 23, 63),
 (8402, 23, 70),
+(8424, 5, 23),
 (8424, 5, 63),
 (8424, 5, 99102),
+(8425, 5, 23),
 (8425, 5, 63),
 (8425, 5, 99102),
+(8427, 5, 23),
 (8427, 5, 63),
 (8427, 5, 86102),
 (8427, 5, 99102),
@@ -15958,9 +17061,12 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8444, 34, 23),
 (8444, 34, 63),
 (8444, 34, 73),
+(8444, 34, 86102),
 (8444, 34, 99102),
+(8456, 84, 80),
 (8457, 83, 80),
 (8458, 84, 72),
+(8458, 84, 80),
 (8459, 27, 23),
 (8459, 27, 63),
 (8459, 27, 73),
@@ -15970,6 +17076,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8460, 3, 70),
 (8460, 3, 76),
 (8461, 3, 23),
+(8461, 3, 63),
 (8461, 3, 77),
 (8461, 3, 86102),
 (8461, 3, 99102),
@@ -15983,6 +17090,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8471, 30, 36),
 (8472, 26, 36),
 (8473, 26, 36),
+(8475, 84, 80),
 (8477, 23, 36),
 (8478, 23, 36),
 (8479, 4, 5),
@@ -16013,6 +17121,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8503, 83, 80),
 (8504, 83, 80),
 (8505, 83, 80),
+(8506, 84, 80),
 (8507, 21, 23),
 (8507, 21, 63),
 (8507, 21, 99102),
@@ -16023,15 +17132,18 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8509, 82, 80),
 (8510, 82, 72),
 (8510, 82, 80),
+(8511, 84, 80),
 (8512, 26, 36),
 (8513, 26, 36),
 (8514, 26, 23),
 (8514, 26, 63),
 (8514, 26, 86102),
+(8514, 26, 99102),
 (8515, 26, 23),
 (8515, 26, 63),
 (8515, 26, 70),
 (8515, 26, 73),
+(8515, 26, 99102),
 (8516, 1, 5),
 (8516, 1, 23),
 (8516, 1, 70),
@@ -16073,8 +17185,10 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8538, 3, 23),
 (8538, 3, 86102),
 (8539, 3, 23),
+(8539, 3, 63),
 (8539, 3, 99102),
 (8540, 3, 23),
+(8540, 3, 63),
 (8540, 3, 73),
 (8540, 3, 86102),
 (8540, 3, 99102),
@@ -16082,14 +17196,19 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8541, 26, 63),
 (8541, 26, 70),
 (8541, 26, 86102),
+(8541, 26, 99102),
 (8542, 26, 23),
 (8543, 26, 23),
 (8543, 26, 63),
 (8543, 26, 70),
+(8543, 26, 99102),
+(8544, 84, 80),
+(8545, 84, 80),
 (8546, 2, 23),
 (8546, 2, 55),
 (8546, 2, 62),
 (8546, 2, 63),
+(8546, 2, 70),
 (8546, 2, 86102),
 (8546, 2, 91102),
 (8546, 2, 99102),
@@ -16111,6 +17230,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8559, 32, 36),
 (8560, 32, 36),
 (8561, 84, 72),
+(8561, 84, 80),
 (8562, 83, 80),
 (8563, 4, 36),
 (8564, 26, 36),
@@ -16122,6 +17242,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8567, 30, 70),
 (8567, 30, 86102),
 (8568, 3, 23),
+(8568, 3, 63),
 (8568, 3, 70),
 (8568, 3, 76),
 (8568, 3, 86102),
@@ -16130,6 +17251,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8570, 32, 63),
 (8570, 32, 70),
 (8574, 3, 23),
+(8574, 3, 63),
 (8574, 3, 73),
 (8574, 3, 86102),
 (8574, 3, 96102),
@@ -16137,6 +17259,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8585, 23, 23),
 (8585, 23, 62),
 (8585, 23, 63),
+(8585, 23, 73),
 (8585, 23, 86102),
 (8585, 23, 88102),
 (8585, 23, 96102),
@@ -16147,8 +17270,10 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8593, 13, 23),
 (8594, 17, 23),
 (8594, 17, 63),
+(8594, 17, 73),
 (8595, 17, 23),
 (8595, 17, 63),
+(8595, 17, 73),
 (8595, 17, 86102),
 (8595, 17, 91102),
 (8595, 17, 99102),
@@ -16160,6 +17285,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8598, 13, 6),
 (8598, 13, 23),
 (8598, 13, 63),
+(8598, 13, 73),
 (8598, 13, 89102),
 (8598, 13, 96102),
 (8598, 13, 99102),
@@ -16170,7 +17296,9 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8601, 34, 23),
 (8601, 34, 63),
 (8601, 34, 73),
+(8601, 34, 86102),
 (8601, 34, 99102),
+(8602, 84, 80),
 (8603, 81, 80),
 (8604, 24, 36),
 (8604, 24, 63),
@@ -16183,6 +17311,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8610, 43, 5),
 (8611, 43, 5),
 (8612, 19, 5),
+(8613, 24, 5),
 (8614, 1, 23),
 (8614, 1, 63),
 (8614, 1, 70),
@@ -16190,6 +17319,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8614, 1, 99102),
 (8615, 34, 23),
 (8615, 34, 63),
+(8615, 34, 86102),
 (8615, 34, 99102),
 (8616, 24, 23),
 (8616, 24, 63),
@@ -16209,6 +17339,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8618, 35, 73),
 (8618, 35, 86102),
 (8618, 35, 99102),
+(8668, 84, 80),
 (8669, 100, 59),
 (8670, 100, 59),
 (8671, 100, 59),
@@ -16241,6 +17372,9 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8719, 83, 80),
 (8720, 83, 80),
 (8721, 83, 80),
+(8722, 84, 80),
+(8723, 84, 80),
+(8724, 84, 80),
 (8728, 4, 23),
 (8728, 4, 63),
 (8728, 4, 73),
@@ -16277,8 +17411,10 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8743, 8, 73),
 (8743, 8, 86102),
 (8743, 8, 99102),
+(8744, 5, 23),
 (8744, 5, 63),
 (8744, 5, 70),
+(8744, 5, 73),
 (8744, 5, 86102),
 (8744, 5, 99102),
 (8745, 8, 23),
@@ -16292,6 +17428,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8748, 34, 23),
 (8748, 34, 63),
 (8748, 34, 73),
+(8748, 34, 86102),
 (8748, 34, 99102),
 (8751, 28, 23),
 (8751, 28, 63),
@@ -16313,6 +17450,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8756, 12, 63),
 (8757, 48, 6),
 (8757, 48, 23),
+(8757, 48, 63),
 (8758, 40, 23),
 (8758, 40, 63),
 (8758, 40, 86102),
@@ -16325,6 +17463,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8761, 68, 23),
 (8761, 68, 63),
 (8762, 3, 23),
+(8762, 3, 63),
 (8763, 19, 23),
 (8763, 19, 55),
 (8763, 19, 63),
@@ -16348,11 +17487,16 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8769, 19, 63),
 (8769, 19, 73),
 (8770, 3, 23),
+(8770, 3, 62),
+(8770, 3, 63),
 (8770, 3, 76),
 (8771, 30, 23),
 (8771, 30, 63),
+(8772, 38, 23),
 (8772, 38, 63),
+(8772, 38, 70),
 (8772, 38, 99102),
+(8773, 38, 23),
 (8773, 38, 63),
 (8773, 38, 99102),
 (8774, 1, 23),
@@ -16366,10 +17510,12 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8780, 6, 36),
 (8781, 26, 23),
 (8782, 3, 23),
+(8782, 3, 63),
 (8782, 3, 86102),
 (8782, 3, 99102),
 (8783, 6, 36),
 (8784, 23, 63),
+(8784, 23, 73),
 (8784, 23, 96102),
 (8785, 1, 23),
 (8785, 1, 36),
@@ -16392,6 +17538,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8792, 20, 63),
 (8792, 20, 99102),
 (8793, 3, 23),
+(8793, 3, 63),
 (8793, 3, 70),
 (8793, 3, 88102),
 (8793, 3, 99102),
@@ -16403,10 +17550,13 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8795, 29, 63),
 (8795, 29, 73),
 (8795, 29, 99102),
+(8796, 51, 6),
 (8796, 51, 23),
+(8796, 51, 63),
 (8796, 51, 96102),
 (8797, 51, 23),
 (8797, 51, 36),
+(8797, 51, 63),
 (8797, 51, 73),
 (8798, 25, 6),
 (8798, 25, 23),
@@ -16457,6 +17607,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8825, 23, 62),
 (8825, 23, 63),
 (8825, 23, 70),
+(8825, 23, 73),
 (8825, 23, 86102),
 (8825, 23, 96102),
 (8825, 23, 99102),
@@ -16467,6 +17618,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8831, 30, 62),
 (8831, 30, 63),
 (8831, 30, 86102),
+(8831, 30, 99102),
 (8832, 13, 23),
 (8832, 13, 63),
 (8832, 13, 99102),
@@ -16478,6 +17630,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8834, 32, 73),
 (8834, 32, 86102),
 (8834, 32, 91102),
+(8834, 32, 96102),
 (8834, 32, 99102),
 (8835, 19, 6),
 (8835, 19, 23),
@@ -16494,6 +17647,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8838, 27, 99102),
 (8839, 22, 23),
 (8839, 22, 63),
+(8839, 22, 86102),
 (8840, 1, 5),
 (8840, 1, 23),
 (8840, 1, 63),
@@ -16532,12 +17686,14 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8853, 10, 63),
 (8854, 14, 5),
 (8855, 17, 5),
+(8856, 30, 5),
 (8857, 20, 5),
 (8859, 82, 80),
 (8860, 25, 6),
 (8860, 25, 36),
 (8861, 66, 36),
 (8862, 10, 23),
+(8862, 10, 55),
 (8862, 10, 63),
 (8862, 10, 70),
 (8862, 10, 73),
@@ -16556,6 +17712,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8867, 34, 23),
 (8867, 34, 55),
 (8867, 34, 63),
+(8867, 34, 70),
 (8867, 34, 99102),
 (8868, 10, 23),
 (8868, 10, 63),
@@ -16565,12 +17722,15 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8869, 28, 63),
 (8869, 28, 70),
 (8869, 28, 99102),
+(8870, 18, 23),
 (8870, 18, 63),
+(8870, 18, 70),
 (8871, 28, 6),
 (8871, 28, 23),
 (8871, 28, 63),
 (8871, 28, 73),
 (8871, 28, 89102),
+(8871, 28, 91102),
 (8871, 28, 96102),
 (8871, 28, 99102),
 (8871, 28, 104102),
@@ -16628,10 +17788,12 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8889, 34, 23),
 (8889, 34, 63),
 (8889, 34, 73),
+(8889, 34, 86102),
 (8889, 34, 99102),
 (8890, 34, 23),
 (8890, 34, 63),
 (8890, 34, 73),
+(8890, 34, 86102),
 (8891, 34, 23),
 (8891, 34, 63),
 (8891, 34, 73),
@@ -16648,6 +17810,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8895, 19, 23),
 (8895, 19, 63),
 (8895, 19, 73),
+(8895, 19, 96102),
 (8895, 19, 99102),
 (8896, 105, 67),
 (8897, 105, 67),
@@ -16689,6 +17852,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8933, 5, 99102),
 (8934, 10, 36),
 (8935, 82, 80),
+(8936, 84, 80),
 (8937, 12, 23),
 (8937, 12, 63),
 (8938, 12, 23),
@@ -16698,8 +17862,13 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8939, 12, 63),
 (8940, 12, 23),
 (8940, 12, 63),
+(8941, 18, 23),
 (8941, 18, 63),
 (8942, 95, 36),
+(8943, 111, 68),
+(8944, 111, 68),
+(8945, 111, 68),
+(8946, 111, 68),
 (8947, 112, 68),
 (8948, 113, 68),
 (8949, 114, 68),
@@ -16710,6 +17879,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8951, 1, 86102),
 (8952, 81, 72),
 (8952, 81, 80),
+(8953, 84, 80),
 (8954, 81, 80),
 (8956, 3, 55),
 (8956, 3, 70),
@@ -16745,6 +17915,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (8974, 1, 70),
 (8974, 1, 86102),
 (8975, 84, 72),
+(8975, 84, 80),
 (8976, 84, 72),
 (8977, 84, 72),
 (8978, 83, 72),
@@ -17417,6 +18588,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (9274, 83, 72),
 (9275, 83, 72),
 (9276, 71, 23),
+(9276, 71, 63),
 (9276, 71, 73),
 (9277, 8, 23),
 (9277, 8, 63),
@@ -17488,6 +18660,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (9305, 17, 23),
 (9305, 17, 37),
 (9305, 17, 63),
+(9305, 17, 73),
 (9306, 17, 23),
 (9306, 17, 63),
 (9306, 17, 99102),
@@ -17530,6 +18703,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (9322, 26, 23),
 (9322, 26, 63),
 (9322, 26, 70),
+(9322, 26, 99102),
 (9323, 27, 23),
 (9323, 27, 63),
 (9323, 27, 86102),
@@ -17571,11 +18745,17 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (9336, 45, 23),
 (9336, 45, 63),
 (9337, 71, 23),
+(9337, 71, 63),
 (9337, 71, 73),
+(9337, 71, 99102),
 (9338, 71, 23),
+(9338, 71, 63),
 (9338, 71, 73),
+(9338, 71, 99102),
 (9339, 71, 23),
+(9339, 71, 63),
 (9339, 71, 73),
+(9339, 71, 99102),
 (9340, 56, 23),
 (9340, 56, 63),
 (9341, 19, 23),
@@ -17589,10 +18769,13 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (9344, 19, 63),
 (9345, 19, 23),
 (9345, 19, 63),
+(9346, 5, 23),
 (9346, 5, 63),
 (9346, 5, 70),
+(9346, 5, 73),
 (9346, 5, 86102),
 (9346, 5, 99102),
+(9347, 5, 23),
 (9347, 5, 63),
 (9347, 5, 99102),
 (9348, 41, 23),
@@ -17620,7 +18803,8 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (9364, 84, 72),
 (9365, 24, 23),
 (9366, 82, 72),
-(9367, 30, 63),
+(9367, 30, 63);
+INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_id`, `catalog_id`) VALUES
 (9368, 1, 23),
 (9368, 1, 63),
 (9369, 30, 63),
@@ -17628,10 +18812,12 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (9370, 30, 63),
 (9370, 30, 73),
 (9370, 30, 96102),
+(9370, 30, 99102),
 (9371, 30, 23),
 (9371, 30, 63),
 (9372, 22, 23),
 (9372, 22, 63),
+(9372, 22, 86102),
 (9372, 22, 96102),
 (9373, 26, 23),
 (9373, 26, 63),
@@ -17659,8 +18845,10 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (9391, 3, 76),
 (9393, 3, 76),
 (9396, 1, 36),
+(9397, 47, 36),
 (9398, 1, 36),
 (9399, 21, 36),
+(9400, 84, 80),
 (9403, 30, 55),
 (9410, 84, 72),
 (9411, 84, 72),
@@ -17674,6 +18862,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (9415, 24, 73),
 (9415, 24, 89102),
 (9415, 24, 91102),
+(9415, 24, 96102),
 (9415, 24, 99102),
 (9416, 10, 23),
 (9416, 10, 36),
@@ -17688,11 +18877,15 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (9424, 84, 72),
 (9425, 14, 36),
 (9426, 3, 23),
+(9426, 3, 62),
 (9427, 3, 23),
+(9427, 3, 62),
 (9428, 3, 23),
+(9428, 3, 63),
 (9428, 3, 99102),
 (9429, 28, 23),
 (9430, 3, 23),
+(9430, 3, 63),
 (9430, 3, 70),
 (9430, 3, 73),
 (9430, 3, 86102),
@@ -17723,10 +18916,13 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (9447, 33, 36),
 (9454, 3, 36),
 (9454, 3, 99102),
+(9455, 5, 23),
 (9455, 5, 70),
+(9456, 5, 23),
 (9456, 5, 63),
 (9456, 5, 99102),
 (9457, 3, 23),
+(9457, 3, 63),
 (9457, 3, 99102),
 (9458, 8, 23),
 (9458, 8, 63),
@@ -17756,6 +18952,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (9469, 13, 99102),
 (9470, 5, 63),
 (9470, 5, 99102),
+(9471, 5, 23),
 (9471, 5, 63),
 (9472, 19, 63),
 (9473, 19, 63),
@@ -17768,9 +18965,11 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (9477, 28, 63),
 (9477, 28, 70),
 (9478, 3, 23),
+(9478, 3, 63),
 (9478, 3, 70),
 (9478, 3, 99102),
 (9479, 3, 23),
+(9479, 3, 63),
 (9479, 3, 99102),
 (9480, 22, 23),
 (9480, 22, 63),
@@ -17792,8 +18991,18 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (9488, 24, 63),
 (9488, 24, 73),
 (9488, 24, 99102),
+(9489, 84, 80),
+(9490, 84, 80),
+(9491, 84, 80),
+(9492, 84, 80),
+(9493, 84, 80),
+(9494, 84, 80),
 (9495, 81, 80),
+(9496, 84, 80),
+(9497, 84, 80),
+(9498, 84, 80),
 (9499, 82, 80),
+(9500, 84, 80),
 (9502, 81, 72),
 (9503, 83, 80),
 (9504, 83, 80),
@@ -17824,6 +19033,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (9525, 83, 80),
 (9526, 83, 80),
 (9527, 83, 80),
+(9528, 5, 23),
 (9528, 5, 55),
 (9528, 5, 63),
 (9528, 5, 70),
@@ -17847,10 +19057,16 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (9537101, 8, 99102),
 (9538101, 71, 23),
 (9538101, 71, 55),
+(9538101, 71, 63),
 (9538101, 71, 70),
+(9538101, 71, 99102),
+(9540101, 18, 23),
 (9540101, 18, 63),
+(9541101, 18, 23),
 (9541101, 18, 63),
+(9542101, 18, 23),
 (9542101, 18, 63),
+(9543101, 18, 23),
 (9543101, 18, 63),
 (9543101, 18, 86102),
 (9544101, 34, 63),
@@ -17873,6 +19089,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (9553101, 1, 76),
 (9554101, 1, 63),
 (9556101, 51, 23),
+(9556101, 51, 63),
 (9556101, 51, 73),
 (9557101, 1, 63),
 (9558101, 33, 63),
@@ -17922,8 +19139,10 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (9585101, 24, 63),
 (9585101, 24, 99102),
 (9586101, 74, 63),
+(9587101, 38, 23),
 (9587101, 38, 63),
 (9587101, 38, 99102),
+(9588101, 38, 23),
 (9588101, 38, 63),
 (9590101, 19, 63),
 (9591101, 7, 63),
@@ -17952,6 +19171,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (9606101, 1, 63),
 (9606101, 1, 73),
 (9607101, 3, 23),
+(9607101, 3, 63),
 (9607101, 3, 86102),
 (9607101, 3, 99102),
 (9608101, 2, 23),
@@ -18005,6 +19225,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (9643101, 30, 63),
 (9643101, 30, 86102),
 (9643101, 30, 91102),
+(9643101, 30, 99102),
 (9644101, 21, 23),
 (9644101, 21, 86102),
 (9644101, 21, 99102),
@@ -18026,11 +19247,18 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (10793101, 28, 106102),
 (10797101, 28, 106102),
 (10883101, 24, 106102),
+(10906101, 74, 106102),
+(10907101, 74, 106102),
+(10908101, 74, 106102),
+(10909101, 74, 106102),
 (10952101, 71, 106102),
 (10954101, 71, 106102),
+(10980101, 38, 106102),
+(10985101, 38, 106102),
 (10996101, 5, 106102),
 (11021101, 5, 106102),
 (11029101, 5, 106102),
+(11064101, 19, 106102),
 (11265101, 32, 106102),
 (11391101, 33, 106102),
 (11424101, 17, 106102),
@@ -18047,8 +19275,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (11760101, 13, 99102),
 (11761101, 13, 36),
 (11762101, 13, 36),
-(11763101, 13, 5);
-INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_id`, `catalog_id`) VALUES
+(11763101, 13, 5),
 (11763101, 13, 36),
 (11763101, 13, 63),
 (11764101, 68, 36),
@@ -18059,9 +19286,12 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (11768101, 3, 88102),
 (11769101, 10, 63),
 (11770101, 14, 63),
+(11771101, 5, 23),
 (11771101, 5, 63),
 (11771101, 5, 70),
+(11771101, 5, 73),
 (11771101, 5, 99102),
+(11772101, 5, 23),
 (11772101, 5, 63),
 (11773101, 19, 63),
 (11773101, 19, 73),
@@ -18080,8 +19310,10 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (11792101, 81, 72),
 (11793101, 81, 72),
 (11794101, 81, 72),
+(11795101, 5, 23),
 (11795101, 5, 63),
 (11796101, 5, 63),
+(11797101, 5, 23),
 (11797101, 5, 63),
 (11797101, 5, 99102),
 (11798101, 18, 36),
@@ -18113,6 +19345,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (11811101, 43, 63),
 (11812101, 3, 23),
 (11813101, 27, 23),
+(11814101, 5, 23),
 (11814101, 5, 63),
 (11814101, 5, 70),
 (11814101, 5, 99102),
@@ -18179,6 +19412,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (11853101, 1, 86102),
 (11854101, 2, 23),
 (11854101, 2, 63),
+(11854101, 2, 70),
 (11854101, 2, 73),
 (11854101, 2, 86102),
 (11854101, 2, 88102),
@@ -18190,6 +19424,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (11859101, 52, 23),
 (11860101, 30, 23),
 (11860101, 30, 86102),
+(11860101, 30, 99102),
 (11862101, 2, 23),
 (11862101, 2, 86102),
 (11863101, 24, 23),
@@ -18197,11 +19432,14 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (11864101, 3, 23),
 (11864101, 3, 86102),
 (11865101, 3, 23),
+(11865101, 3, 63),
 (11865101, 3, 86102),
 (11865101, 3, 99102),
 (11866101, 3, 23),
+(11866101, 3, 63),
 (11866101, 3, 86102),
 (11866101, 3, 99102),
+(11867101, 5, 23),
 (11867101, 5, 86102),
 (11867101, 5, 99102),
 (11868101, 32, 36),
@@ -18233,8 +19471,11 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (11883101, 121101, 6),
 (11883101, 121101, 23),
 (11883101, 121101, 36),
+(11884101, 3, 63),
+(11885101, 3, 63),
 (11886101, 84, 72),
 (11887101, 84, 72),
+(11887101, 84, 80),
 (11888101, 83, 72),
 (11889101, 2, 36),
 (11890101, 1, 36),
@@ -18258,6 +19499,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (11903101, 32, 63),
 (11904101, 20, 36),
 (11905101, 29, 63),
+(11906101, 130101, 36),
 (11907101, 94, 6),
 (11907101, 94, 36),
 (11908101, 121101, 6),
@@ -18285,6 +19527,8 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (11920101, 26, 62),
 (11920101, 26, 63),
 (11920101, 26, 73),
+(11920101, 26, 96102),
+(11920101, 26, 99102),
 (11921101, 34, 36),
 (11922101, 3, 36),
 (11922101, 3, 99102),
@@ -18307,6 +19551,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (11937101, 28, 36),
 (11938101, 38, 36),
 (11939101, 38, 36),
+(11940102, 131102, 84102),
 (11941102, 132102, 84102),
 (11942102, 133102, 84102),
 (11943102, 136102, 59),
@@ -18317,6 +19562,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (11948102, 29, 85102),
 (11949102, 30, 85102),
 (11950102, 84, 72),
+(11951102, 5, 23),
 (11952102, 13, 23),
 (11953102, 13, 23),
 (11954102, 35, 55),
@@ -18362,6 +19608,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (11986102, 36, 36),
 (11987102, 12, 36),
 (11988102, 24, 36),
+(11989102, 3, 26),
 (11989102, 3, 105102),
 (11990102, 31, 23),
 (11991102, 31, 23),
@@ -18466,6 +19713,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (12120102, 83, 72),
 (12121102, 1, 23),
 (12122102, 26, 63),
+(12122102, 26, 96102),
 (12123102, 40, 36),
 (12124102, 26, 36),
 (12125102, 26, 36),
@@ -18475,8 +19723,10 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (12128102, 21, 26),
 (12129102, 21, 26),
 (12131102, 21, 26),
+(12132102, 47, 36),
 (12133102, 5, 63),
 (12133102, 5, 99102),
+(12134102, 5, 23),
 (12134102, 5, 63),
 (12134102, 5, 99102),
 (12135102, 96, 36),
@@ -18499,7 +19749,9 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (12151102, 19, 91102),
 (12152102, 19, 91102),
 (12154102, 32, 91102),
+(12155102, 34, 70),
 (12155102, 34, 91102),
+(12156102, 34, 70),
 (12156102, 34, 91102),
 (12157102, 20, 91102),
 (12158102, 26, 91102),
@@ -18642,13 +19894,16 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (12295102, 4, 36),
 (12296102, 30, 36),
 (12297102, 30, 36),
+(12298102, 3, 63),
 (12298102, 3, 73),
 (12298102, 3, 96102),
 (12298102, 3, 99102),
+(12299102, 3, 63),
 (12299102, 3, 73),
 (12299102, 3, 99102),
 (12300102, 23, 36),
 (12301102, 3, 36),
+(12301102, 3, 63),
 (12302102, 81, 72),
 (12303102, 83, 72),
 (12304102, 30, 36),
@@ -18821,6 +20076,8 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (12455102, 8, 36),
 (12456102, 8, 5),
 (12456102, 8, 36),
+(12459102, 47, 36),
+(12460102, 47, 36),
 (12461102, 30, 55),
 (12461102, 30, 70),
 (12461102, 30, 91102),
@@ -18938,6 +20195,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (12582102, 26, 36),
 (12583102, 27, 36),
 (12584102, 3, 36),
+(12589102, 130101, 36),
 (12590102, 121101, 6),
 (12590102, 121101, 36),
 (12591102, 121101, 6),
@@ -18954,6 +20212,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (12601102, 5, 55),
 (12601102, 5, 63),
 (12601102, 5, 70),
+(12601102, 5, 73),
 (12601102, 5, 99102),
 (12602102, 35, 55),
 (12602102, 35, 63),
@@ -18962,6 +20221,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (12602102, 35, 99102),
 (12603102, 81, 80),
 (12605102, 5, 63),
+(12605102, 5, 73),
 (12605102, 5, 99102),
 (12607102, 21, 36),
 (12608102, 26, 36),
@@ -18971,6 +20231,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (12612102, 141102, 36),
 (12613102, 141102, 36),
 (12614102, 83, 80),
+(12615102, 84, 80),
 (12617102, 26, 36),
 (12618102, 26, 36),
 (12619102, 21, 91102),
@@ -18990,8 +20251,11 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (12633102, 56, 6),
 (12633102, 56, 23),
 (12633102, 56, 36),
+(12634102, 84, 80),
 (12635102, 83, 80),
 (12636102, 3, 23),
+(12636102, 3, 62),
+(12636102, 3, 63),
 (12636102, 3, 70),
 (12636102, 3, 73),
 (12636102, 3, 99102),
@@ -19004,6 +20268,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (12643102, 1, 36),
 (12644102, 83, 80),
 (12645102, 83, 80),
+(12646102, 84, 80),
 (12650102, 3, 55),
 (12650102, 3, 70),
 (12661102, 3, 90102),
@@ -19011,12 +20276,14 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (12663102, 10, 90102),
 (12664102, 3, 90102),
 (12665102, 2, 90102),
+(12666102, 14, 90102),
 (12667102, 87, 36),
 (12668102, 13, 36),
 (12669102, 29, 36),
 (12670102, 10, 5),
 (12670102, 10, 36),
 (12671102, 10, 23),
+(12672102, 84, 80),
 (12673102, 100, 59),
 (12674102, 34, 63),
 (12674102, 34, 99102),
@@ -19065,6 +20332,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (12714102, 29, 95102),
 (12715102, 29, 95102),
 (12716102, 29, 95102),
+(12717102, 1, 95102),
 (12718102, 3, 95102),
 (12719102, 3, 95102),
 (12720102, 3, 95102),
@@ -19104,6 +20372,10 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (12754102, 23, 95102),
 (12755102, 3, 95102),
 (12756102, 3, 95102),
+(12757102, 1, 95102),
+(12758102, 1, 95102),
+(12759102, 1, 95102),
+(12760102, 1, 95102),
 (12761102, 30, 95102),
 (12762102, 30, 95102),
 (12763102, 30, 95102),
@@ -19340,12 +20612,29 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (12983102, 30, 95102),
 (12984102, 30, 95102),
 (12985102, 30, 95102),
+(12986102, 14, 95102),
 (12987102, 60, 95102),
+(12988102, 1, 95102),
+(12989102, 1, 95102),
 (12990102, 2, 95102),
+(12991102, 1, 95102),
+(12992102, 1, 95102),
+(12993102, 1, 95102),
+(12994102, 1, 95102),
 (12995102, 1, 70),
+(12995102, 1, 95102),
+(12996102, 1, 95102),
+(12997102, 1, 95102),
 (12998102, 1, 70),
+(12998102, 1, 95102),
+(12999102, 1, 95102),
 (13000102, 3, 95102),
 (13001102, 3, 95102),
+(13002102, 1, 95102),
+(13003102, 1, 95102),
+(13004102, 1, 95102),
+(13005102, 1, 95102),
+(13006102, 1, 95102),
 (13007102, 23, 95102),
 (13008102, 23, 95102),
 (13009102, 3, 95102),
@@ -19354,6 +20643,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13012102, 3, 95102),
 (13013102, 3, 95102),
 (13014102, 3, 95102),
+(13015102, 1, 95102),
 (13016102, 3, 95102),
 (13017102, 3, 95102),
 (13018102, 3, 95102),
@@ -19368,8 +20658,23 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13027102, 21, 95102),
 (13028102, 21, 95102),
 (13029102, 21, 95102),
+(13030102, 1, 95102),
+(13031102, 1, 95102),
+(13032102, 1, 95102),
+(13033102, 1, 95102),
+(13034102, 1, 95102),
+(13035102, 1, 95102),
+(13036102, 1, 19),
+(13036102, 1, 95102),
+(13037102, 1, 95102),
+(13038102, 1, 95102),
+(13039102, 1, 95102),
+(13040102, 1, 19),
+(13040102, 1, 95102),
 (13041102, 30, 95102),
 (13042102, 30, 95102),
+(13043102, 1, 95102),
+(13044102, 1, 95102),
 (13045102, 3, 95102),
 (13046102, 3, 95102),
 (13047102, 3, 95102),
@@ -19383,6 +20688,8 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13055102, 33, 95102),
 (13056102, 3, 95102),
 (13057102, 30, 95102),
+(13058102, 1, 95102),
+(13059102, 1, 95102),
 (13060102, 30, 95102),
 (13061102, 30, 95102),
 (13062102, 30, 95102),
@@ -19393,6 +20700,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13067102, 30, 95102),
 (13068102, 30, 95102),
 (13069102, 30, 95102),
+(13070102, 1, 95102),
 (13071102, 26, 95102),
 (13072102, 3, 95102),
 (13073102, 3, 95102),
@@ -19412,6 +20720,8 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13086102, 23, 95102),
 (13087102, 23, 95102),
 (13088102, 23, 95102),
+(13089102, 1, 95102),
+(13090102, 1, 95102),
 (13091102, 3, 95102),
 (13092102, 3, 95102),
 (13093102, 3, 95102),
@@ -19445,7 +20755,15 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13113102, 3, 95102),
 (13114102, 3, 95102),
 (13115102, 3, 95102),
+(13116102, 1, 95102),
+(13117102, 1, 95102),
+(13118102, 1, 95102),
+(13119102, 1, 95102),
+(13120102, 1, 95102),
+(13121102, 1, 95102),
+(13122102, 1, 95102),
 (13123102, 23, 95102),
+(13124102, 1, 95102),
 (13125102, 3, 95102),
 (13126102, 3, 95102),
 (13127102, 3, 95102),
@@ -19464,6 +20782,10 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13139102, 26, 70),
 (13139102, 26, 95102),
 (13140102, 26, 95102),
+(13141102, 1, 95102),
+(13142102, 1, 95102),
+(13143102, 1, 95102),
+(13144102, 1, 95102),
 (13145102, 3, 95102),
 (13146102, 3, 95102),
 (13147102, 3, 95102),
@@ -19506,29 +20828,57 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13184102, 26, 95102),
 (13185102, 26, 95102),
 (13186102, 26, 95102),
+(13187102, 1, 95102),
 (13188102, 3, 95102),
 (13189102, 3, 95102),
 (13190102, 3, 95102),
 (13191102, 3, 95102),
 (13192102, 3, 95102),
+(13193102, 1, 95102),
+(13194102, 1, 95102),
 (13195102, 1, 70),
+(13195102, 1, 95102),
+(13196102, 1, 95102),
+(13197102, 1, 95102),
 (13198102, 22, 95102),
 (13199102, 21, 95102),
 (13200102, 21, 95102),
 (13201102, 21, 95102),
 (13202102, 23, 95102),
 (13203102, 23, 95102),
+(13204102, 1, 19),
+(13204102, 1, 95102),
+(13205102, 1, 19),
+(13205102, 1, 95102),
 (13206102, 26, 95102),
 (13207102, 26, 95102),
 (13208102, 26, 95102),
 (13209102, 30, 95102),
 (13210102, 30, 95102),
+(13211102, 1, 95102),
+(13212102, 1, 95102),
+(13213102, 1, 95102),
+(13214102, 1, 95102),
+(13215102, 1, 95102),
+(13216102, 1, 95102),
+(13217102, 1, 95102),
+(13218102, 1, 95102),
+(13219102, 1, 95102),
+(13220102, 1, 95102),
 (13221102, 21, 95102),
 (13222102, 21, 95102),
 (13223102, 1, 70),
+(13223102, 1, 95102),
+(13224102, 1, 95102),
+(13225102, 1, 95102),
+(13226102, 1, 95102),
+(13227102, 1, 95102),
 (13228102, 30, 95102),
 (13229102, 30, 95102),
 (13230102, 30, 95102),
+(13231102, 1, 95102),
+(13232102, 1, 95102),
+(13233102, 1, 95102),
 (13234102, 3, 95102),
 (13235102, 2, 95102),
 (13236102, 3, 95102),
@@ -19554,28 +20904,48 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13256102, 23, 95102),
 (13257102, 15, 95102),
 (13258102, 12, 95102),
+(13259102, 1, 95102),
 (13260102, 1, 88102),
+(13260102, 1, 95102),
 (13261102, 24, 95102),
 (13262102, 24, 95102),
 (13263102, 3, 95102),
+(13264102, 1, 95102),
+(13265102, 1, 95102),
 (13266102, 30, 95102),
 (13267102, 30, 95102),
 (13268102, 30, 95102),
 (13269102, 30, 95102),
+(13270102, 1, 95102),
+(13271102, 1, 95102),
+(13272102, 1, 95102),
 (13273102, 1, 88102),
+(13273102, 1, 95102),
 (13274102, 1, 70),
 (13274102, 1, 88102),
+(13274102, 1, 95102),
 (13275102, 21, 95102),
 (13276102, 23, 95102),
+(13277102, 1, 95102),
+(13278102, 1, 95102),
+(13279102, 1, 95102),
 (13280102, 1, 70),
+(13280102, 1, 95102),
 (13281102, 1, 70),
+(13281102, 1, 95102),
 (13282102, 1, 70),
+(13282102, 1, 95102),
 (13283102, 3, 95102),
 (13284102, 3, 70),
 (13284102, 3, 95102),
 (13285102, 33, 95102),
 (13286102, 3, 95102),
+(13287102, 1, 95102),
 (13288102, 1, 70),
+(13288102, 1, 95102),
+(13289102, 1, 95102),
+(13290102, 1, 95102),
+(13291102, 1, 95102),
 (13292102, 3, 95102),
 (13293102, 3, 95102),
 (13294102, 3, 95102),
@@ -19589,6 +20959,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13302102, 30, 95102),
 (13303102, 17, 36),
 (13304102, 30, 36),
+(13305102, 5, 89102),
 (13306102, 5, 91102),
 (13307102, 8, 70),
 (13307102, 8, 91102),
@@ -19613,6 +20984,9 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13325102, 17, 91102),
 (13326102, 17, 91102),
 (13327102, 32, 91102),
+(13328102, 28, 91102),
+(13329102, 28, 91102),
+(13330102, 28, 91102),
 (13331102, 13, 91102),
 (13332102, 13, 91102),
 (13333102, 13, 91102),
@@ -19651,6 +21025,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13363102, 23, 93102),
 (13364102, 23, 93102),
 (13365102, 23, 93102),
+(13366102, 3, 63),
 (13366102, 3, 99102),
 (13367102, 23, 93102),
 (13368102, 23, 93102),
@@ -19696,7 +21071,9 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13400102, 3, 93102),
 (13401102, 51, 93102),
 (13402102, 24, 23),
+(13403102, 71, 63),
 (13403102, 71, 73),
+(13403102, 71, 99102),
 (13404102, 24, 63),
 (13404102, 24, 73),
 (13404102, 24, 99102),
@@ -19705,7 +21082,9 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13405102, 24, 99102),
 (13406102, 19, 63),
 (13406102, 19, 73),
+(13407102, 71, 63),
 (13407102, 71, 73),
+(13407102, 71, 99102),
 (13408102, 3, 93102),
 (13409102, 30, 23),
 (13410102, 81, 80),
@@ -19716,6 +21095,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13412102, 127101, 23),
 (13412102, 127101, 63),
 (13412102, 127101, 73),
+(13412102, 127101, 86102),
 (13413102, 5, 36),
 (13414102, 72, 36),
 (13414102, 72, 63),
@@ -19757,6 +21137,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13445102, 3, 93102),
 (13446102, 3, 93102),
 (13447102, 3, 23),
+(13447102, 3, 63),
 (13447102, 3, 73),
 (13447102, 3, 99102),
 (13448102, 107, 67),
@@ -19793,6 +21174,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13471102, 23, 91102),
 (13472102, 23, 91102),
 (13473102, 23, 91102),
+(13474102, 5, 23),
 (13475102, 26, 26),
 (13476102, 3, 91102),
 (13477102, 50, 36),
@@ -19809,6 +21191,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13488102, 1, 70),
 (13488102, 1, 77),
 (13489102, 3, 70),
+(13490102, 145102, 67),
 (13491102, 2, 23),
 (13491102, 2, 96102),
 (13491102, 2, 99102),
@@ -19887,6 +21270,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13551102, 2, 73),
 (13551102, 2, 99102),
 (13552102, 23, 93102),
+(13553102, 1, 95102),
 (13554102, 24, 89102),
 (13555102, 142102, 36),
 (13556102, 18, 91102),
@@ -19906,10 +21290,12 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13575102, 31, 23),
 (13575102, 31, 36),
 (13575102, 31, 63),
+(13575102, 31, 73),
 (13575102, 31, 91102),
 (13575102, 31, 96102),
 (13575102, 31, 99102),
 (13575102, 31, 104102),
+(13576102, 14, 95102),
 (13577102, 10, 23),
 (13578102, 1, 36),
 (13579102, 27, 36),
@@ -19922,12 +21308,14 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13587102, 18, 36),
 (13588102, 5, 36),
 (13589102, 10, 36),
+(13591102, 18, 23),
 (13592102, 23, 23),
 (13593102, 51, 23),
 (13594102, 137102, 36),
 (13595102, 51, 36),
 (13596102, 51, 36),
 (13597102, 51, 36),
+(13597102, 51, 63),
 (13597102, 51, 96102),
 (13597102, 51, 99102),
 (13598102, 1, 36),
@@ -19998,6 +21386,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13650102, 3, 36),
 (13651102, 3, 36),
 (13652102, 3, 36),
+(13652102, 3, 63),
 (13652102, 3, 99102),
 (13653102, 3, 36),
 (13654102, 3, 36),
@@ -20017,6 +21406,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13664102, 3, 36),
 (13664102, 3, 99102),
 (13665102, 3, 36),
+(13665102, 3, 63),
 (13666102, 3, 36),
 (13666102, 3, 99102),
 (13667102, 3, 36),
@@ -20058,6 +21448,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13700102, 14, 23),
 (13700102, 14, 63),
 (13701102, 23, 76),
+(13702102, 51, 76),
 (13703102, 1, 70),
 (13703102, 1, 76),
 (13704102, 1, 76),
@@ -20070,12 +21461,14 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13709102, 3, 99102),
 (13710102, 94, 6),
 (13710102, 94, 36),
-(13711102, 48, 36),
+(13711102, 48, 36);
+INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_id`, `catalog_id`) VALUES
 (13712102, 23, 6),
 (13712102, 23, 23),
 (13713102, 30, 23),
 (13714102, 47, 23),
 (13715102, 3, 23),
+(13715102, 3, 63),
 (13715102, 3, 86102),
 (13715102, 3, 99102),
 (13716102, 51, 96102),
@@ -20091,8 +21484,10 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13723102, 32, 36),
 (13724102, 1, 36),
 (13725102, 105, 67),
+(13726102, 51, 6),
 (13726102, 51, 23),
 (13727102, 30, 95102),
+(13728102, 47, 36),
 (13729102, 24, 36),
 (13733102, 1, 96102),
 (13734102, 1, 96102),
@@ -20126,6 +21521,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13756102, 1, 91102),
 (13757102, 20, 63),
 (13757102, 20, 73),
+(13758102, 51, 6),
 (13759102, 51, 93102),
 (13760102, 51, 93102),
 (13761102, 31, 93102),
@@ -20136,6 +21532,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13765102, 56, 93102),
 (13766102, 56, 93102),
 (13767102, 31, 6),
+(13768102, 51, 6),
 (13768102, 51, 23),
 (13768102, 51, 99102),
 (13769102, 28, 63),
@@ -20171,12 +21568,14 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13791102, 3, 6),
 (13791102, 3, 23),
 (13792102, 72, 63),
+(13793102, 3, 63),
 (13793102, 3, 99102),
 (13794102, 5, 36),
 (13794102, 5, 63),
 (13794102, 5, 99102),
 (13795102, 51, 93102),
 (13796102, 28, 63),
+(13797102, 71, 63),
 (13799102, 3, 90102),
 (13799102, 3, 104102),
 (13802102, 42, 91102),
@@ -20219,6 +21618,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13838102, 48, 23),
 (13839102, 27, 6),
 (13839102, 27, 23),
+(13840102, 18, 23),
 (13840102, 18, 63),
 (13841102, 13, 23),
 (13841102, 13, 63),
@@ -20242,6 +21642,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13856102, 3, 36),
 (13856102, 3, 91102),
 (13857102, 3, 36),
+(13858102, 3, 63),
 (13858102, 3, 99102),
 (13859102, 31, 63),
 (13860102, 7, 63),
@@ -20259,6 +21660,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13874102, 26, 36),
 (13875102, 26, 36),
 (13876102, 26, 36),
+(13876102, 26, 99102),
 (13877102, 26, 36),
 (13878102, 26, 36),
 (13879102, 26, 36),
@@ -20378,6 +21780,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (13992102, 1, 99102),
 (13993102, 115, 71),
 (13994102, 115, 71),
+(13996102, 31, 55),
 (13997102, 32, 63),
 (13998102, 64, 36),
 (14007102, 3, 55),
@@ -20392,7 +21795,10 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (14056102, 26, 95102),
 (14057102, 10, 95102),
 (14058102, 10, 95102),
+(14059102, 14, 95102),
+(14060102, 14, 95102),
 (14061102, 10, 95102),
+(14062102, 1, 95102),
 (14063102, 3, 95102),
 (14064102, 3, 95102),
 (14065102, 3, 95102),
@@ -20419,6 +21825,10 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (14086102, 29, 95102),
 (14087102, 29, 95102),
 (14088102, 3, 95102),
+(14089102, 1, 95102),
+(14090102, 1, 95102),
+(14091102, 1, 95102),
+(14092102, 1, 95102),
 (14093102, 23, 95102),
 (14094102, 23, 95102),
 (14095102, 23, 95102),
@@ -20459,6 +21869,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (14136102, 27, 36),
 (14137102, 28, 36),
 (14138102, 63, 36),
+(14139102, 47, 36),
 (14140102, 18, 36),
 (14140102, 18, 99102),
 (14141102, 3, 23),
@@ -20485,6 +21896,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (14157102, 20, 99102),
 (14158102, 17, 63),
 (14159102, 26, 23),
+(14159102, 26, 99102),
 (14160102, 32, 95102),
 (14161102, 32, 95102),
 (14162102, 20, 95102),
@@ -20492,8 +21904,10 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (14164102, 24, 95102),
 (14165102, 24, 95102),
 (14166102, 24, 95102),
+(14167102, 1, 95102),
 (14168102, 3, 95102),
 (14169102, 1, 70),
+(14169102, 1, 95102),
 (14170102, 28, 70),
 (14170102, 28, 95102),
 (14171102, 13, 95102),
@@ -20504,6 +21918,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (14176102, 1, 23),
 (14177102, 26, 23),
 (14177102, 26, 63),
+(14177102, 26, 99102),
 (14178102, 3, 103102),
 (14179102, 2, 103102),
 (14180102, 3, 103102),
@@ -20586,6 +22001,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (14266102, 3, 105102),
 (14267102, 3, 105102),
 (14268102, 3, 23),
+(14268102, 3, 63),
 (14268102, 3, 73),
 (14269102, 4, 99102),
 (14270102, 28, 99102),
@@ -20610,6 +22026,8 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (14288102, 31, 36),
 (14289102, 121101, 36),
 (14290102, 34, 99102),
+(14291102, 71, 99102),
+(14292102, 71, 99102),
 (14293102, 5, 99102),
 (14294102, 32, 99102),
 (14295102, 30, 23),
@@ -20618,8 +22036,10 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (14298102, 30, 105102),
 (14299102, 30, 105102),
 (14300102, 30, 105102),
-(14301102, 30, 105102);
-INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_id`, `catalog_id`) VALUES
+(14301102, 30, 105102),
+(14302102, 23, 105102),
+(14303102, 23, 105102),
+(14304102, 23, 105102),
 (14305102, 1, 105102),
 (14306102, 1, 105102),
 (14307102, 1, 105102),
@@ -20631,6 +22051,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (14313102, 1, 105102),
 (14314102, 30, 105102),
 (14315102, 30, 105102),
+(14316102, 5, 23),
 (14340102, 1, 63),
 (14341102, 1, 63),
 (14342102, 43, 36),
@@ -20638,10 +22059,15 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (14344102, 1, 63),
 (14344102, 1, 99102),
 (14345102, 1, 63),
+(14346102, 26, 99102),
 (14347102, 27, 99102),
 (14348102, 27, 99102),
+(14349102, 1, 95102),
+(14350102, 1, 95102),
+(14351102, 1, 95102),
 (14352102, 1, 105102),
 (14356102, 95, 95102),
+(14357102, 26, 99102),
 (14358102, 17, 99102),
 (14359102, 13, 99102),
 (14360102, 4, 23),
@@ -20651,6 +22077,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (14363102, 1, 62),
 (14364102, 4, 23),
 (14365102, 8, 23),
+(14366102, 5, 23),
 (14367102, 100, 59),
 (14369102, 17, 23),
 (14370102, 17, 36),
@@ -20716,6 +22143,15 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (14430102, 3, 106102),
 (14431102, 2, 106102),
 (14432102, 2, 106102),
+(14433102, 23, 106102),
+(14434102, 23, 106102),
+(14435102, 23, 106102),
+(14436102, 23, 106102),
+(14437102, 23, 106102),
+(14438102, 23, 106102),
+(14439102, 23, 106102),
+(14440102, 23, 106102),
+(14441102, 23, 106102),
 (14442102, 3, 106102),
 (14443102, 3, 106102),
 (14444102, 3, 106102),
@@ -20972,8 +22408,158 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (14700102, 26, 106102),
 (14701102, 26, 106102),
 (14702102, 26, 106102),
+(14703102, 19, 106102),
+(14704102, 19, 106102),
 (14705102, 13, 106102),
 (14706102, 15, 106102),
+(14707102, 23, 106102),
+(14708102, 23, 106102),
+(14709102, 23, 106102),
+(14710102, 23, 106102),
+(14711102, 23, 106102),
+(14712102, 23, 106102),
+(14713102, 23, 106102),
+(14714102, 23, 106102),
+(14715102, 23, 106102),
+(14716102, 23, 106102),
+(14717102, 23, 106102),
+(14718102, 23, 106102),
+(14719102, 23, 106102),
+(14720102, 23, 106102),
+(14721102, 23, 106102),
+(14722102, 23, 106102),
+(14723102, 23, 106102),
+(14724102, 23, 106102),
+(14725102, 23, 106102),
+(14726102, 23, 106102),
+(14727102, 23, 106102),
+(14728102, 23, 106102),
+(14729102, 23, 106102),
+(14730102, 23, 106102),
+(14731102, 23, 106102),
+(14732102, 23, 106102),
+(14733102, 23, 106102),
+(14734102, 23, 106102),
+(14735102, 23, 106102),
+(14736102, 23, 106102),
+(14737102, 23, 106102),
+(14738102, 23, 106102),
+(14739102, 23, 106102),
+(14740102, 23, 106102),
+(14741102, 23, 106102),
+(14742102, 23, 106102),
+(14743102, 23, 106102),
+(14744102, 23, 106102),
+(14745102, 23, 106102),
+(14746102, 23, 106102),
+(14747102, 23, 106102),
+(14748102, 23, 106102),
+(14749102, 23, 106102),
+(14750102, 23, 106102),
+(14751102, 23, 106102),
+(14752102, 23, 106102),
+(14753102, 23, 106102),
+(14754102, 23, 106102),
+(14755102, 23, 106102),
+(14756102, 23, 106102),
+(14757102, 23, 106102),
+(14758102, 23, 106102),
+(14759102, 23, 106102),
+(14760102, 23, 106102),
+(14761102, 23, 106102),
+(14762102, 23, 106102),
+(14763102, 23, 106102),
+(14764102, 23, 106102),
+(14765102, 23, 106102),
+(14766102, 23, 106102),
+(14767102, 23, 106102),
+(14768102, 23, 106102),
+(14769102, 23, 106102),
+(14770102, 23, 106102),
+(14771102, 23, 106102),
+(14772102, 23, 106102),
+(14773102, 23, 106102),
+(14774102, 23, 106102),
+(14775102, 23, 106102),
+(14776102, 23, 106102),
+(14777102, 23, 106102),
+(14778102, 23, 106102),
+(14779102, 23, 106102),
+(14780102, 23, 106102),
+(14781102, 23, 106102),
+(14782102, 23, 106102),
+(14783102, 23, 106102),
+(14784102, 23, 106102),
+(14785102, 23, 106102),
+(14786102, 23, 106102),
+(14787102, 23, 106102),
+(14788102, 23, 106102),
+(14789102, 23, 106102),
+(14790102, 23, 106102),
+(14791102, 23, 106102),
+(14792102, 23, 106102),
+(14793102, 23, 106102),
+(14794102, 23, 106102),
+(14795102, 23, 106102),
+(14796102, 23, 106102),
+(14797102, 23, 106102),
+(14798102, 23, 106102),
+(14799102, 23, 106102),
+(14800102, 23, 106102),
+(14801102, 23, 106102),
+(14802102, 23, 106102),
+(14803102, 23, 106102),
+(14804102, 23, 106102),
+(14805102, 23, 106102),
+(14806102, 23, 106102),
+(14807102, 23, 106102),
+(14808102, 23, 106102),
+(14809102, 23, 106102),
+(14810102, 23, 106102),
+(14811102, 23, 106102),
+(14812102, 23, 106102),
+(14813102, 23, 106102),
+(14814102, 23, 106102),
+(14815102, 23, 106102),
+(14816102, 23, 106102),
+(14817102, 23, 106102),
+(14818102, 23, 106102),
+(14819102, 23, 106102),
+(14820102, 23, 106102),
+(14821102, 23, 106102),
+(14822102, 23, 106102),
+(14823102, 23, 106102),
+(14824102, 23, 106102),
+(14825102, 23, 106102),
+(14826102, 23, 106102),
+(14827102, 23, 106102),
+(14828102, 23, 106102),
+(14829102, 23, 106102),
+(14830102, 23, 106102),
+(14831102, 23, 106102),
+(14832102, 23, 106102),
+(14833102, 23, 106102),
+(14834102, 23, 106102),
+(14835102, 23, 106102),
+(14836102, 23, 106102),
+(14837102, 23, 106102),
+(14838102, 23, 106102),
+(14839102, 23, 106102),
+(14840102, 23, 106102),
+(14841102, 23, 106102),
+(14842102, 23, 106102),
+(14843102, 23, 106102),
+(14844102, 23, 106102),
+(14845102, 23, 106102),
+(14846102, 23, 106102),
+(14847102, 23, 106102),
+(14848102, 23, 106102),
+(14849102, 23, 106102),
+(14850102, 23, 106102),
+(14851102, 23, 106102),
+(14852102, 23, 106102),
+(14853102, 23, 106102),
+(14854102, 23, 106102),
 (14855102, 1, 106102),
 (14856102, 1, 106102),
 (14857102, 1, 106102),
@@ -21524,6 +23110,41 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (15405102, 34, 106102),
 (15406102, 40, 106102),
 (15407102, 40, 106102),
+(15408102, 23, 106102),
+(15409102, 23, 106102),
+(15410102, 23, 106102),
+(15411102, 23, 106102),
+(15412102, 23, 106102),
+(15413102, 23, 106102),
+(15414102, 23, 106102),
+(15415102, 23, 106102),
+(15416102, 23, 106102),
+(15417102, 23, 106102),
+(15418102, 23, 106102),
+(15419102, 23, 106102),
+(15420102, 23, 106102),
+(15421102, 23, 106102),
+(15422102, 23, 106102),
+(15423102, 23, 106102),
+(15424102, 23, 106102),
+(15425102, 23, 106102),
+(15426102, 23, 106102),
+(15427102, 23, 106102),
+(15428102, 23, 106102),
+(15429102, 23, 106102),
+(15430102, 23, 106102),
+(15431102, 23, 106102),
+(15432102, 23, 106102),
+(15433102, 23, 106102),
+(15434102, 23, 106102),
+(15435102, 23, 106102),
+(15436102, 23, 106102),
+(15437102, 23, 106102),
+(15438102, 23, 106102),
+(15439102, 23, 106102),
+(15440102, 23, 106102),
+(15441102, 23, 106102),
+(15442102, 23, 106102),
 (15443102, 17, 106102),
 (15444102, 30, 106102),
 (15445102, 30, 106102),
@@ -22018,6 +23639,14 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (15934102, 26, 106102),
 (15935102, 26, 106102),
 (15936102, 26, 106102),
+(15937102, 23, 106102),
+(15938102, 23, 106102),
+(15939102, 23, 106102),
+(15940102, 23, 106102),
+(15941102, 23, 106102),
+(15942102, 23, 106102),
+(15943102, 23, 106102),
+(15944102, 23, 106102),
 (15945102, 26, 106102),
 (15946102, 26, 106102),
 (15947102, 26, 106102),
@@ -22086,6 +23715,48 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (16010102, 26, 106102),
 (16011102, 26, 106102),
 (16012102, 26, 106102),
+(16013102, 23, 106102),
+(16014102, 23, 106102),
+(16015102, 23, 106102),
+(16016102, 23, 106102),
+(16017102, 23, 106102),
+(16018102, 23, 106102),
+(16019102, 23, 106102),
+(16020102, 23, 106102),
+(16021102, 23, 106102),
+(16022102, 23, 106102),
+(16023102, 23, 106102),
+(16024102, 23, 106102),
+(16025102, 23, 106102),
+(16026102, 23, 106102),
+(16027102, 23, 106102),
+(16028102, 23, 106102),
+(16029102, 23, 106102),
+(16030102, 23, 106102),
+(16031102, 23, 106102),
+(16032102, 23, 106102),
+(16033102, 23, 106102),
+(16034102, 23, 106102),
+(16035102, 23, 106102),
+(16036102, 23, 106102),
+(16037102, 23, 106102),
+(16038102, 23, 106102),
+(16039102, 23, 106102),
+(16040102, 23, 106102),
+(16041102, 23, 106102),
+(16042102, 23, 106102),
+(16043102, 23, 106102),
+(16044102, 23, 106102),
+(16045102, 23, 106102),
+(16046102, 23, 106102),
+(16047102, 23, 106102),
+(16048102, 23, 106102),
+(16049102, 23, 106102),
+(16050102, 23, 106102),
+(16051102, 23, 106102),
+(16052102, 23, 106102),
+(16053102, 23, 106102),
+(16054102, 23, 106102),
 (16055102, 1, 106102),
 (16056102, 1, 106102),
 (16057102, 1, 106102),
@@ -22100,6 +23771,26 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (16066102, 1, 106102),
 (16067102, 1, 106102),
 (16068102, 1, 106102),
+(16069102, 23, 106102),
+(16070102, 23, 106102),
+(16071102, 23, 106102),
+(16072102, 23, 106102),
+(16073102, 23, 106102),
+(16074102, 23, 106102),
+(16075102, 23, 106102),
+(16076102, 23, 106102),
+(16077102, 23, 106102),
+(16078102, 23, 106102),
+(16079102, 23, 106102),
+(16080102, 23, 106102),
+(16081102, 23, 106102),
+(16082102, 23, 106102),
+(16083102, 23, 106102),
+(16084102, 23, 106102),
+(16085102, 23, 106102),
+(16086102, 23, 106102),
+(16087102, 23, 106102),
+(16088102, 23, 106102),
 (16089102, 1, 106102),
 (16090102, 1, 106102),
 (16091102, 1, 106102),
@@ -22144,6 +23835,9 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (16130102, 26, 106102),
 (16131102, 26, 106102),
 (16132102, 26, 106102),
+(16133102, 23, 106102),
+(16134102, 23, 106102);
+INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_id`, `catalog_id`) VALUES
 (16135102, 29, 106102),
 (16136102, 29, 106102),
 (16137102, 29, 106102),
@@ -22269,6 +23963,13 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (16257102, 1, 106102),
 (16258102, 1, 106102),
 (16259102, 1, 106102),
+(16260102, 23, 106102),
+(16261102, 23, 106102),
+(16262102, 23, 106102),
+(16263102, 23, 106102),
+(16264102, 23, 106102),
+(16265102, 23, 106102),
+(16266102, 23, 106102),
 (16267102, 1, 106102),
 (16268102, 1, 106102),
 (16269102, 1, 106102),
@@ -22966,8 +24667,7 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (16961102, 3, 106102),
 (16962102, 3, 106102),
 (16963102, 3, 106102),
-(16964102, 3, 106102);
-INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_id`, `catalog_id`) VALUES
+(16964102, 3, 106102),
 (16965102, 3, 106102),
 (16966102, 3, 106102),
 (16967102, 3, 106102),
@@ -23031,6 +24731,15 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (17025102, 31, 106102),
 (17026102, 31, 106102),
 (17027102, 31, 106102),
+(17028102, 23, 106102),
+(17029102, 23, 106102),
+(17030102, 23, 106102),
+(17031102, 23, 106102),
+(17032102, 23, 106102),
+(17033102, 23, 106102),
+(17034102, 23, 106102),
+(17035102, 23, 106102),
+(17036102, 23, 106102),
 (17037102, 3, 106102),
 (17038102, 3, 106102),
 (17039102, 3, 106102),
@@ -23105,6 +24814,10 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (17108102, 26, 106102),
 (17109102, 26, 106102),
 (17110102, 26, 106102),
+(17111102, 23, 106102),
+(17112102, 23, 106102),
+(17113102, 23, 106102),
+(17114102, 23, 106102),
 (17115102, 1, 106102),
 (17116102, 24, 106102),
 (17117102, 24, 106102),
@@ -23790,11 +25503,119 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (17799102, 33, 106102),
 (17800102, 33, 106102),
 (17801102, 33, 106102),
+(17802102, 23, 106102),
+(17803102, 23, 106102),
+(17804102, 23, 106102),
+(17805102, 23, 106102),
+(17806102, 23, 106102),
+(17807102, 23, 106102),
+(17808102, 23, 106102),
+(17809102, 23, 106102),
+(17810102, 23, 106102),
+(17811102, 23, 106102),
+(17812102, 23, 106102),
+(17813102, 23, 106102),
+(17814102, 23, 106102),
+(17815102, 23, 106102),
+(17816102, 23, 106102),
+(17817102, 23, 106102),
+(17818102, 23, 106102),
+(17819102, 23, 106102),
+(17820102, 23, 106102),
+(17821102, 23, 106102),
+(17822102, 23, 106102),
+(17823102, 23, 106102),
+(17824102, 23, 106102),
+(17825102, 23, 106102),
+(17826102, 23, 106102),
+(17827102, 23, 106102),
+(17828102, 23, 106102),
+(17829102, 23, 106102),
+(17830102, 23, 106102),
+(17831102, 23, 106102),
+(17832102, 23, 106102),
+(17833102, 23, 106102),
+(17834102, 23, 106102),
+(17835102, 23, 106102),
+(17836102, 23, 106102),
+(17837102, 23, 106102),
+(17838102, 23, 106102),
+(17839102, 23, 106102),
+(17840102, 23, 106102),
+(17841102, 23, 106102),
+(17842102, 23, 106102),
+(17843102, 23, 106102),
+(17844102, 23, 106102),
+(17845102, 23, 106102),
+(17846102, 23, 106102),
+(17847102, 23, 106102),
+(17848102, 23, 106102),
+(17849102, 23, 106102),
+(17850102, 23, 106102),
+(17851102, 23, 106102),
+(17852102, 23, 106102),
+(17853102, 23, 106102),
+(17854102, 23, 106102),
+(17855102, 23, 106102),
+(17856102, 23, 106102),
+(17857102, 23, 106102),
+(17858102, 23, 106102),
+(17859102, 23, 106102),
+(17860102, 23, 106102),
+(17861102, 23, 106102),
+(17862102, 23, 106102),
+(17863102, 23, 106102),
+(17864102, 23, 106102),
+(17865102, 23, 106102),
+(17866102, 23, 106102),
+(17867102, 23, 106102),
+(17868102, 23, 106102),
+(17869102, 23, 106102),
+(17870102, 23, 106102),
+(17871102, 23, 106102),
+(17872102, 23, 106102),
+(17873102, 23, 106102),
+(17874102, 23, 106102),
+(17875102, 23, 106102),
+(17876102, 23, 106102),
+(17877102, 23, 106102),
+(17878102, 23, 106102),
+(17879102, 23, 106102),
+(17880102, 23, 106102),
+(17881102, 23, 106102),
+(17882102, 23, 106102),
+(17883102, 23, 106102),
+(17884102, 23, 106102),
+(17885102, 23, 106102),
+(17886102, 23, 106102),
+(17887102, 23, 106102),
+(17888102, 23, 106102),
+(17889102, 23, 106102),
+(17890102, 23, 106102),
+(17891102, 23, 106102),
+(17892102, 23, 106102),
+(17893102, 23, 106102),
+(17894102, 23, 106102),
+(17895102, 23, 106102),
+(17896102, 23, 106102),
+(17897102, 23, 106102),
+(17898102, 23, 106102),
+(17899102, 23, 106102),
+(17900102, 23, 106102),
+(17901102, 23, 106102),
+(17902102, 23, 106102),
 (17903102, 3, 106102),
 (17904102, 3, 106102),
 (17905102, 3, 106102),
 (17906102, 3, 106102),
 (17907102, 3, 106102),
+(17908102, 8, 106102),
+(17909102, 8, 106102),
+(17910102, 8, 106102),
+(17911102, 8, 106102),
+(17912102, 8, 106102),
+(17913102, 8, 106102),
+(17914102, 8, 106102),
 (17915102, 71, 106102),
 (17916102, 71, 106102),
 (17917102, 71, 106102),
@@ -23964,6 +25785,13 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (18081102, 24, 106102),
 (18082102, 28, 106102),
 (18083102, 13, 106102),
+(18084102, 23, 106102),
+(18085102, 23, 106102),
+(18086102, 23, 106102),
+(18087102, 23, 106102),
+(18088102, 23, 106102),
+(18089102, 23, 106102),
+(18090102, 23, 106102),
 (18091102, 1, 106102),
 (18092102, 1, 106102),
 (18093102, 1, 106102),
@@ -24220,6 +26048,10 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (18348102, 3, 106102),
 (18349102, 3, 106102),
 (18350102, 3, 106102),
+(18351102, 23, 106102),
+(18352102, 23, 106102),
+(18353102, 23, 106102),
+(18354102, 23, 106102),
 (18355102, 3, 106102),
 (18356102, 3, 106102),
 (18357102, 3, 106102),
@@ -24340,7 +26172,8 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 (18477102, 1, 106102),
 (18478102, 1, 106102),
 (18479102, 1, 106102),
-(18480102, 1, 106102),
+(18480102, 1, 106102);
+INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_id`, `catalog_id`) VALUES
 (18481102, 1, 106102),
 (18482102, 1, 106102),
 (18483102, 1, 106102),
@@ -24420,14 +26253,15 @@ INSERT INTO `oc_category_to_subsection_auto` (`category_subsection_id`, `parent_
 --
 
 CREATE TABLE IF NOT EXISTS `oc_country` (
-`country_id` int(11) NOT NULL,
+  `country_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL,
   `iso_code_2` varchar(2) NOT NULL,
   `iso_code_3` varchar(3) NOT NULL,
   `address_format` text NOT NULL,
   `postcode_required` tinyint(1) NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=MyISAM AUTO_INCREMENT=227 DEFAULT CHARSET=utf8;
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`country_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=227 ;
 
 --
 -- Дамп данных таблицы `oc_country`
@@ -24449,7 +26283,7 @@ INSERT INTO `oc_country` (`country_id`, `name`, `iso_code_2`, `iso_code_3`, `add
 --
 
 CREATE TABLE IF NOT EXISTS `oc_coupon` (
-`coupon_id` int(11) NOT NULL,
+  `coupon_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL,
   `code` varchar(10) NOT NULL,
   `type` char(1) NOT NULL,
@@ -24462,8 +26296,9 @@ CREATE TABLE IF NOT EXISTS `oc_coupon` (
   `uses_total` int(11) NOT NULL,
   `uses_customer` varchar(11) NOT NULL,
   `status` tinyint(1) NOT NULL,
-  `date_added` datetime NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+  `date_added` datetime NOT NULL,
+  PRIMARY KEY (`coupon_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Дамп данных таблицы `oc_coupon`
@@ -24482,7 +26317,8 @@ INSERT INTO `oc_coupon` (`coupon_id`, `name`, `code`, `type`, `discount`, `logge
 
 CREATE TABLE IF NOT EXISTS `oc_coupon_category` (
   `coupon_id` int(11) NOT NULL,
-  `category_id` int(11) NOT NULL
+  `category_id` int(11) NOT NULL,
+  PRIMARY KEY (`coupon_id`,`category_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -24492,13 +26328,14 @@ CREATE TABLE IF NOT EXISTS `oc_coupon_category` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_coupon_history` (
-`coupon_history_id` int(11) NOT NULL,
+  `coupon_history_id` int(11) NOT NULL AUTO_INCREMENT,
   `coupon_id` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL,
   `amount` decimal(15,4) NOT NULL,
-  `date_added` datetime NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `date_added` datetime NOT NULL,
+  PRIMARY KEY (`coupon_history_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -24507,10 +26344,11 @@ CREATE TABLE IF NOT EXISTS `oc_coupon_history` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_coupon_product` (
-`coupon_product_id` int(11) NOT NULL,
+  `coupon_product_id` int(11) NOT NULL AUTO_INCREMENT,
   `coupon_id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `product_id` int(11) NOT NULL,
+  PRIMARY KEY (`coupon_product_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -24519,7 +26357,7 @@ CREATE TABLE IF NOT EXISTS `oc_coupon_product` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_currency` (
-`currency_id` int(11) NOT NULL,
+  `currency_id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(32) NOT NULL,
   `code` varchar(3) NOT NULL,
   `symbol_left` varchar(12) NOT NULL,
@@ -24527,8 +26365,9 @@ CREATE TABLE IF NOT EXISTS `oc_currency` (
   `decimal_place` char(1) NOT NULL,
   `value` float(15,8) NOT NULL,
   `status` tinyint(1) NOT NULL,
-  `date_modified` datetime NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  `date_modified` datetime NOT NULL,
+  PRIMARY KEY (`currency_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Дамп данных таблицы `oc_currency`
@@ -24536,7 +26375,7 @@ CREATE TABLE IF NOT EXISTS `oc_currency` (
 
 INSERT INTO `oc_currency` (`currency_id`, `title`, `code`, `symbol_left`, `symbol_right`, `decimal_place`, `value`, `status`, `date_modified`) VALUES
 (1, 'Рубль', 'RUB', '', 'р.', '0', 62.25699997, 1, '2015-10-08 11:23:24'),
-(2, 'Доллар', 'USD', '$', '', '', 1.00000000, 1, '2015-10-08 12:52:56');
+(2, 'Доллар', 'USD', '$', '', '', 1.00000000, 1, '2015-10-09 10:36:05');
 
 -- --------------------------------------------------------
 
@@ -24545,7 +26384,7 @@ INSERT INTO `oc_currency` (`currency_id`, `title`, `code`, `symbol_left`, `symbo
 --
 
 CREATE TABLE IF NOT EXISTS `oc_customer` (
-`customer_id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL AUTO_INCREMENT,
   `customer_group_id` int(11) NOT NULL,
   `store_id` int(11) NOT NULL DEFAULT '0',
   `firstname` varchar(32) NOT NULL,
@@ -24565,8 +26404,9 @@ CREATE TABLE IF NOT EXISTS `oc_customer` (
   `approved` tinyint(1) NOT NULL,
   `safe` tinyint(1) NOT NULL,
   `token` varchar(255) NOT NULL,
-  `date_added` datetime NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  `date_added` datetime NOT NULL,
+  PRIMARY KEY (`customer_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Дамп данных таблицы `oc_customer`
@@ -24583,13 +26423,14 @@ INSERT INTO `oc_customer` (`customer_id`, `customer_group_id`, `store_id`, `firs
 --
 
 CREATE TABLE IF NOT EXISTS `oc_customer_activity` (
-`activity_id` int(11) NOT NULL,
+  `activity_id` int(11) NOT NULL AUTO_INCREMENT,
   `customer_id` int(11) NOT NULL,
   `key` varchar(64) NOT NULL,
   `data` text NOT NULL,
   `ip` varchar(40) NOT NULL,
-  `date_added` datetime NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+  `date_added` datetime NOT NULL,
+  PRIMARY KEY (`activity_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=29 ;
 
 --
 -- Дамп данных таблицы `oc_customer_activity`
@@ -24632,9 +26473,11 @@ INSERT INTO `oc_customer_activity` (`activity_id`, `customer_id`, `key`, `data`,
 --
 
 CREATE TABLE IF NOT EXISTS `oc_customer_ban_ip` (
-`customer_ban_ip_id` int(11) NOT NULL,
-  `ip` varchar(40) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `customer_ban_ip_id` int(11) NOT NULL AUTO_INCREMENT,
+  `ip` varchar(40) NOT NULL,
+  PRIMARY KEY (`customer_ban_ip_id`),
+  KEY `ip` (`ip`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -24643,10 +26486,11 @@ CREATE TABLE IF NOT EXISTS `oc_customer_ban_ip` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_customer_group` (
-`customer_group_id` int(11) NOT NULL,
+  `customer_group_id` int(11) NOT NULL AUTO_INCREMENT,
   `approval` int(1) NOT NULL,
-  `sort_order` int(3) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `sort_order` int(3) NOT NULL,
+  PRIMARY KEY (`customer_group_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Дамп данных таблицы `oc_customer_group`
@@ -24665,7 +26509,8 @@ CREATE TABLE IF NOT EXISTS `oc_customer_group_description` (
   `customer_group_id` int(11) NOT NULL,
   `language_id` int(11) NOT NULL,
   `name` varchar(32) NOT NULL,
-  `description` text NOT NULL
+  `description` text NOT NULL,
+  PRIMARY KEY (`customer_group_id`,`language_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -24682,11 +26527,12 @@ INSERT INTO `oc_customer_group_description` (`customer_group_id`, `language_id`,
 --
 
 CREATE TABLE IF NOT EXISTS `oc_customer_history` (
-`customer_history_id` int(11) NOT NULL,
+  `customer_history_id` int(11) NOT NULL AUTO_INCREMENT,
   `customer_id` int(11) NOT NULL,
   `comment` text NOT NULL,
-  `date_added` datetime NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `date_added` datetime NOT NULL,
+  PRIMARY KEY (`customer_history_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -24695,11 +26541,13 @@ CREATE TABLE IF NOT EXISTS `oc_customer_history` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_customer_ip` (
-`customer_ip_id` int(11) NOT NULL,
+  `customer_ip_id` int(11) NOT NULL AUTO_INCREMENT,
   `customer_id` int(11) NOT NULL,
   `ip` varchar(40) NOT NULL,
-  `date_added` datetime NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  `date_added` datetime NOT NULL,
+  PRIMARY KEY (`customer_ip_id`),
+  KEY `ip` (`ip`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Дамп данных таблицы `oc_customer_ip`
@@ -24716,13 +26564,16 @@ INSERT INTO `oc_customer_ip` (`customer_ip_id`, `customer_id`, `ip`, `date_added
 --
 
 CREATE TABLE IF NOT EXISTS `oc_customer_login` (
-`customer_login_id` int(11) NOT NULL,
+  `customer_login_id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(96) NOT NULL,
   `ip` varchar(40) NOT NULL,
   `total` int(4) NOT NULL,
   `date_added` datetime NOT NULL,
-  `date_modified` datetime NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `date_modified` datetime NOT NULL,
+  PRIMARY KEY (`customer_login_id`),
+  KEY `email` (`email`),
+  KEY `ip` (`ip`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Дамп данных таблицы `oc_customer_login`
@@ -24742,7 +26593,8 @@ CREATE TABLE IF NOT EXISTS `oc_customer_online` (
   `customer_id` int(11) NOT NULL,
   `url` text NOT NULL,
   `referer` text NOT NULL,
-  `date_added` datetime NOT NULL
+  `date_added` datetime NOT NULL,
+  PRIMARY KEY (`ip`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -24752,13 +26604,14 @@ CREATE TABLE IF NOT EXISTS `oc_customer_online` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_customer_reward` (
-`customer_reward_id` int(11) NOT NULL,
+  `customer_reward_id` int(11) NOT NULL AUTO_INCREMENT,
   `customer_id` int(11) NOT NULL DEFAULT '0',
   `order_id` int(11) NOT NULL DEFAULT '0',
   `description` text NOT NULL,
   `points` int(8) NOT NULL DEFAULT '0',
-  `date_added` datetime NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `date_added` datetime NOT NULL,
+  PRIMARY KEY (`customer_reward_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -24767,13 +26620,14 @@ CREATE TABLE IF NOT EXISTS `oc_customer_reward` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_customer_transaction` (
-`customer_transaction_id` int(11) NOT NULL,
+  `customer_transaction_id` int(11) NOT NULL AUTO_INCREMENT,
   `customer_id` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
   `description` text NOT NULL,
   `amount` decimal(15,4) NOT NULL,
-  `date_added` datetime NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `date_added` datetime NOT NULL,
+  PRIMARY KEY (`customer_transaction_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -24782,13 +26636,14 @@ CREATE TABLE IF NOT EXISTS `oc_customer_transaction` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_custom_field` (
-`custom_field_id` int(11) NOT NULL,
+  `custom_field_id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(32) NOT NULL,
   `value` text NOT NULL,
   `location` varchar(7) NOT NULL,
   `status` tinyint(1) NOT NULL,
-  `sort_order` int(3) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `sort_order` int(3) NOT NULL,
+  PRIMARY KEY (`custom_field_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -24799,7 +26654,8 @@ CREATE TABLE IF NOT EXISTS `oc_custom_field` (
 CREATE TABLE IF NOT EXISTS `oc_custom_field_customer_group` (
   `custom_field_id` int(11) NOT NULL,
   `customer_group_id` int(11) NOT NULL,
-  `required` tinyint(1) NOT NULL
+  `required` tinyint(1) NOT NULL,
+  PRIMARY KEY (`custom_field_id`,`customer_group_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -24811,7 +26667,8 @@ CREATE TABLE IF NOT EXISTS `oc_custom_field_customer_group` (
 CREATE TABLE IF NOT EXISTS `oc_custom_field_description` (
   `custom_field_id` int(11) NOT NULL,
   `language_id` int(11) NOT NULL,
-  `name` varchar(128) NOT NULL
+  `name` varchar(128) NOT NULL,
+  PRIMARY KEY (`custom_field_id`,`language_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -24821,10 +26678,11 @@ CREATE TABLE IF NOT EXISTS `oc_custom_field_description` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_custom_field_value` (
-`custom_field_value_id` int(11) NOT NULL,
+  `custom_field_value_id` int(11) NOT NULL AUTO_INCREMENT,
   `custom_field_id` int(11) NOT NULL,
-  `sort_order` int(3) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `sort_order` int(3) NOT NULL,
+  PRIMARY KEY (`custom_field_value_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -24836,7 +26694,8 @@ CREATE TABLE IF NOT EXISTS `oc_custom_field_value_description` (
   `custom_field_value_id` int(11) NOT NULL,
   `language_id` int(11) NOT NULL,
   `custom_field_id` int(11) NOT NULL,
-  `name` varchar(128) NOT NULL
+  `name` varchar(128) NOT NULL,
+  PRIMARY KEY (`custom_field_value_id`,`language_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -24846,11 +26705,12 @@ CREATE TABLE IF NOT EXISTS `oc_custom_field_value_description` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_download` (
-`download_id` int(11) NOT NULL,
+  `download_id` int(11) NOT NULL AUTO_INCREMENT,
   `filename` varchar(128) NOT NULL,
   `mask` varchar(128) NOT NULL,
-  `date_added` datetime NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `date_added` datetime NOT NULL,
+  PRIMARY KEY (`download_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Дамп данных таблицы `oc_download`
@@ -24868,7 +26728,8 @@ INSERT INTO `oc_download` (`download_id`, `filename`, `mask`, `date_added`) VALU
 CREATE TABLE IF NOT EXISTS `oc_download_description` (
   `download_id` int(11) NOT NULL,
   `language_id` int(11) NOT NULL,
-  `name` varchar(64) NOT NULL
+  `name` varchar(64) NOT NULL,
+  PRIMARY KEY (`download_id`,`language_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -24885,11 +26746,12 @@ INSERT INTO `oc_download_description` (`download_id`, `language_id`, `name`) VAL
 --
 
 CREATE TABLE IF NOT EXISTS `oc_download_files` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `link` varchar(255) NOT NULL,
-  `category_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=110 DEFAULT CHARSET=utf8;
+  `category_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`,`category_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=110 ;
 
 --
 -- Дамп данных таблицы `oc_download_files`
@@ -24915,11 +26777,12 @@ INSERT INTO `oc_download_files` (`id`, `name`, `link`, `category_id`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `oc_event` (
-`event_id` int(11) NOT NULL,
+  `event_id` int(11) NOT NULL AUTO_INCREMENT,
   `code` varchar(32) NOT NULL,
   `trigger` text NOT NULL,
-  `action` text NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `action` text NOT NULL,
+  PRIMARY KEY (`event_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -24928,10 +26791,11 @@ CREATE TABLE IF NOT EXISTS `oc_event` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_extension` (
-`extension_id` int(11) NOT NULL,
+  `extension_id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(32) NOT NULL,
-  `code` varchar(32) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=431 DEFAULT CHARSET=utf8;
+  `code` varchar(32) NOT NULL,
+  PRIMARY KEY (`extension_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=431 ;
 
 --
 -- Дамп данных таблицы `oc_extension`
@@ -24967,10 +26831,11 @@ INSERT INTO `oc_extension` (`extension_id`, `type`, `code`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `oc_filter` (
-`filter_id` int(11) NOT NULL,
+  `filter_id` int(11) NOT NULL AUTO_INCREMENT,
   `filter_group_id` int(11) NOT NULL,
-  `sort_order` int(3) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `sort_order` int(3) NOT NULL,
+  PRIMARY KEY (`filter_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -24982,7 +26847,8 @@ CREATE TABLE IF NOT EXISTS `oc_filter_description` (
   `filter_id` int(11) NOT NULL,
   `language_id` int(11) NOT NULL,
   `filter_group_id` int(11) NOT NULL,
-  `name` varchar(64) NOT NULL
+  `name` varchar(64) NOT NULL,
+  PRIMARY KEY (`filter_id`,`language_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -24992,9 +26858,10 @@ CREATE TABLE IF NOT EXISTS `oc_filter_description` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_filter_group` (
-`filter_group_id` int(11) NOT NULL,
-  `sort_order` int(3) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `filter_group_id` int(11) NOT NULL AUTO_INCREMENT,
+  `sort_order` int(3) NOT NULL,
+  PRIMARY KEY (`filter_group_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -25005,7 +26872,8 @@ CREATE TABLE IF NOT EXISTS `oc_filter_group` (
 CREATE TABLE IF NOT EXISTS `oc_filter_group_description` (
   `filter_group_id` int(11) NOT NULL,
   `language_id` int(11) NOT NULL,
-  `name` varchar(64) NOT NULL
+  `name` varchar(64) NOT NULL,
+  PRIMARY KEY (`filter_group_id`,`language_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -25015,12 +26883,13 @@ CREATE TABLE IF NOT EXISTS `oc_filter_group_description` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_geo_zone` (
-`geo_zone_id` int(11) NOT NULL,
+  `geo_zone_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(32) NOT NULL,
   `description` varchar(255) NOT NULL,
   `date_modified` datetime NOT NULL,
-  `date_added` datetime NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  `date_added` datetime NOT NULL,
+  PRIMARY KEY (`geo_zone_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Дамп данных таблицы `oc_geo_zone`
@@ -25036,11 +26905,12 @@ INSERT INTO `oc_geo_zone` (`geo_zone_id`, `name`, `description`, `date_modified`
 --
 
 CREATE TABLE IF NOT EXISTS `oc_information` (
-`information_id` int(11) NOT NULL,
+  `information_id` int(11) NOT NULL AUTO_INCREMENT,
   `bottom` int(1) NOT NULL DEFAULT '0',
   `sort_order` int(3) NOT NULL DEFAULT '0',
-  `status` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`information_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Дамп данных таблицы `oc_information`
@@ -25065,7 +26935,8 @@ CREATE TABLE IF NOT EXISTS `oc_information_description` (
   `description` text NOT NULL,
   `meta_title` varchar(255) NOT NULL,
   `meta_description` varchar(255) NOT NULL,
-  `meta_keyword` varchar(255) NOT NULL
+  `meta_keyword` varchar(255) NOT NULL,
+  PRIMARY KEY (`information_id`,`language_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -25087,7 +26958,8 @@ INSERT INTO `oc_information_description` (`information_id`, `language_id`, `titl
 CREATE TABLE IF NOT EXISTS `oc_information_to_layout` (
   `information_id` int(11) NOT NULL,
   `store_id` int(11) NOT NULL,
-  `layout_id` int(11) NOT NULL
+  `layout_id` int(11) NOT NULL,
+  PRIMARY KEY (`information_id`,`store_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -25107,7 +26979,8 @@ INSERT INTO `oc_information_to_layout` (`information_id`, `store_id`, `layout_id
 
 CREATE TABLE IF NOT EXISTS `oc_information_to_store` (
   `information_id` int(11) NOT NULL,
-  `store_id` int(11) NOT NULL
+  `store_id` int(11) NOT NULL,
+  PRIMARY KEY (`information_id`,`store_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -25127,15 +27000,17 @@ INSERT INTO `oc_information_to_store` (`information_id`, `store_id`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `oc_language` (
-`language_id` int(11) NOT NULL,
+  `language_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(32) NOT NULL,
   `code` varchar(5) NOT NULL,
   `locale` varchar(255) NOT NULL,
   `image` varchar(64) NOT NULL,
   `directory` varchar(32) NOT NULL,
   `sort_order` int(3) NOT NULL DEFAULT '0',
-  `status` tinyint(1) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `status` tinyint(1) NOT NULL,
+  PRIMARY KEY (`language_id`),
+  KEY `name` (`name`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Дамп данных таблицы `oc_language`
@@ -25151,10 +27026,11 @@ INSERT INTO `oc_language` (`language_id`, `name`, `code`, `locale`, `image`, `di
 --
 
 CREATE TABLE IF NOT EXISTS `oc_layout` (
-`layout_id` int(11) NOT NULL,
+  `layout_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
-  `home_article` text NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+  `home_article` text NOT NULL,
+  PRIMARY KEY (`layout_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
 
 --
 -- Дамп данных таблицы `oc_layout`
@@ -25183,12 +27059,13 @@ INSERT INTO `oc_layout` (`layout_id`, `name`, `home_article`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `oc_layout_module` (
-`layout_module_id` int(11) NOT NULL,
+  `layout_module_id` int(11) NOT NULL AUTO_INCREMENT,
   `layout_id` int(11) NOT NULL,
   `code` varchar(64) NOT NULL,
   `position` varchar(14) NOT NULL,
-  `sort_order` int(3) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=137 DEFAULT CHARSET=utf8;
+  `sort_order` int(3) NOT NULL,
+  PRIMARY KEY (`layout_module_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=137 ;
 
 --
 -- Дамп данных таблицы `oc_layout_module`
@@ -25211,11 +27088,12 @@ INSERT INTO `oc_layout_module` (`layout_module_id`, `layout_id`, `code`, `positi
 --
 
 CREATE TABLE IF NOT EXISTS `oc_layout_route` (
-`layout_route_id` int(11) NOT NULL,
+  `layout_route_id` int(11) NOT NULL AUTO_INCREMENT,
   `layout_id` int(11) NOT NULL,
   `store_id` int(11) NOT NULL,
-  `route` varchar(255) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=115 DEFAULT CHARSET=utf8;
+  `route` varchar(255) NOT NULL,
+  PRIMARY KEY (`layout_route_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=115 ;
 
 --
 -- Дамп данных таблицы `oc_layout_route`
@@ -25244,9 +27122,10 @@ INSERT INTO `oc_layout_route` (`layout_route_id`, `layout_id`, `store_id`, `rout
 --
 
 CREATE TABLE IF NOT EXISTS `oc_length_class` (
-`length_class_id` int(11) NOT NULL,
-  `value` decimal(15,8) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  `length_class_id` int(11) NOT NULL AUTO_INCREMENT,
+  `value` decimal(15,8) NOT NULL,
+  PRIMARY KEY (`length_class_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Дамп данных таблицы `oc_length_class`
@@ -25264,11 +27143,12 @@ INSERT INTO `oc_length_class` (`length_class_id`, `value`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `oc_length_class_description` (
-`length_class_id` int(11) NOT NULL,
+  `length_class_id` int(11) NOT NULL AUTO_INCREMENT,
   `language_id` int(11) NOT NULL,
   `title` varchar(32) NOT NULL,
-  `unit` varchar(4) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  `unit` varchar(4) NOT NULL,
+  PRIMARY KEY (`length_class_id`,`language_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Дамп данных таблицы `oc_length_class_description`
@@ -25285,7 +27165,7 @@ INSERT INTO `oc_length_class_description` (`length_class_id`, `language_id`, `ti
 --
 
 CREATE TABLE IF NOT EXISTS `oc_location` (
-`location_id` int(11) NOT NULL,
+  `location_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(32) NOT NULL,
   `address` text NOT NULL,
   `telephone` varchar(32) NOT NULL,
@@ -25293,8 +27173,10 @@ CREATE TABLE IF NOT EXISTS `oc_location` (
   `geocode` varchar(32) NOT NULL,
   `image` varchar(255) DEFAULT NULL,
   `open` text NOT NULL,
-  `comment` text NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `comment` text NOT NULL,
+  PRIMARY KEY (`location_id`),
+  KEY `name` (`name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -25303,11 +27185,12 @@ CREATE TABLE IF NOT EXISTS `oc_location` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_manufacturer` (
-`manufacturer_id` int(11) NOT NULL,
+  `manufacturer_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
   `image` varchar(255) DEFAULT NULL,
-  `sort_order` int(3) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+  `sort_order` int(3) NOT NULL,
+  PRIMARY KEY (`manufacturer_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
 --
 -- Дамп данных таблицы `oc_manufacturer`
@@ -25329,7 +27212,8 @@ INSERT INTO `oc_manufacturer` (`manufacturer_id`, `name`, `image`, `sort_order`)
 
 CREATE TABLE IF NOT EXISTS `oc_manufacturer_to_store` (
   `manufacturer_id` int(11) NOT NULL,
-  `store_id` int(11) NOT NULL
+  `store_id` int(11) NOT NULL,
+  PRIMARY KEY (`manufacturer_id`,`store_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -25351,13 +27235,14 @@ INSERT INTO `oc_manufacturer_to_store` (`manufacturer_id`, `store_id`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `oc_marketing` (
-`marketing_id` int(11) NOT NULL,
+  `marketing_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(32) NOT NULL,
   `description` text NOT NULL,
   `code` varchar(64) NOT NULL,
   `clicks` int(5) NOT NULL DEFAULT '0',
-  `date_added` datetime NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `date_added` datetime NOT NULL,
+  PRIMARY KEY (`marketing_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -25366,7 +27251,7 @@ CREATE TABLE IF NOT EXISTS `oc_marketing` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_modification` (
-`modification_id` int(11) NOT NULL,
+  `modification_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
   `code` varchar(64) NOT NULL,
   `author` varchar(64) NOT NULL,
@@ -25374,8 +27259,9 @@ CREATE TABLE IF NOT EXISTS `oc_modification` (
   `link` varchar(255) NOT NULL,
   `xml` text NOT NULL,
   `status` tinyint(1) NOT NULL,
-  `date_added` datetime NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `date_added` datetime NOT NULL,
+  PRIMARY KEY (`modification_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -25384,11 +27270,12 @@ CREATE TABLE IF NOT EXISTS `oc_modification` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_module` (
-`module_id` int(11) NOT NULL,
+  `module_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
   `code` varchar(32) NOT NULL,
-  `setting` text NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
+  `setting` text NOT NULL,
+  PRIMARY KEY (`module_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=44 ;
 
 --
 -- Дамп данных таблицы `oc_module`
@@ -25412,10 +27299,11 @@ INSERT INTO `oc_module` (`module_id`, `name`, `code`, `setting`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `oc_option` (
-`option_id` int(11) NOT NULL,
+  `option_id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(32) NOT NULL,
-  `sort_order` int(3) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+  `sort_order` int(3) NOT NULL,
+  PRIMARY KEY (`option_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
 -- Дамп данных таблицы `oc_option`
@@ -25443,7 +27331,8 @@ INSERT INTO `oc_option` (`option_id`, `type`, `sort_order`) VALUES
 CREATE TABLE IF NOT EXISTS `oc_option_description` (
   `option_id` int(11) NOT NULL,
   `language_id` int(11) NOT NULL,
-  `name` varchar(128) NOT NULL
+  `name` varchar(128) NOT NULL,
+  PRIMARY KEY (`option_id`,`language_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -25470,11 +27359,12 @@ INSERT INTO `oc_option_description` (`option_id`, `language_id`, `name`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `oc_option_value` (
-`option_value_id` int(11) NOT NULL,
+  `option_value_id` int(11) NOT NULL AUTO_INCREMENT,
   `option_id` int(11) NOT NULL,
   `image` varchar(255) NOT NULL,
-  `sort_order` int(3) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=49 DEFAULT CHARSET=utf8;
+  `sort_order` int(3) NOT NULL,
+  PRIMARY KEY (`option_value_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=49 ;
 
 --
 -- Дамп данных таблицы `oc_option_value`
@@ -25506,7 +27396,8 @@ CREATE TABLE IF NOT EXISTS `oc_option_value_description` (
   `option_value_id` int(11) NOT NULL,
   `language_id` int(11) NOT NULL,
   `option_id` int(11) NOT NULL,
-  `name` varchar(128) NOT NULL
+  `name` varchar(128) NOT NULL,
+  PRIMARY KEY (`option_value_id`,`language_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -25536,7 +27427,7 @@ INSERT INTO `oc_option_value_description` (`option_value_id`, `language_id`, `op
 --
 
 CREATE TABLE IF NOT EXISTS `oc_order` (
-`order_id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL AUTO_INCREMENT,
   `invoice_no` int(11) NOT NULL DEFAULT '0',
   `invoice_prefix` varchar(26) NOT NULL,
   `store_id` int(11) NOT NULL DEFAULT '0',
@@ -25596,8 +27487,9 @@ CREATE TABLE IF NOT EXISTS `oc_order` (
   `user_agent` varchar(255) NOT NULL,
   `accept_language` varchar(255) NOT NULL,
   `date_added` datetime NOT NULL,
-  `date_modified` datetime NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=148 DEFAULT CHARSET=utf8;
+  `date_modified` datetime NOT NULL,
+  PRIMARY KEY (`order_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=148 ;
 
 --
 -- Дамп данных таблицы `oc_order`
@@ -25761,15 +27653,16 @@ INSERT INTO `oc_order` (`order_id`, `invoice_no`, `invoice_prefix`, `store_id`, 
 --
 
 CREATE TABLE IF NOT EXISTS `oc_order_custom_field` (
-`order_custom_field_id` int(11) NOT NULL,
+  `order_custom_field_id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) NOT NULL,
   `custom_field_id` int(11) NOT NULL,
   `custom_field_value_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `value` text NOT NULL,
   `type` varchar(32) NOT NULL,
-  `location` varchar(16) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `location` varchar(16) NOT NULL,
+  PRIMARY KEY (`order_custom_field_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -25778,13 +27671,14 @@ CREATE TABLE IF NOT EXISTS `oc_order_custom_field` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_order_history` (
-`order_history_id` int(11) NOT NULL,
+  `order_history_id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) NOT NULL,
   `order_status_id` int(11) NOT NULL,
   `notify` tinyint(1) NOT NULL DEFAULT '0',
   `comment` text NOT NULL,
-  `date_added` datetime NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
+  `date_added` datetime NOT NULL,
+  PRIMARY KEY (`order_history_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=52 ;
 
 --
 -- Дамп данных таблицы `oc_order_history`
@@ -25850,15 +27744,16 @@ INSERT INTO `oc_order_history` (`order_history_id`, `order_id`, `order_status_id
 --
 
 CREATE TABLE IF NOT EXISTS `oc_order_option` (
-`order_option_id` int(11) NOT NULL,
+  `order_option_id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) NOT NULL,
   `order_product_id` int(11) NOT NULL,
   `product_option_id` int(11) NOT NULL,
   `product_option_value_id` int(11) NOT NULL DEFAULT '0',
   `name` varchar(255) NOT NULL,
   `value` text NOT NULL,
-  `type` varchar(32) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
+  `type` varchar(32) NOT NULL,
+  PRIMARY KEY (`order_option_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=37 ;
 
 --
 -- Дамп данных таблицы `oc_order_option`
@@ -25909,7 +27804,7 @@ INSERT INTO `oc_order_option` (`order_option_id`, `order_id`, `order_product_id`
 --
 
 CREATE TABLE IF NOT EXISTS `oc_order_product` (
-`order_product_id` int(11) NOT NULL,
+  `order_product_id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
@@ -25918,8 +27813,9 @@ CREATE TABLE IF NOT EXISTS `oc_order_product` (
   `price` decimal(15,4) NOT NULL DEFAULT '0.0000',
   `total` decimal(15,4) NOT NULL DEFAULT '0.0000',
   `tax` decimal(15,4) NOT NULL DEFAULT '0.0000',
-  `reward` int(8) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=182 DEFAULT CHARSET=utf8;
+  `reward` int(8) NOT NULL,
+  PRIMARY KEY (`order_product_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=182 ;
 
 --
 -- Дамп данных таблицы `oc_order_product`
@@ -26115,7 +28011,7 @@ INSERT INTO `oc_order_product` (`order_product_id`, `order_id`, `product_id`, `n
 --
 
 CREATE TABLE IF NOT EXISTS `oc_order_recurring` (
-`order_recurring_id` int(11) NOT NULL,
+  `order_recurring_id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) NOT NULL,
   `reference` varchar(255) NOT NULL,
   `product_id` int(11) NOT NULL,
@@ -26134,8 +28030,9 @@ CREATE TABLE IF NOT EXISTS `oc_order_recurring` (
   `trial_duration` smallint(6) NOT NULL,
   `trial_price` decimal(10,4) NOT NULL,
   `status` tinyint(4) NOT NULL,
-  `date_added` datetime NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `date_added` datetime NOT NULL,
+  PRIMARY KEY (`order_recurring_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -26144,13 +28041,14 @@ CREATE TABLE IF NOT EXISTS `oc_order_recurring` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_order_recurring_transaction` (
-`order_recurring_transaction_id` int(11) NOT NULL,
+  `order_recurring_transaction_id` int(11) NOT NULL AUTO_INCREMENT,
   `order_recurring_id` int(11) NOT NULL,
   `reference` varchar(255) NOT NULL,
   `type` varchar(255) NOT NULL,
   `amount` decimal(10,4) NOT NULL,
-  `date_added` datetime NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `date_added` datetime NOT NULL,
+  PRIMARY KEY (`order_recurring_transaction_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -26159,10 +28057,11 @@ CREATE TABLE IF NOT EXISTS `oc_order_recurring_transaction` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_order_status` (
-`order_status_id` int(11) NOT NULL,
+  `order_status_id` int(11) NOT NULL AUTO_INCREMENT,
   `language_id` int(11) NOT NULL,
-  `name` varchar(32) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+  `name` varchar(32) NOT NULL,
+  PRIMARY KEY (`order_status_id`,`language_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
 
 --
 -- Дамп данных таблицы `oc_order_status`
@@ -26188,13 +28087,15 @@ INSERT INTO `oc_order_status` (`order_status_id`, `language_id`, `name`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `oc_order_total` (
-`order_total_id` int(10) NOT NULL,
+  `order_total_id` int(10) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) NOT NULL,
   `code` varchar(32) NOT NULL,
   `title` varchar(255) NOT NULL,
   `value` decimal(15,4) NOT NULL DEFAULT '0.0000',
-  `sort_order` int(3) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=295 DEFAULT CHARSET=utf8;
+  `sort_order` int(3) NOT NULL,
+  PRIMARY KEY (`order_total_id`),
+  KEY `order_id` (`order_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=295 ;
 
 --
 -- Дамп данных таблицы `oc_order_total`
@@ -26503,7 +28404,7 @@ INSERT INTO `oc_order_total` (`order_total_id`, `order_id`, `code`, `title`, `va
 --
 
 CREATE TABLE IF NOT EXISTS `oc_order_voucher` (
-`order_voucher_id` int(11) NOT NULL,
+  `order_voucher_id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) NOT NULL,
   `voucher_id` int(11) NOT NULL,
   `description` varchar(255) NOT NULL,
@@ -26514,8 +28415,9 @@ CREATE TABLE IF NOT EXISTS `oc_order_voucher` (
   `to_email` varchar(96) NOT NULL,
   `voucher_theme_id` int(11) NOT NULL,
   `message` text NOT NULL,
-  `amount` decimal(15,4) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `amount` decimal(15,4) NOT NULL,
+  PRIMARY KEY (`order_voucher_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -26524,7 +28426,7 @@ CREATE TABLE IF NOT EXISTS `oc_order_voucher` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_product` (
-`product_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL AUTO_INCREMENT,
   `model` varchar(64) NOT NULL,
   `sku` varchar(64) NOT NULL,
   `upc` varchar(12) NOT NULL,
@@ -26556,8 +28458,9 @@ CREATE TABLE IF NOT EXISTS `oc_product` (
   `status` tinyint(1) NOT NULL DEFAULT '0',
   `viewed` int(5) NOT NULL DEFAULT '0',
   `date_added` datetime NOT NULL,
-  `date_modified` datetime NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=64 DEFAULT CHARSET=utf8;
+  `date_modified` datetime NOT NULL,
+  PRIMARY KEY (`product_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=64 ;
 
 --
 -- Дамп данных таблицы `oc_product`
@@ -26595,7 +28498,8 @@ CREATE TABLE IF NOT EXISTS `oc_product_attribute` (
   `product_id` int(11) NOT NULL,
   `attribute_id` int(11) NOT NULL,
   `language_id` int(11) NOT NULL,
-  `text` text NOT NULL
+  `text` text NOT NULL,
+  PRIMARY KEY (`product_id`,`attribute_id`,`language_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -26620,7 +28524,9 @@ CREATE TABLE IF NOT EXISTS `oc_product_description` (
   `tag` text NOT NULL,
   `meta_title` varchar(255) NOT NULL,
   `meta_description` varchar(255) NOT NULL,
-  `meta_keyword` varchar(255) NOT NULL
+  `meta_keyword` varchar(255) NOT NULL,
+  PRIMARY KEY (`product_id`,`language_id`),
+  KEY `name` (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -26656,15 +28562,17 @@ INSERT INTO `oc_product_description` (`product_id`, `language_id`, `name`, `desc
 --
 
 CREATE TABLE IF NOT EXISTS `oc_product_discount` (
-`product_discount_id` int(11) NOT NULL,
+  `product_discount_id` int(11) NOT NULL AUTO_INCREMENT,
   `product_id` int(11) NOT NULL,
   `customer_group_id` int(11) NOT NULL,
   `quantity` int(4) NOT NULL DEFAULT '0',
   `priority` int(5) NOT NULL DEFAULT '1',
   `price` decimal(15,4) NOT NULL DEFAULT '0.0000',
   `date_start` date NOT NULL DEFAULT '0000-00-00',
-  `date_end` date NOT NULL DEFAULT '0000-00-00'
-) ENGINE=MyISAM AUTO_INCREMENT=465 DEFAULT CHARSET=utf8;
+  `date_end` date NOT NULL DEFAULT '0000-00-00',
+  PRIMARY KEY (`product_discount_id`),
+  KEY `product_id` (`product_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=465 ;
 
 -- --------------------------------------------------------
 
@@ -26674,7 +28582,8 @@ CREATE TABLE IF NOT EXISTS `oc_product_discount` (
 
 CREATE TABLE IF NOT EXISTS `oc_product_filter` (
   `product_id` int(11) NOT NULL,
-  `filter_id` int(11) NOT NULL
+  `filter_id` int(11) NOT NULL,
+  PRIMARY KEY (`product_id`,`filter_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -26684,11 +28593,13 @@ CREATE TABLE IF NOT EXISTS `oc_product_filter` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_product_image` (
-`product_image_id` int(11) NOT NULL,
+  `product_image_id` int(11) NOT NULL AUTO_INCREMENT,
   `product_id` int(11) NOT NULL,
   `image` varchar(255) DEFAULT NULL,
-  `sort_order` int(3) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM AUTO_INCREMENT=2504 DEFAULT CHARSET=utf8;
+  `sort_order` int(3) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`product_image_id`),
+  KEY `product_id` (`product_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2504 ;
 
 --
 -- Дамп данных таблицы `oc_product_image`
@@ -26720,12 +28631,13 @@ INSERT INTO `oc_product_image` (`product_image_id`, `product_id`, `image`, `sort
 --
 
 CREATE TABLE IF NOT EXISTS `oc_product_option` (
-`product_option_id` int(11) NOT NULL,
+  `product_option_id` int(11) NOT NULL AUTO_INCREMENT,
   `product_id` int(11) NOT NULL,
   `option_id` int(11) NOT NULL,
   `value` text NOT NULL,
-  `required` tinyint(1) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=227 DEFAULT CHARSET=utf8;
+  `required` tinyint(1) NOT NULL,
+  PRIMARY KEY (`product_option_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=227 ;
 
 --
 -- Дамп данных таблицы `oc_product_option`
@@ -26741,7 +28653,7 @@ INSERT INTO `oc_product_option` (`product_option_id`, `product_id`, `option_id`,
 --
 
 CREATE TABLE IF NOT EXISTS `oc_product_option_value` (
-`product_option_value_id` int(11) NOT NULL,
+  `product_option_value_id` int(11) NOT NULL AUTO_INCREMENT,
   `product_option_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `option_id` int(11) NOT NULL,
@@ -26753,8 +28665,9 @@ CREATE TABLE IF NOT EXISTS `oc_product_option_value` (
   `points` int(8) NOT NULL,
   `points_prefix` varchar(1) NOT NULL,
   `weight` decimal(15,8) NOT NULL,
-  `weight_prefix` varchar(1) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+  `weight_prefix` varchar(1) NOT NULL,
+  PRIMARY KEY (`product_option_value_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
 
 -- --------------------------------------------------------
 
@@ -26765,7 +28678,8 @@ CREATE TABLE IF NOT EXISTS `oc_product_option_value` (
 CREATE TABLE IF NOT EXISTS `oc_product_recurring` (
   `product_id` int(11) NOT NULL,
   `recurring_id` int(11) NOT NULL,
-  `customer_group_id` int(11) NOT NULL
+  `customer_group_id` int(11) NOT NULL,
+  PRIMARY KEY (`product_id`,`recurring_id`,`customer_group_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -26776,7 +28690,8 @@ CREATE TABLE IF NOT EXISTS `oc_product_recurring` (
 
 CREATE TABLE IF NOT EXISTS `oc_product_related` (
   `product_id` int(11) NOT NULL,
-  `related_id` int(11) NOT NULL
+  `related_id` int(11) NOT NULL,
+  PRIMARY KEY (`product_id`,`related_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -26798,11 +28713,12 @@ INSERT INTO `oc_product_related` (`product_id`, `related_id`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `oc_product_reward` (
-`product_reward_id` int(11) NOT NULL,
+  `product_reward_id` int(11) NOT NULL AUTO_INCREMENT,
   `product_id` int(11) NOT NULL DEFAULT '0',
   `customer_group_id` int(11) NOT NULL DEFAULT '0',
-  `points` int(8) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM AUTO_INCREMENT=574 DEFAULT CHARSET=utf8;
+  `points` int(8) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`product_reward_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=574 ;
 
 --
 -- Дамп данных таблицы `oc_product_reward`
@@ -26819,14 +28735,16 @@ INSERT INTO `oc_product_reward` (`product_reward_id`, `product_id`, `customer_gr
 --
 
 CREATE TABLE IF NOT EXISTS `oc_product_special` (
-`product_special_id` int(11) NOT NULL,
+  `product_special_id` int(11) NOT NULL AUTO_INCREMENT,
   `product_id` int(11) NOT NULL,
   `customer_group_id` int(11) NOT NULL,
   `priority` int(5) NOT NULL DEFAULT '1',
   `price` decimal(15,4) NOT NULL DEFAULT '0.0000',
   `date_start` date NOT NULL DEFAULT '0000-00-00',
-  `date_end` date NOT NULL DEFAULT '0000-00-00'
-) ENGINE=MyISAM AUTO_INCREMENT=450 DEFAULT CHARSET=utf8;
+  `date_end` date NOT NULL DEFAULT '0000-00-00',
+  PRIMARY KEY (`product_special_id`),
+  KEY `product_id` (`product_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=450 ;
 
 -- --------------------------------------------------------
 
@@ -26836,7 +28754,9 @@ CREATE TABLE IF NOT EXISTS `oc_product_special` (
 
 CREATE TABLE IF NOT EXISTS `oc_product_to_category` (
   `product_id` int(11) NOT NULL,
-  `category_id` int(11) NOT NULL
+  `category_id` int(11) NOT NULL,
+  PRIMARY KEY (`product_id`,`category_id`),
+  KEY `category_id` (`category_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -26876,7 +28796,8 @@ INSERT INTO `oc_product_to_category` (`product_id`, `category_id`) VALUES
 
 CREATE TABLE IF NOT EXISTS `oc_product_to_download` (
   `product_id` int(11) NOT NULL,
-  `download_id` int(11) NOT NULL
+  `download_id` int(11) NOT NULL,
+  PRIMARY KEY (`product_id`,`download_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -26888,7 +28809,8 @@ CREATE TABLE IF NOT EXISTS `oc_product_to_download` (
 CREATE TABLE IF NOT EXISTS `oc_product_to_layout` (
   `product_id` int(11) NOT NULL,
   `store_id` int(11) NOT NULL,
-  `layout_id` int(11) NOT NULL
+  `layout_id` int(11) NOT NULL,
+  PRIMARY KEY (`product_id`,`store_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -26925,7 +28847,8 @@ INSERT INTO `oc_product_to_layout` (`product_id`, `store_id`, `layout_id`) VALUE
 
 CREATE TABLE IF NOT EXISTS `oc_product_to_store` (
   `product_id` int(11) NOT NULL,
-  `store_id` int(11) NOT NULL DEFAULT '0'
+  `store_id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`product_id`,`store_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -26961,7 +28884,7 @@ INSERT INTO `oc_product_to_store` (`product_id`, `store_id`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `oc_recurring` (
-`recurring_id` int(11) NOT NULL,
+  `recurring_id` int(11) NOT NULL AUTO_INCREMENT,
   `price` decimal(10,4) NOT NULL,
   `frequency` enum('day','week','semi_month','month','year') NOT NULL,
   `duration` int(10) unsigned NOT NULL,
@@ -26972,8 +28895,9 @@ CREATE TABLE IF NOT EXISTS `oc_recurring` (
   `trial_duration` int(10) unsigned NOT NULL,
   `trial_cycle` int(10) unsigned NOT NULL,
   `status` tinyint(4) NOT NULL,
-  `sort_order` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `sort_order` int(11) NOT NULL,
+  PRIMARY KEY (`recurring_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -26984,7 +28908,8 @@ CREATE TABLE IF NOT EXISTS `oc_recurring` (
 CREATE TABLE IF NOT EXISTS `oc_recurring_description` (
   `recurring_id` int(11) NOT NULL,
   `language_id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`recurring_id`,`language_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -26994,7 +28919,7 @@ CREATE TABLE IF NOT EXISTS `oc_recurring_description` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_return` (
-`return_id` int(11) NOT NULL,
+  `return_id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL,
@@ -27012,8 +28937,9 @@ CREATE TABLE IF NOT EXISTS `oc_return` (
   `comment` text,
   `date_ordered` date NOT NULL DEFAULT '0000-00-00',
   `date_added` datetime NOT NULL,
-  `date_modified` datetime NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `date_modified` datetime NOT NULL,
+  PRIMARY KEY (`return_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -27022,10 +28948,11 @@ CREATE TABLE IF NOT EXISTS `oc_return` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_return_action` (
-`return_action_id` int(11) NOT NULL,
+  `return_action_id` int(11) NOT NULL AUTO_INCREMENT,
   `language_id` int(11) NOT NULL DEFAULT '0',
-  `name` varchar(64) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  `name` varchar(64) NOT NULL,
+  PRIMARY KEY (`return_action_id`,`language_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Дамп данных таблицы `oc_return_action`
@@ -27043,13 +28970,14 @@ INSERT INTO `oc_return_action` (`return_action_id`, `language_id`, `name`) VALUE
 --
 
 CREATE TABLE IF NOT EXISTS `oc_return_history` (
-`return_history_id` int(11) NOT NULL,
+  `return_history_id` int(11) NOT NULL AUTO_INCREMENT,
   `return_id` int(11) NOT NULL,
   `return_status_id` int(11) NOT NULL,
   `notify` tinyint(1) NOT NULL,
   `comment` text NOT NULL,
-  `date_added` datetime NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `date_added` datetime NOT NULL,
+  PRIMARY KEY (`return_history_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -27058,10 +28986,11 @@ CREATE TABLE IF NOT EXISTS `oc_return_history` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_return_reason` (
-`return_reason_id` int(11) NOT NULL,
+  `return_reason_id` int(11) NOT NULL AUTO_INCREMENT,
   `language_id` int(11) NOT NULL DEFAULT '0',
-  `name` varchar(128) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+  `name` varchar(128) NOT NULL,
+  PRIMARY KEY (`return_reason_id`,`language_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Дамп данных таблицы `oc_return_reason`
@@ -27080,10 +29009,11 @@ INSERT INTO `oc_return_reason` (`return_reason_id`, `language_id`, `name`) VALUE
 --
 
 CREATE TABLE IF NOT EXISTS `oc_return_status` (
-`return_status_id` int(11) NOT NULL,
+  `return_status_id` int(11) NOT NULL AUTO_INCREMENT,
   `language_id` int(11) NOT NULL DEFAULT '0',
-  `name` varchar(32) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  `name` varchar(32) NOT NULL,
+  PRIMARY KEY (`return_status_id`,`language_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Дамп данных таблицы `oc_return_status`
@@ -27101,7 +29031,7 @@ INSERT INTO `oc_return_status` (`return_status_id`, `language_id`, `name`) VALUE
 --
 
 CREATE TABLE IF NOT EXISTS `oc_review` (
-`review_id` int(11) NOT NULL,
+  `review_id` int(11) NOT NULL AUTO_INCREMENT,
   `product_id` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL,
   `author` varchar(64) NOT NULL,
@@ -27109,8 +29039,10 @@ CREATE TABLE IF NOT EXISTS `oc_review` (
   `rating` int(1) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '0',
   `date_added` datetime NOT NULL,
-  `date_modified` datetime NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `date_modified` datetime NOT NULL,
+  PRIMARY KEY (`review_id`),
+  KEY `product_id` (`product_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -27119,13 +29051,14 @@ CREATE TABLE IF NOT EXISTS `oc_review` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_setting` (
-`setting_id` int(11) NOT NULL,
+  `setting_id` int(11) NOT NULL AUTO_INCREMENT,
   `store_id` int(11) NOT NULL DEFAULT '0',
   `code` varchar(32) NOT NULL,
   `key` varchar(64) NOT NULL,
   `value` text NOT NULL,
-  `serialized` tinyint(1) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=5720 DEFAULT CHARSET=utf8;
+  `serialized` tinyint(1) NOT NULL,
+  PRIMARY KEY (`setting_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5720 ;
 
 --
 -- Дамп данных таблицы `oc_setting`
@@ -27287,10 +29220,11 @@ INSERT INTO `oc_setting` (`setting_id`, `store_id`, `code`, `key`, `value`, `ser
 --
 
 CREATE TABLE IF NOT EXISTS `oc_stock_status` (
-`stock_status_id` int(11) NOT NULL,
+  `stock_status_id` int(11) NOT NULL AUTO_INCREMENT,
   `language_id` int(11) NOT NULL,
-  `name` varchar(32) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+  `name` varchar(32) NOT NULL,
+  PRIMARY KEY (`stock_status_id`,`language_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- Дамп данных таблицы `oc_stock_status`
@@ -27309,11 +29243,12 @@ INSERT INTO `oc_stock_status` (`stock_status_id`, `language_id`, `name`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `oc_store` (
-`store_id` int(11) NOT NULL,
+  `store_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
   `url` varchar(255) NOT NULL,
-  `ssl` varchar(255) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `ssl` varchar(255) NOT NULL,
+  PRIMARY KEY (`store_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -27322,12 +29257,13 @@ CREATE TABLE IF NOT EXISTS `oc_store` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_tax_class` (
-`tax_class_id` int(11) NOT NULL,
+  `tax_class_id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(32) NOT NULL,
   `description` varchar(255) NOT NULL,
   `date_added` datetime NOT NULL,
-  `date_modified` datetime NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+  `date_modified` datetime NOT NULL,
+  PRIMARY KEY (`tax_class_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
 --
 -- Дамп данных таблицы `oc_tax_class`
@@ -27343,14 +29279,15 @@ INSERT INTO `oc_tax_class` (`tax_class_id`, `title`, `description`, `date_added`
 --
 
 CREATE TABLE IF NOT EXISTS `oc_tax_rate` (
-`tax_rate_id` int(11) NOT NULL,
+  `tax_rate_id` int(11) NOT NULL AUTO_INCREMENT,
   `geo_zone_id` int(11) NOT NULL DEFAULT '0',
   `name` varchar(32) NOT NULL,
   `rate` decimal(15,4) NOT NULL DEFAULT '0.0000',
   `type` char(1) NOT NULL,
   `date_added` datetime NOT NULL,
-  `date_modified` datetime NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=88 DEFAULT CHARSET=utf8;
+  `date_modified` datetime NOT NULL,
+  PRIMARY KEY (`tax_rate_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=88 ;
 
 --
 -- Дамп данных таблицы `oc_tax_rate`
@@ -27367,7 +29304,8 @@ INSERT INTO `oc_tax_rate` (`tax_rate_id`, `geo_zone_id`, `name`, `rate`, `type`,
 
 CREATE TABLE IF NOT EXISTS `oc_tax_rate_to_customer_group` (
   `tax_rate_id` int(11) NOT NULL,
-  `customer_group_id` int(11) NOT NULL
+  `customer_group_id` int(11) NOT NULL,
+  PRIMARY KEY (`tax_rate_id`,`customer_group_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -27385,12 +29323,13 @@ INSERT INTO `oc_tax_rate_to_customer_group` (`tax_rate_id`, `customer_group_id`)
 --
 
 CREATE TABLE IF NOT EXISTS `oc_tax_rule` (
-`tax_rule_id` int(11) NOT NULL,
+  `tax_rule_id` int(11) NOT NULL AUTO_INCREMENT,
   `tax_class_id` int(11) NOT NULL,
   `tax_rate_id` int(11) NOT NULL,
   `based` varchar(10) NOT NULL,
-  `priority` int(5) NOT NULL DEFAULT '1'
-) ENGINE=MyISAM AUTO_INCREMENT=128 DEFAULT CHARSET=utf8;
+  `priority` int(5) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`tax_rule_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=128 ;
 
 --
 -- Дамп данных таблицы `oc_tax_rule`
@@ -27408,12 +29347,13 @@ INSERT INTO `oc_tax_rule` (`tax_rule_id`, `tax_class_id`, `tax_rate_id`, `based`
 --
 
 CREATE TABLE IF NOT EXISTS `oc_upload` (
-`upload_id` int(11) NOT NULL,
+  `upload_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `filename` varchar(255) NOT NULL,
   `code` varchar(255) NOT NULL,
-  `date_added` datetime NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `date_added` datetime NOT NULL,
+  PRIMARY KEY (`upload_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -27422,10 +29362,13 @@ CREATE TABLE IF NOT EXISTS `oc_upload` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_url_alias` (
-`url_alias_id` int(11) NOT NULL,
+  `url_alias_id` int(11) NOT NULL AUTO_INCREMENT,
   `query` varchar(255) NOT NULL,
-  `keyword` varchar(255) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=1090 DEFAULT CHARSET=utf8;
+  `keyword` varchar(255) NOT NULL,
+  PRIMARY KEY (`url_alias_id`),
+  KEY `query` (`query`),
+  KEY `keyword` (`keyword`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1090 ;
 
 --
 -- Дамп данных таблицы `oc_url_alias`
@@ -27521,7 +29464,7 @@ INSERT INTO `oc_url_alias` (`url_alias_id`, `query`, `keyword`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `oc_user` (
-`user_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_group_id` int(11) NOT NULL,
   `username` varchar(20) NOT NULL,
   `password` varchar(40) NOT NULL,
@@ -27533,8 +29476,9 @@ CREATE TABLE IF NOT EXISTS `oc_user` (
   `code` varchar(40) NOT NULL,
   `ip` varchar(40) NOT NULL,
   `status` tinyint(1) NOT NULL,
-  `date_added` datetime NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `date_added` datetime NOT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Дамп данных таблицы `oc_user`
@@ -27550,10 +29494,11 @@ INSERT INTO `oc_user` (`user_id`, `user_group_id`, `username`, `password`, `salt
 --
 
 CREATE TABLE IF NOT EXISTS `oc_user_group` (
-`user_group_id` int(11) NOT NULL,
+  `user_group_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
-  `permission` text NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+  `permission` text NOT NULL,
+  PRIMARY KEY (`user_group_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
 --
 -- Дамп данных таблицы `oc_user_group`
@@ -27570,7 +29515,7 @@ INSERT INTO `oc_user_group` (`user_group_id`, `name`, `permission`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `oc_voucher` (
-`voucher_id` int(11) NOT NULL,
+  `voucher_id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) NOT NULL,
   `code` varchar(10) NOT NULL,
   `from_name` varchar(64) NOT NULL,
@@ -27581,8 +29526,9 @@ CREATE TABLE IF NOT EXISTS `oc_voucher` (
   `message` text NOT NULL,
   `amount` decimal(15,4) NOT NULL,
   `status` tinyint(1) NOT NULL,
-  `date_added` datetime NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `date_added` datetime NOT NULL,
+  PRIMARY KEY (`voucher_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -27591,12 +29537,13 @@ CREATE TABLE IF NOT EXISTS `oc_voucher` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_voucher_history` (
-`voucher_history_id` int(11) NOT NULL,
+  `voucher_history_id` int(11) NOT NULL AUTO_INCREMENT,
   `voucher_id` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
   `amount` decimal(15,4) NOT NULL,
-  `date_added` datetime NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `date_added` datetime NOT NULL,
+  PRIMARY KEY (`voucher_history_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -27605,9 +29552,10 @@ CREATE TABLE IF NOT EXISTS `oc_voucher_history` (
 --
 
 CREATE TABLE IF NOT EXISTS `oc_voucher_theme` (
-`voucher_theme_id` int(11) NOT NULL,
-  `image` varchar(255) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+  `voucher_theme_id` int(11) NOT NULL AUTO_INCREMENT,
+  `image` varchar(255) NOT NULL,
+  PRIMARY KEY (`voucher_theme_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- Дамп данных таблицы `oc_voucher_theme`
@@ -27627,7 +29575,8 @@ INSERT INTO `oc_voucher_theme` (`voucher_theme_id`, `image`) VALUES
 CREATE TABLE IF NOT EXISTS `oc_voucher_theme_description` (
   `voucher_theme_id` int(11) NOT NULL,
   `language_id` int(11) NOT NULL,
-  `name` varchar(32) NOT NULL
+  `name` varchar(32) NOT NULL,
+  PRIMARY KEY (`voucher_theme_id`,`language_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -27646,9 +29595,10 @@ INSERT INTO `oc_voucher_theme_description` (`voucher_theme_id`, `language_id`, `
 --
 
 CREATE TABLE IF NOT EXISTS `oc_weight_class` (
-`weight_class_id` int(11) NOT NULL,
-  `value` decimal(15,8) NOT NULL DEFAULT '0.00000000'
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+  `weight_class_id` int(11) NOT NULL AUTO_INCREMENT,
+  `value` decimal(15,8) NOT NULL DEFAULT '0.00000000',
+  PRIMARY KEY (`weight_class_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Дамп данных таблицы `oc_weight_class`
@@ -27667,11 +29617,12 @@ INSERT INTO `oc_weight_class` (`weight_class_id`, `value`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `oc_weight_class_description` (
-`weight_class_id` int(11) NOT NULL,
+  `weight_class_id` int(11) NOT NULL AUTO_INCREMENT,
   `language_id` int(11) NOT NULL,
   `title` varchar(32) NOT NULL,
-  `unit` varchar(4) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  `unit` varchar(4) NOT NULL,
+  PRIMARY KEY (`weight_class_id`,`language_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Дамп данных таблицы `oc_weight_class_description`
@@ -27688,12 +29639,13 @@ INSERT INTO `oc_weight_class_description` (`weight_class_id`, `language_id`, `ti
 --
 
 CREATE TABLE IF NOT EXISTS `oc_zone` (
-`zone_id` int(11) NOT NULL,
+  `zone_id` int(11) NOT NULL AUTO_INCREMENT,
   `country_id` int(11) NOT NULL,
   `name` varchar(128) NOT NULL,
   `code` varchar(32) NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=MyISAM AUTO_INCREMENT=169 DEFAULT CHARSET=utf8;
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`zone_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=169 ;
 
 --
 -- Дамп данных таблицы `oc_zone`
@@ -27876,13 +29828,14 @@ INSERT INTO `oc_zone` (`zone_id`, `country_id`, `name`, `code`, `status`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `oc_zone_to_geo_zone` (
-`zone_to_geo_zone_id` int(11) NOT NULL,
+  `zone_to_geo_zone_id` int(11) NOT NULL AUTO_INCREMENT,
   `country_id` int(11) NOT NULL,
   `zone_id` int(11) NOT NULL DEFAULT '0',
   `geo_zone_id` int(11) NOT NULL,
   `date_added` datetime NOT NULL,
-  `date_modified` datetime NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=111 DEFAULT CHARSET=utf8;
+  `date_modified` datetime NOT NULL,
+  PRIMARY KEY (`zone_to_geo_zone_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=111 ;
 
 --
 -- Дамп данных таблицы `oc_zone_to_geo_zone`
@@ -27892,1233 +29845,6 @@ INSERT INTO `oc_zone_to_geo_zone` (`zone_to_geo_zone_id`, `country_id`, `zone_id
 (1, 222, 0, 4, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (110, 176, 0, 3, '2014-09-09 11:48:13', '0000-00-00 00:00:00');
 
---
--- Индексы сохранённых таблиц
---
-
---
--- Индексы таблицы `oc_address`
---
-ALTER TABLE `oc_address`
- ADD PRIMARY KEY (`address_id`), ADD KEY `customer_id` (`customer_id`);
-
---
--- Индексы таблицы `oc_affiliate`
---
-ALTER TABLE `oc_affiliate`
- ADD PRIMARY KEY (`affiliate_id`);
-
---
--- Индексы таблицы `oc_affiliate_activity`
---
-ALTER TABLE `oc_affiliate_activity`
- ADD PRIMARY KEY (`activity_id`);
-
---
--- Индексы таблицы `oc_affiliate_login`
---
-ALTER TABLE `oc_affiliate_login`
- ADD PRIMARY KEY (`affiliate_login_id`), ADD KEY `email` (`email`), ADD KEY `ip` (`ip`);
-
---
--- Индексы таблицы `oc_affiliate_transaction`
---
-ALTER TABLE `oc_affiliate_transaction`
- ADD PRIMARY KEY (`affiliate_transaction_id`);
-
---
--- Индексы таблицы `oc_api`
---
-ALTER TABLE `oc_api`
- ADD PRIMARY KEY (`api_id`);
-
---
--- Индексы таблицы `oc_attribute`
---
-ALTER TABLE `oc_attribute`
- ADD PRIMARY KEY (`attribute_id`);
-
---
--- Индексы таблицы `oc_attribute_description`
---
-ALTER TABLE `oc_attribute_description`
- ADD PRIMARY KEY (`attribute_id`,`language_id`);
-
---
--- Индексы таблицы `oc_attribute_group`
---
-ALTER TABLE `oc_attribute_group`
- ADD PRIMARY KEY (`attribute_group_id`);
-
---
--- Индексы таблицы `oc_attribute_group_description`
---
-ALTER TABLE `oc_attribute_group_description`
- ADD PRIMARY KEY (`attribute_group_id`,`language_id`);
-
---
--- Индексы таблицы `oc_banner`
---
-ALTER TABLE `oc_banner`
- ADD PRIMARY KEY (`banner_id`);
-
---
--- Индексы таблицы `oc_banner_image`
---
-ALTER TABLE `oc_banner_image`
- ADD PRIMARY KEY (`banner_image_id`);
-
---
--- Индексы таблицы `oc_banner_image_description`
---
-ALTER TABLE `oc_banner_image_description`
- ADD PRIMARY KEY (`banner_image_id`,`language_id`);
-
---
--- Индексы таблицы `oc_category`
---
-ALTER TABLE `oc_category`
- ADD PRIMARY KEY (`category_id`), ADD KEY `parent_id` (`parent_id`);
-
---
--- Индексы таблицы `oc_category_auto`
---
-ALTER TABLE `oc_category_auto`
- ADD PRIMARY KEY (`category_id`);
-
---
--- Индексы таблицы `oc_category_description`
---
-ALTER TABLE `oc_category_description`
- ADD PRIMARY KEY (`category_id`,`language_id`), ADD KEY `name` (`name`);
-
---
--- Индексы таблицы `oc_category_filter`
---
-ALTER TABLE `oc_category_filter`
- ADD PRIMARY KEY (`category_id`,`filter_id`);
-
---
--- Индексы таблицы `oc_category_path`
---
-ALTER TABLE `oc_category_path`
- ADD PRIMARY KEY (`category_id`,`path_id`);
-
---
--- Индексы таблицы `oc_category_section_auto`
---
-ALTER TABLE `oc_category_section_auto`
- ADD PRIMARY KEY (`category_id`);
-
---
--- Индексы таблицы `oc_category_subsection_auto`
---
-ALTER TABLE `oc_category_subsection_auto`
- ADD PRIMARY KEY (`category_id`);
-
---
--- Индексы таблицы `oc_category_to_layout`
---
-ALTER TABLE `oc_category_to_layout`
- ADD PRIMARY KEY (`category_id`,`store_id`);
-
---
--- Индексы таблицы `oc_category_to_section_auto`
---
-ALTER TABLE `oc_category_to_section_auto`
- ADD PRIMARY KEY (`category_section_id`,`parent_id`);
-
---
--- Индексы таблицы `oc_category_to_store`
---
-ALTER TABLE `oc_category_to_store`
- ADD PRIMARY KEY (`category_id`,`store_id`);
-
---
--- Индексы таблицы `oc_category_to_subsection_auto`
---
-ALTER TABLE `oc_category_to_subsection_auto`
- ADD PRIMARY KEY (`category_subsection_id`,`parent_id`,`catalog_id`);
-
---
--- Индексы таблицы `oc_country`
---
-ALTER TABLE `oc_country`
- ADD PRIMARY KEY (`country_id`);
-
---
--- Индексы таблицы `oc_coupon`
---
-ALTER TABLE `oc_coupon`
- ADD PRIMARY KEY (`coupon_id`);
-
---
--- Индексы таблицы `oc_coupon_category`
---
-ALTER TABLE `oc_coupon_category`
- ADD PRIMARY KEY (`coupon_id`,`category_id`);
-
---
--- Индексы таблицы `oc_coupon_history`
---
-ALTER TABLE `oc_coupon_history`
- ADD PRIMARY KEY (`coupon_history_id`);
-
---
--- Индексы таблицы `oc_coupon_product`
---
-ALTER TABLE `oc_coupon_product`
- ADD PRIMARY KEY (`coupon_product_id`);
-
---
--- Индексы таблицы `oc_currency`
---
-ALTER TABLE `oc_currency`
- ADD PRIMARY KEY (`currency_id`);
-
---
--- Индексы таблицы `oc_customer`
---
-ALTER TABLE `oc_customer`
- ADD PRIMARY KEY (`customer_id`);
-
---
--- Индексы таблицы `oc_customer_activity`
---
-ALTER TABLE `oc_customer_activity`
- ADD PRIMARY KEY (`activity_id`);
-
---
--- Индексы таблицы `oc_customer_ban_ip`
---
-ALTER TABLE `oc_customer_ban_ip`
- ADD PRIMARY KEY (`customer_ban_ip_id`), ADD KEY `ip` (`ip`);
-
---
--- Индексы таблицы `oc_customer_group`
---
-ALTER TABLE `oc_customer_group`
- ADD PRIMARY KEY (`customer_group_id`);
-
---
--- Индексы таблицы `oc_customer_group_description`
---
-ALTER TABLE `oc_customer_group_description`
- ADD PRIMARY KEY (`customer_group_id`,`language_id`);
-
---
--- Индексы таблицы `oc_customer_history`
---
-ALTER TABLE `oc_customer_history`
- ADD PRIMARY KEY (`customer_history_id`);
-
---
--- Индексы таблицы `oc_customer_ip`
---
-ALTER TABLE `oc_customer_ip`
- ADD PRIMARY KEY (`customer_ip_id`), ADD KEY `ip` (`ip`);
-
---
--- Индексы таблицы `oc_customer_login`
---
-ALTER TABLE `oc_customer_login`
- ADD PRIMARY KEY (`customer_login_id`), ADD KEY `email` (`email`), ADD KEY `ip` (`ip`);
-
---
--- Индексы таблицы `oc_customer_online`
---
-ALTER TABLE `oc_customer_online`
- ADD PRIMARY KEY (`ip`);
-
---
--- Индексы таблицы `oc_customer_reward`
---
-ALTER TABLE `oc_customer_reward`
- ADD PRIMARY KEY (`customer_reward_id`);
-
---
--- Индексы таблицы `oc_customer_transaction`
---
-ALTER TABLE `oc_customer_transaction`
- ADD PRIMARY KEY (`customer_transaction_id`);
-
---
--- Индексы таблицы `oc_custom_field`
---
-ALTER TABLE `oc_custom_field`
- ADD PRIMARY KEY (`custom_field_id`);
-
---
--- Индексы таблицы `oc_custom_field_customer_group`
---
-ALTER TABLE `oc_custom_field_customer_group`
- ADD PRIMARY KEY (`custom_field_id`,`customer_group_id`);
-
---
--- Индексы таблицы `oc_custom_field_description`
---
-ALTER TABLE `oc_custom_field_description`
- ADD PRIMARY KEY (`custom_field_id`,`language_id`);
-
---
--- Индексы таблицы `oc_custom_field_value`
---
-ALTER TABLE `oc_custom_field_value`
- ADD PRIMARY KEY (`custom_field_value_id`);
-
---
--- Индексы таблицы `oc_custom_field_value_description`
---
-ALTER TABLE `oc_custom_field_value_description`
- ADD PRIMARY KEY (`custom_field_value_id`,`language_id`);
-
---
--- Индексы таблицы `oc_download`
---
-ALTER TABLE `oc_download`
- ADD PRIMARY KEY (`download_id`);
-
---
--- Индексы таблицы `oc_download_description`
---
-ALTER TABLE `oc_download_description`
- ADD PRIMARY KEY (`download_id`,`language_id`);
-
---
--- Индексы таблицы `oc_download_files`
---
-ALTER TABLE `oc_download_files`
- ADD PRIMARY KEY (`id`,`category_id`);
-
---
--- Индексы таблицы `oc_event`
---
-ALTER TABLE `oc_event`
- ADD PRIMARY KEY (`event_id`);
-
---
--- Индексы таблицы `oc_extension`
---
-ALTER TABLE `oc_extension`
- ADD PRIMARY KEY (`extension_id`);
-
---
--- Индексы таблицы `oc_filter`
---
-ALTER TABLE `oc_filter`
- ADD PRIMARY KEY (`filter_id`);
-
---
--- Индексы таблицы `oc_filter_description`
---
-ALTER TABLE `oc_filter_description`
- ADD PRIMARY KEY (`filter_id`,`language_id`);
-
---
--- Индексы таблицы `oc_filter_group`
---
-ALTER TABLE `oc_filter_group`
- ADD PRIMARY KEY (`filter_group_id`);
-
---
--- Индексы таблицы `oc_filter_group_description`
---
-ALTER TABLE `oc_filter_group_description`
- ADD PRIMARY KEY (`filter_group_id`,`language_id`);
-
---
--- Индексы таблицы `oc_geo_zone`
---
-ALTER TABLE `oc_geo_zone`
- ADD PRIMARY KEY (`geo_zone_id`);
-
---
--- Индексы таблицы `oc_information`
---
-ALTER TABLE `oc_information`
- ADD PRIMARY KEY (`information_id`);
-
---
--- Индексы таблицы `oc_information_description`
---
-ALTER TABLE `oc_information_description`
- ADD PRIMARY KEY (`information_id`,`language_id`);
-
---
--- Индексы таблицы `oc_information_to_layout`
---
-ALTER TABLE `oc_information_to_layout`
- ADD PRIMARY KEY (`information_id`,`store_id`);
-
---
--- Индексы таблицы `oc_information_to_store`
---
-ALTER TABLE `oc_information_to_store`
- ADD PRIMARY KEY (`information_id`,`store_id`);
-
---
--- Индексы таблицы `oc_language`
---
-ALTER TABLE `oc_language`
- ADD PRIMARY KEY (`language_id`), ADD KEY `name` (`name`);
-
---
--- Индексы таблицы `oc_layout`
---
-ALTER TABLE `oc_layout`
- ADD PRIMARY KEY (`layout_id`);
-
---
--- Индексы таблицы `oc_layout_module`
---
-ALTER TABLE `oc_layout_module`
- ADD PRIMARY KEY (`layout_module_id`);
-
---
--- Индексы таблицы `oc_layout_route`
---
-ALTER TABLE `oc_layout_route`
- ADD PRIMARY KEY (`layout_route_id`);
-
---
--- Индексы таблицы `oc_length_class`
---
-ALTER TABLE `oc_length_class`
- ADD PRIMARY KEY (`length_class_id`);
-
---
--- Индексы таблицы `oc_length_class_description`
---
-ALTER TABLE `oc_length_class_description`
- ADD PRIMARY KEY (`length_class_id`,`language_id`);
-
---
--- Индексы таблицы `oc_location`
---
-ALTER TABLE `oc_location`
- ADD PRIMARY KEY (`location_id`), ADD KEY `name` (`name`);
-
---
--- Индексы таблицы `oc_manufacturer`
---
-ALTER TABLE `oc_manufacturer`
- ADD PRIMARY KEY (`manufacturer_id`);
-
---
--- Индексы таблицы `oc_manufacturer_to_store`
---
-ALTER TABLE `oc_manufacturer_to_store`
- ADD PRIMARY KEY (`manufacturer_id`,`store_id`);
-
---
--- Индексы таблицы `oc_marketing`
---
-ALTER TABLE `oc_marketing`
- ADD PRIMARY KEY (`marketing_id`);
-
---
--- Индексы таблицы `oc_modification`
---
-ALTER TABLE `oc_modification`
- ADD PRIMARY KEY (`modification_id`);
-
---
--- Индексы таблицы `oc_module`
---
-ALTER TABLE `oc_module`
- ADD PRIMARY KEY (`module_id`);
-
---
--- Индексы таблицы `oc_option`
---
-ALTER TABLE `oc_option`
- ADD PRIMARY KEY (`option_id`);
-
---
--- Индексы таблицы `oc_option_description`
---
-ALTER TABLE `oc_option_description`
- ADD PRIMARY KEY (`option_id`,`language_id`);
-
---
--- Индексы таблицы `oc_option_value`
---
-ALTER TABLE `oc_option_value`
- ADD PRIMARY KEY (`option_value_id`);
-
---
--- Индексы таблицы `oc_option_value_description`
---
-ALTER TABLE `oc_option_value_description`
- ADD PRIMARY KEY (`option_value_id`,`language_id`);
-
---
--- Индексы таблицы `oc_order`
---
-ALTER TABLE `oc_order`
- ADD PRIMARY KEY (`order_id`);
-
---
--- Индексы таблицы `oc_order_custom_field`
---
-ALTER TABLE `oc_order_custom_field`
- ADD PRIMARY KEY (`order_custom_field_id`);
-
---
--- Индексы таблицы `oc_order_history`
---
-ALTER TABLE `oc_order_history`
- ADD PRIMARY KEY (`order_history_id`);
-
---
--- Индексы таблицы `oc_order_option`
---
-ALTER TABLE `oc_order_option`
- ADD PRIMARY KEY (`order_option_id`);
-
---
--- Индексы таблицы `oc_order_product`
---
-ALTER TABLE `oc_order_product`
- ADD PRIMARY KEY (`order_product_id`);
-
---
--- Индексы таблицы `oc_order_recurring`
---
-ALTER TABLE `oc_order_recurring`
- ADD PRIMARY KEY (`order_recurring_id`);
-
---
--- Индексы таблицы `oc_order_recurring_transaction`
---
-ALTER TABLE `oc_order_recurring_transaction`
- ADD PRIMARY KEY (`order_recurring_transaction_id`);
-
---
--- Индексы таблицы `oc_order_status`
---
-ALTER TABLE `oc_order_status`
- ADD PRIMARY KEY (`order_status_id`,`language_id`);
-
---
--- Индексы таблицы `oc_order_total`
---
-ALTER TABLE `oc_order_total`
- ADD PRIMARY KEY (`order_total_id`), ADD KEY `order_id` (`order_id`);
-
---
--- Индексы таблицы `oc_order_voucher`
---
-ALTER TABLE `oc_order_voucher`
- ADD PRIMARY KEY (`order_voucher_id`);
-
---
--- Индексы таблицы `oc_product`
---
-ALTER TABLE `oc_product`
- ADD PRIMARY KEY (`product_id`);
-
---
--- Индексы таблицы `oc_product_attribute`
---
-ALTER TABLE `oc_product_attribute`
- ADD PRIMARY KEY (`product_id`,`attribute_id`,`language_id`);
-
---
--- Индексы таблицы `oc_product_description`
---
-ALTER TABLE `oc_product_description`
- ADD PRIMARY KEY (`product_id`,`language_id`), ADD KEY `name` (`name`);
-
---
--- Индексы таблицы `oc_product_discount`
---
-ALTER TABLE `oc_product_discount`
- ADD PRIMARY KEY (`product_discount_id`), ADD KEY `product_id` (`product_id`);
-
---
--- Индексы таблицы `oc_product_filter`
---
-ALTER TABLE `oc_product_filter`
- ADD PRIMARY KEY (`product_id`,`filter_id`);
-
---
--- Индексы таблицы `oc_product_image`
---
-ALTER TABLE `oc_product_image`
- ADD PRIMARY KEY (`product_image_id`), ADD KEY `product_id` (`product_id`);
-
---
--- Индексы таблицы `oc_product_option`
---
-ALTER TABLE `oc_product_option`
- ADD PRIMARY KEY (`product_option_id`);
-
---
--- Индексы таблицы `oc_product_option_value`
---
-ALTER TABLE `oc_product_option_value`
- ADD PRIMARY KEY (`product_option_value_id`);
-
---
--- Индексы таблицы `oc_product_recurring`
---
-ALTER TABLE `oc_product_recurring`
- ADD PRIMARY KEY (`product_id`,`recurring_id`,`customer_group_id`);
-
---
--- Индексы таблицы `oc_product_related`
---
-ALTER TABLE `oc_product_related`
- ADD PRIMARY KEY (`product_id`,`related_id`);
-
---
--- Индексы таблицы `oc_product_reward`
---
-ALTER TABLE `oc_product_reward`
- ADD PRIMARY KEY (`product_reward_id`);
-
---
--- Индексы таблицы `oc_product_special`
---
-ALTER TABLE `oc_product_special`
- ADD PRIMARY KEY (`product_special_id`), ADD KEY `product_id` (`product_id`);
-
---
--- Индексы таблицы `oc_product_to_category`
---
-ALTER TABLE `oc_product_to_category`
- ADD PRIMARY KEY (`product_id`,`category_id`), ADD KEY `category_id` (`category_id`);
-
---
--- Индексы таблицы `oc_product_to_download`
---
-ALTER TABLE `oc_product_to_download`
- ADD PRIMARY KEY (`product_id`,`download_id`);
-
---
--- Индексы таблицы `oc_product_to_layout`
---
-ALTER TABLE `oc_product_to_layout`
- ADD PRIMARY KEY (`product_id`,`store_id`);
-
---
--- Индексы таблицы `oc_product_to_store`
---
-ALTER TABLE `oc_product_to_store`
- ADD PRIMARY KEY (`product_id`,`store_id`);
-
---
--- Индексы таблицы `oc_recurring`
---
-ALTER TABLE `oc_recurring`
- ADD PRIMARY KEY (`recurring_id`);
-
---
--- Индексы таблицы `oc_recurring_description`
---
-ALTER TABLE `oc_recurring_description`
- ADD PRIMARY KEY (`recurring_id`,`language_id`);
-
---
--- Индексы таблицы `oc_return`
---
-ALTER TABLE `oc_return`
- ADD PRIMARY KEY (`return_id`);
-
---
--- Индексы таблицы `oc_return_action`
---
-ALTER TABLE `oc_return_action`
- ADD PRIMARY KEY (`return_action_id`,`language_id`);
-
---
--- Индексы таблицы `oc_return_history`
---
-ALTER TABLE `oc_return_history`
- ADD PRIMARY KEY (`return_history_id`);
-
---
--- Индексы таблицы `oc_return_reason`
---
-ALTER TABLE `oc_return_reason`
- ADD PRIMARY KEY (`return_reason_id`,`language_id`);
-
---
--- Индексы таблицы `oc_return_status`
---
-ALTER TABLE `oc_return_status`
- ADD PRIMARY KEY (`return_status_id`,`language_id`);
-
---
--- Индексы таблицы `oc_review`
---
-ALTER TABLE `oc_review`
- ADD PRIMARY KEY (`review_id`), ADD KEY `product_id` (`product_id`);
-
---
--- Индексы таблицы `oc_setting`
---
-ALTER TABLE `oc_setting`
- ADD PRIMARY KEY (`setting_id`);
-
---
--- Индексы таблицы `oc_stock_status`
---
-ALTER TABLE `oc_stock_status`
- ADD PRIMARY KEY (`stock_status_id`,`language_id`);
-
---
--- Индексы таблицы `oc_store`
---
-ALTER TABLE `oc_store`
- ADD PRIMARY KEY (`store_id`);
-
---
--- Индексы таблицы `oc_tax_class`
---
-ALTER TABLE `oc_tax_class`
- ADD PRIMARY KEY (`tax_class_id`);
-
---
--- Индексы таблицы `oc_tax_rate`
---
-ALTER TABLE `oc_tax_rate`
- ADD PRIMARY KEY (`tax_rate_id`);
-
---
--- Индексы таблицы `oc_tax_rate_to_customer_group`
---
-ALTER TABLE `oc_tax_rate_to_customer_group`
- ADD PRIMARY KEY (`tax_rate_id`,`customer_group_id`);
-
---
--- Индексы таблицы `oc_tax_rule`
---
-ALTER TABLE `oc_tax_rule`
- ADD PRIMARY KEY (`tax_rule_id`);
-
---
--- Индексы таблицы `oc_upload`
---
-ALTER TABLE `oc_upload`
- ADD PRIMARY KEY (`upload_id`);
-
---
--- Индексы таблицы `oc_url_alias`
---
-ALTER TABLE `oc_url_alias`
- ADD PRIMARY KEY (`url_alias_id`), ADD KEY `query` (`query`), ADD KEY `keyword` (`keyword`);
-
---
--- Индексы таблицы `oc_user`
---
-ALTER TABLE `oc_user`
- ADD PRIMARY KEY (`user_id`);
-
---
--- Индексы таблицы `oc_user_group`
---
-ALTER TABLE `oc_user_group`
- ADD PRIMARY KEY (`user_group_id`);
-
---
--- Индексы таблицы `oc_voucher`
---
-ALTER TABLE `oc_voucher`
- ADD PRIMARY KEY (`voucher_id`);
-
---
--- Индексы таблицы `oc_voucher_history`
---
-ALTER TABLE `oc_voucher_history`
- ADD PRIMARY KEY (`voucher_history_id`);
-
---
--- Индексы таблицы `oc_voucher_theme`
---
-ALTER TABLE `oc_voucher_theme`
- ADD PRIMARY KEY (`voucher_theme_id`);
-
---
--- Индексы таблицы `oc_voucher_theme_description`
---
-ALTER TABLE `oc_voucher_theme_description`
- ADD PRIMARY KEY (`voucher_theme_id`,`language_id`);
-
---
--- Индексы таблицы `oc_weight_class`
---
-ALTER TABLE `oc_weight_class`
- ADD PRIMARY KEY (`weight_class_id`);
-
---
--- Индексы таблицы `oc_weight_class_description`
---
-ALTER TABLE `oc_weight_class_description`
- ADD PRIMARY KEY (`weight_class_id`,`language_id`);
-
---
--- Индексы таблицы `oc_zone`
---
-ALTER TABLE `oc_zone`
- ADD PRIMARY KEY (`zone_id`);
-
---
--- Индексы таблицы `oc_zone_to_geo_zone`
---
-ALTER TABLE `oc_zone_to_geo_zone`
- ADD PRIMARY KEY (`zone_to_geo_zone_id`);
-
---
--- AUTO_INCREMENT для сохранённых таблиц
---
-
---
--- AUTO_INCREMENT для таблицы `oc_address`
---
-ALTER TABLE `oc_address`
-MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT для таблицы `oc_affiliate`
---
-ALTER TABLE `oc_affiliate`
-MODIFY `affiliate_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_affiliate_activity`
---
-ALTER TABLE `oc_affiliate_activity`
-MODIFY `activity_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_affiliate_login`
---
-ALTER TABLE `oc_affiliate_login`
-MODIFY `affiliate_login_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_affiliate_transaction`
---
-ALTER TABLE `oc_affiliate_transaction`
-MODIFY `affiliate_transaction_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_api`
---
-ALTER TABLE `oc_api`
-MODIFY `api_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT для таблицы `oc_attribute`
---
-ALTER TABLE `oc_attribute`
-MODIFY `attribute_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
---
--- AUTO_INCREMENT для таблицы `oc_attribute_group`
---
-ALTER TABLE `oc_attribute_group`
-MODIFY `attribute_group_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
---
--- AUTO_INCREMENT для таблицы `oc_banner`
---
-ALTER TABLE `oc_banner`
-MODIFY `banner_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
---
--- AUTO_INCREMENT для таблицы `oc_banner_image`
---
-ALTER TABLE `oc_banner_image`
-MODIFY `banner_image_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=115;
---
--- AUTO_INCREMENT для таблицы `oc_category`
---
-ALTER TABLE `oc_category`
-MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=79;
---
--- AUTO_INCREMENT для таблицы `oc_country`
---
-ALTER TABLE `oc_country`
-MODIFY `country_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=227;
---
--- AUTO_INCREMENT для таблицы `oc_coupon`
---
-ALTER TABLE `oc_coupon`
-MODIFY `coupon_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
---
--- AUTO_INCREMENT для таблицы `oc_coupon_history`
---
-ALTER TABLE `oc_coupon_history`
-MODIFY `coupon_history_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_coupon_product`
---
-ALTER TABLE `oc_coupon_product`
-MODIFY `coupon_product_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_currency`
---
-ALTER TABLE `oc_currency`
-MODIFY `currency_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT для таблицы `oc_customer`
---
-ALTER TABLE `oc_customer`
-MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT для таблицы `oc_customer_activity`
---
-ALTER TABLE `oc_customer_activity`
-MODIFY `activity_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=29;
---
--- AUTO_INCREMENT для таблицы `oc_customer_ban_ip`
---
-ALTER TABLE `oc_customer_ban_ip`
-MODIFY `customer_ban_ip_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_customer_group`
---
-ALTER TABLE `oc_customer_group`
-MODIFY `customer_group_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT для таблицы `oc_customer_history`
---
-ALTER TABLE `oc_customer_history`
-MODIFY `customer_history_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_customer_ip`
---
-ALTER TABLE `oc_customer_ip`
-MODIFY `customer_ip_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT для таблицы `oc_customer_login`
---
-ALTER TABLE `oc_customer_login`
-MODIFY `customer_login_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT для таблицы `oc_customer_reward`
---
-ALTER TABLE `oc_customer_reward`
-MODIFY `customer_reward_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_customer_transaction`
---
-ALTER TABLE `oc_customer_transaction`
-MODIFY `customer_transaction_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_custom_field`
---
-ALTER TABLE `oc_custom_field`
-MODIFY `custom_field_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_custom_field_value`
---
-ALTER TABLE `oc_custom_field_value`
-MODIFY `custom_field_value_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_download`
---
-ALTER TABLE `oc_download`
-MODIFY `download_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT для таблицы `oc_download_files`
---
-ALTER TABLE `oc_download_files`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=110;
---
--- AUTO_INCREMENT для таблицы `oc_event`
---
-ALTER TABLE `oc_event`
-MODIFY `event_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_extension`
---
-ALTER TABLE `oc_extension`
-MODIFY `extension_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=431;
---
--- AUTO_INCREMENT для таблицы `oc_filter`
---
-ALTER TABLE `oc_filter`
-MODIFY `filter_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_filter_group`
---
-ALTER TABLE `oc_filter_group`
-MODIFY `filter_group_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_geo_zone`
---
-ALTER TABLE `oc_geo_zone`
-MODIFY `geo_zone_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
---
--- AUTO_INCREMENT для таблицы `oc_information`
---
-ALTER TABLE `oc_information`
-MODIFY `information_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
---
--- AUTO_INCREMENT для таблицы `oc_language`
---
-ALTER TABLE `oc_language`
-MODIFY `language_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT для таблицы `oc_layout`
---
-ALTER TABLE `oc_layout`
-MODIFY `layout_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=20;
---
--- AUTO_INCREMENT для таблицы `oc_layout_module`
---
-ALTER TABLE `oc_layout_module`
-MODIFY `layout_module_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=137;
---
--- AUTO_INCREMENT для таблицы `oc_layout_route`
---
-ALTER TABLE `oc_layout_route`
-MODIFY `layout_route_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=115;
---
--- AUTO_INCREMENT для таблицы `oc_length_class`
---
-ALTER TABLE `oc_length_class`
-MODIFY `length_class_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
---
--- AUTO_INCREMENT для таблицы `oc_length_class_description`
---
-ALTER TABLE `oc_length_class_description`
-MODIFY `length_class_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT для таблицы `oc_location`
---
-ALTER TABLE `oc_location`
-MODIFY `location_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_manufacturer`
---
-ALTER TABLE `oc_manufacturer`
-MODIFY `manufacturer_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
---
--- AUTO_INCREMENT для таблицы `oc_marketing`
---
-ALTER TABLE `oc_marketing`
-MODIFY `marketing_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_modification`
---
-ALTER TABLE `oc_modification`
-MODIFY `modification_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_module`
---
-ALTER TABLE `oc_module`
-MODIFY `module_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=44;
---
--- AUTO_INCREMENT для таблицы `oc_option`
---
-ALTER TABLE `oc_option`
-MODIFY `option_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
---
--- AUTO_INCREMENT для таблицы `oc_option_value`
---
-ALTER TABLE `oc_option_value`
-MODIFY `option_value_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=49;
---
--- AUTO_INCREMENT для таблицы `oc_order`
---
-ALTER TABLE `oc_order`
-MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=148;
---
--- AUTO_INCREMENT для таблицы `oc_order_custom_field`
---
-ALTER TABLE `oc_order_custom_field`
-MODIFY `order_custom_field_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_order_history`
---
-ALTER TABLE `oc_order_history`
-MODIFY `order_history_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=52;
---
--- AUTO_INCREMENT для таблицы `oc_order_option`
---
-ALTER TABLE `oc_order_option`
-MODIFY `order_option_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=37;
---
--- AUTO_INCREMENT для таблицы `oc_order_product`
---
-ALTER TABLE `oc_order_product`
-MODIFY `order_product_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=182;
---
--- AUTO_INCREMENT для таблицы `oc_order_recurring`
---
-ALTER TABLE `oc_order_recurring`
-MODIFY `order_recurring_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_order_recurring_transaction`
---
-ALTER TABLE `oc_order_recurring_transaction`
-MODIFY `order_recurring_transaction_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_order_status`
---
-ALTER TABLE `oc_order_status`
-MODIFY `order_status_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
---
--- AUTO_INCREMENT для таблицы `oc_order_total`
---
-ALTER TABLE `oc_order_total`
-MODIFY `order_total_id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=295;
---
--- AUTO_INCREMENT для таблицы `oc_order_voucher`
---
-ALTER TABLE `oc_order_voucher`
-MODIFY `order_voucher_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_product`
---
-ALTER TABLE `oc_product`
-MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=64;
---
--- AUTO_INCREMENT для таблицы `oc_product_discount`
---
-ALTER TABLE `oc_product_discount`
-MODIFY `product_discount_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=465;
---
--- AUTO_INCREMENT для таблицы `oc_product_image`
---
-ALTER TABLE `oc_product_image`
-MODIFY `product_image_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2504;
---
--- AUTO_INCREMENT для таблицы `oc_product_option`
---
-ALTER TABLE `oc_product_option`
-MODIFY `product_option_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=227;
---
--- AUTO_INCREMENT для таблицы `oc_product_option_value`
---
-ALTER TABLE `oc_product_option_value`
-MODIFY `product_option_value_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=17;
---
--- AUTO_INCREMENT для таблицы `oc_product_reward`
---
-ALTER TABLE `oc_product_reward`
-MODIFY `product_reward_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=574;
---
--- AUTO_INCREMENT для таблицы `oc_product_special`
---
-ALTER TABLE `oc_product_special`
-MODIFY `product_special_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=450;
---
--- AUTO_INCREMENT для таблицы `oc_recurring`
---
-ALTER TABLE `oc_recurring`
-MODIFY `recurring_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_return`
---
-ALTER TABLE `oc_return`
-MODIFY `return_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_return_action`
---
-ALTER TABLE `oc_return_action`
-MODIFY `return_action_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
---
--- AUTO_INCREMENT для таблицы `oc_return_history`
---
-ALTER TABLE `oc_return_history`
-MODIFY `return_history_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_return_reason`
---
-ALTER TABLE `oc_return_reason`
-MODIFY `return_reason_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
---
--- AUTO_INCREMENT для таблицы `oc_return_status`
---
-ALTER TABLE `oc_return_status`
-MODIFY `return_status_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
---
--- AUTO_INCREMENT для таблицы `oc_review`
---
-ALTER TABLE `oc_review`
-MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_setting`
---
-ALTER TABLE `oc_setting`
-MODIFY `setting_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5720;
---
--- AUTO_INCREMENT для таблицы `oc_stock_status`
---
-ALTER TABLE `oc_stock_status`
-MODIFY `stock_status_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
---
--- AUTO_INCREMENT для таблицы `oc_store`
---
-ALTER TABLE `oc_store`
-MODIFY `store_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_tax_class`
---
-ALTER TABLE `oc_tax_class`
-MODIFY `tax_class_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
---
--- AUTO_INCREMENT для таблицы `oc_tax_rate`
---
-ALTER TABLE `oc_tax_rate`
-MODIFY `tax_rate_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=88;
---
--- AUTO_INCREMENT для таблицы `oc_tax_rule`
---
-ALTER TABLE `oc_tax_rule`
-MODIFY `tax_rule_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=128;
---
--- AUTO_INCREMENT для таблицы `oc_upload`
---
-ALTER TABLE `oc_upload`
-MODIFY `upload_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_url_alias`
---
-ALTER TABLE `oc_url_alias`
-MODIFY `url_alias_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1090;
---
--- AUTO_INCREMENT для таблицы `oc_user`
---
-ALTER TABLE `oc_user`
-MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT для таблицы `oc_user_group`
---
-ALTER TABLE `oc_user_group`
-MODIFY `user_group_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
---
--- AUTO_INCREMENT для таблицы `oc_voucher`
---
-ALTER TABLE `oc_voucher`
-MODIFY `voucher_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_voucher_history`
---
-ALTER TABLE `oc_voucher_history`
-MODIFY `voucher_history_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `oc_voucher_theme`
---
-ALTER TABLE `oc_voucher_theme`
-MODIFY `voucher_theme_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
---
--- AUTO_INCREMENT для таблицы `oc_weight_class`
---
-ALTER TABLE `oc_weight_class`
-MODIFY `weight_class_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
---
--- AUTO_INCREMENT для таблицы `oc_weight_class_description`
---
-ALTER TABLE `oc_weight_class_description`
-MODIFY `weight_class_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT для таблицы `oc_zone`
---
-ALTER TABLE `oc_zone`
-MODIFY `zone_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=169;
---
--- AUTO_INCREMENT для таблицы `oc_zone_to_geo_zone`
---
-ALTER TABLE `oc_zone_to_geo_zone`
-MODIFY `zone_to_geo_zone_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=111;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
