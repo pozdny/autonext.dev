@@ -8,20 +8,21 @@
 <column id="column-left" class="col-sm-3 hidden-xs">
     <div class="list-group">
         <?php foreach($categories as $category) { ?>
-        <?php if($category['active']){
+        <?php
+              if($category['active']){
                  $active = 'active';
-                 }
-                 else{
+              }
+              else{
                  $active = '';
-                 }
-                 if($category['category_id']){
-                    $datakey = 'data-key="'.$category['category_id'].'"';
-                 }
-                 else{
-                    $datakey = '';
-                 }
+              }
+              if($category['category_id']){
+                 $datakey = 'data-key="'.$category['category_id'].'"';
+              }
+              else{
+                 $datakey = '';
+              }
              ?>
-        <a class="list-group-item <?php echo $active; ?>" href="<?php echo $category['href']; ?>" <?php echo $datakey; ?>><?php echo $category['name']; ?></a>
+        <a class="list-group-item <?php echo $active; ?> <?php echo $getSectionsList; ?>" href="<?php echo $category['href']; ?>" <?php echo $datakey; ?>><?php echo $category['name']; ?></a>
         <?php if ($category['children']) { ?>
         <?php foreach ($category['children'] as $child) { ?>
         <?php if ($child['category_id'] == $child_id_sub) { ?>

@@ -347,8 +347,9 @@ var Settings = {
 	delayedTime: 500,
 	delayedTimeSection: 1000
 };
-var Catalog = function(){
+var Catalog = function() {
 	this.catalogList = [];
+	this.sectionList = [];
 	var requestUrl = 'https://api2.autotrade.su?json',
 		requestUrl2 = 'index.php?route=catalog/product/editCatalog&token=' + token,
 		login = 'brylev.pavel@inbox.ru',
@@ -357,91 +358,96 @@ var Catalog = function(){
 		buttonStart = $('#editAuto'),
 		hash = '',
 		lastDelayedTime = null,
+		lastDelayedTime2 = null,
 		_this = this;
 	$.ajaxSetup({
-		url:requestUrl,
+		url: requestUrl,
 		type: "POST",
-		dataType:"json",
-		cache:false
+		dataType: "json",
+		cache: false
 	});
 	hash = hex_md5(login + hex_md5(password) + salt);
 
-	this.getCatalogList = function(){
+	this.getCatalogList = function () {
 		var request = {
 			"auth_key": hash,
-			"method":"getCatalogsList"
+			"method": "getCatalogsList"
 		};
 		var data = 'data=' + JSON.stringify(request);
 		$.ajax({
 			data: data,
-			beforeSend: function(){
+			beforeSend: function () {
 				elemShow(loader);
 			},
-			success: function(data)
-			{
-				if(data !=''){
-					if(data["code"]){
+			success: function (data) {
+				if (data != '') {
+					if (data["code"]) {
 						//console.log(data);
 						elemShow(notification, data["message"]);
 					}
-					else{
+					else {
 						_this.catalogList = data;
 						_this.putMainCategory();
 					}
 
 				}
 			},
-			error: function(obj, err)
-			{
+			error: function (obj, err) {
 				console.log(err);
 			}
-		}).done(function(data){
+		}).done(function (data) {
 			//elemHide(loader);
 		});
 	};
 	/**
 	 * put main category auto
 	 */
-	this.putMainCategory = function(){
+	this.putMainCategory = function () {
 		var request = {
-			"action":"putMainCategory",
+			"action": "putMainCategory",
 			"list": _this.catalogList
 		};
 		ajaxFunc(requestUrl2, request);
 		setTimeout(_this.startSectionCicle, Settings.delayedTime);
 	};
 
-	this.startSectionCicle = function(){
+	this.startSectionCicle = function () {
 		var catalog_id,
 			delayed_time,
 			length = _this.catalogList.length;
 		var request = {
-			"action":"deleteCetegorySectionName"
+			"action": "deleteCetegorySectionName"
 		};
 		ajaxFunc(requestUrl2, request);
 
-		$.each(_this.catalogList, function(){
+		$.each(_this.catalogList, function () {
 			length--;
 			catalog_id = $(this)[0].id;
-			if(lastDelayedTime == null){
+			if (lastDelayedTime == null) {
 				delayed_time = Settings.delayedTimeSection;
 			}
-			else{
+			else {
 				delayed_time = lastDelayedTime;
 			}
 			lastDelayedTime = lastDelayedTime + 2000;//console.log(lastDelayedTime);
-			delayedGet(catalog_id, delayed_time, length);
+			var arr = {
+				"catalog_id": catalog_id
+			};
+
+			delayedGet(arr, delayed_time, length, 'section');
 
 		})
 	};
-	this.getSectionsList = function(catalog_id, length){ console.log(length);
+	this.getSectionsList = function (arr, length) {
+		console.log(length);
+		var catalog_id = arr["catalog_id"];
 		$.ajaxSetup({
-			url:requestUrl,
-			dataType:"json",
+			url: requestUrl,
+			dataType: "json",
 			type: "POST"
 		});
 		var request = {
-			"auth_key":hash,
+			"auth_key": hash,
 			"method": "getSectionsList",
 			"params": {
 				"catalog_id": catalog_id
@@ -450,46 +456,81 @@ var Catalog = function(){
 		};
 		var data = 'data=' + JSON.stringify(request); //console.log(data);
 
-		 $.ajax({
+		$.ajax({
 			data: data,
-			beforeSend: function(){
+			beforeSend: function () {
 				elemShow(loader);
 			},
-			success: function(data)
-			{
-				if(data["code"]){
+			success: function (data) {
+				if (data["code"]) {
 					//console.log(data);
 					elemShow(notification, data["message"]);
 				}
-				else{
-					console.log(data);
+				else {
+					//console.log(data);
 					var request = {
-						"action":"putCategorySectionName",
+						"action": "putCategorySectionName",
 						"list": data
 					};
 					ajaxFunc(requestUrl2, request);
-					//_this.getSubSectionsList();
+					_this.sectionList.push(data);
 				}
 			},
-			error: function(obj, err)
-			{
+			error: function (obj, err) {
 				console.log(err);
 			}
-		}).done(function(data){
-			 if(!length){
-				 elemHide(loader);
-			 }
-			 elemHide(notification);
+		}).done(function () {
+			if (!length) {
+				lastDelayedTime = null;
+				//elemHide(loader);
+				//console.log(_this.sectionList);
+				_this.startSubSectionCicle();
+			}
+			elemHide(notification);
 		});
 	};
-	this.getSubSectionsList = function(){
-
+	this.startSubSectionCicle = function () {
+		var section_id,
+			catalog_id,
+			section = null,
+			delayed_time,
+			length = _this.sectionList.length;
+		$.each(_this.sectionList, function (num) {
+			section = $(this);
+			length--;
+			$.each(section, function () {
+				var _that = $(this)[0];
+				catalog_id = _that.parent_id;
+				section_id = _that.id;
+				if (lastDelayedTime == null) {
+					delayed_time = Settings.delayedTimeSection;
+				}
+				else {
+					delayed_time = lastDelayedTime;
+				}
+				lastDelayedTime = lastDelayedTime + 2000;//console.log(lastDelayedTime);
+				var arr = {
+					"catalog_id": catalog_id,
+					"section_id": section_id
+				};
+				delayedGet(arr, delayed_time, length, 'subsection');
+			});
+		})
+	};
+	this.getSubSectionsList = function (arr, length) { console.log(length);
+		var catalog_id = arr["catalog_id"],
+			section_id = arr["section_id"];
+		$.ajaxSetup({
+			url: requestUrl,
+			dataType: "json",
+			type: "POST"
+		});
 		var request = {
-			"auth_key":hash,
+			"auth_key": hash,
 			"method": "getSubSectionsList",
 			"params": {
-				"catalog_id": "36",
-				"section_id":"29"
+				"catalog_id": catalog_id,
+				"section_id": section_id
 
 			}
 		};
@@ -497,20 +538,46 @@ var Catalog = function(){
 
 		$.ajax({
 			data: data,
-			success: function(data)
-			{
-				if(data !=''){
+			beforeSend: function () {
+				elemShow(loader);
+			},
+			success: function (data) {
+				if (data != '') {
+
+					//var data = data['photo'].replace(re, "&amp;"); console.log(data);
+					$.map(data, function(val){
+						var re = /&/g;
+						if(val.photo){
+							var str = val.photo;
+							val.photo = val.photo.replace(re, " ");
+						}
+						if(val.name){
+							var str2 = val.name;
+							val.name = val.name.replace(re, " ");
+						}
+						return val;
+					});
 					//console.log(data);
-					//_this.getItemsByCatalog();
+					var request = {
+						"action": "putCategorySubSectionName",
+						"list": data,
+						"catalog_id":catalog_id
+					};
+					ajaxFunc(requestUrl2, request);
 				}
 			},
-			error: function(obj, err)
-			{
+			error: function (obj, err) {
 				console.log(err);
 			}
+		}).done(function () {
+			if (!length) {
+				lastDelayedTime = null;
+				elemHide(loader);
+			}
+			elemHide(notification);
 		});
 	};
-	this.getItemsByCatalog = function(){
+	 /*this.getItemsByCatalog = function(){
 		var request = {
 			"auth_key":hash,
 			"method": "getItemsByCatalog",
@@ -545,7 +612,7 @@ var Catalog = function(){
 				console.log(err);
 			}
 		});
-	};
+	};*/
 	//this.getStorageList();
 
 	buttonStart.on('click', function(){
@@ -556,6 +623,7 @@ var Catalog = function(){
 
 
 };
+
 // параметры строки запроса браузера
 getUrlVars = function (){
 	var vars = [], hash;
@@ -612,9 +680,14 @@ function elemShow(obj, txt){
 		obj.text(txt);
 	}
 }
-function delayedGet(catalog_id, time, length){
+function delayedGet(data, time, length, str){
 	setTimeout(function(){
-		window.Catalog.getSectionsList(catalog_id, length);
+		if(str == 'section'){
+			window.Catalog.getSectionsList(data, length);
+		}
+		else if(str == 'subsection'){
+			window.Catalog.getSubSectionsList(data, length);
+		}
 		//console.log(param);
 	}, time)
 }

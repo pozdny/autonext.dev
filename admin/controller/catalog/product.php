@@ -1500,9 +1500,14 @@ class ControllerCatalogProduct extends Controller {
 			}
 			elseif($action == 'putCategorySectionName'){
 				$categories = $data->list;
-				$result = $this->model_catalog_category->putCategorySectionName($categories);
-				$json['result'] = $result;
+				$this->model_catalog_category->putCategorySectionName($categories);
 			}
+			elseif($action == 'putCategorySubSectionName'){
+				$categories = $data->list;
+				$catalog_id = $data->catalog_id;
+				$this->model_catalog_category->putCategorySubSectionName($categories, $catalog_id);
+			}
+
 		}
 		$json['action'] = $action;
 

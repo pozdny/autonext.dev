@@ -132,17 +132,19 @@ class ControllerCommonColumnLeft extends Controller {
 
                     $category_info = $this->model_catalog_category->getCategory($path_id);
                     $data['categories'] = array();
+                    $data['getSectionsList'] = null;
                     if ($category_info) {
                         $data['breadcrumbs'][] = array(
                             'text' => $category_info['name'],
                             'href' => $this->url->link('product/category', 'path=' . $path . $url)
                         );
                         if($category_info['alias'] == 'zapasnye-chasti'){
+                            $data['getSectionsList'] = 'getSectionsList';
                             $cat_id = array();
                             if(sizeof($arr_path) <= 1){
                                 $parts = array();
                             }
-                            $categories = $this->model_catalog_category->getCategoriesAuto($cat_id);echo '<pre>'; print_r($categories); echo '</pre>';
+                            $categories = $this->model_catalog_category->getCategoriesAuto($cat_id);
                             foreach($categories as $category){
                                 $data['categories'][] = array(
                                     'category_id'  => $category['category_id'],
@@ -154,7 +156,7 @@ class ControllerCommonColumnLeft extends Controller {
                             }
                         }
                         else{
-                            $categories = $this->model_catalog_category->getCategories($cat_id);
+                            $categories = $this->model_catalog_category->getCategories($cat_id); //echo '<pre>'; print_r($categories); echo '</pre>';
                             foreach ($categories as $category) {
                                 if(isset($cat_id_child)){
                                     $children_data = array();
@@ -194,6 +196,7 @@ class ControllerCommonColumnLeft extends Controller {
                                 );
                                 $parts = explode('_', (string)$this->request->get['path']);
                                 $data['categories'][] = array(
+                                    'category_id'  => '',
                                     'name'  => $category['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_catalog_product->getTotalProducts($filter_data) . ')' : ''),
                                     'href'  => $this->url->link('product/category', 'path=' . $category['parent_id'] . '_' . $category['category_id'] . $url),
                                     'children'    => $children_data,
