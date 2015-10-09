@@ -357,18 +357,42 @@ class ModelCatalogCategory extends Model {
 		foreach($data as $category){
 			$category_id = $category->id;
 			$category_name = $category->name;
-			$category_photo = $category->photo;
+			$photo = $category->photo;
+			$parent_id = $category->parent_id;
+			$this->db->query("INSERT INTO `" . DB_PREFIX . "category_to_section_auto` SET category_section_id = '" . (int)$category_id . "', `parent_id` = '" . (int)$parent_id . "'");
+
 			$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "category_section_auto WHERE category_id = '" . (int)$category_id."'");
 			if (!$query->num_rows) {
-				$this->db->query("INSERT INTO `" . DB_PREFIX . "category_section_auto` SET category_id = '" . (int)$category_id . "', `name` = '" . $category_name . "', `photo` = '" . $category_photo . "'");
+				$this->db->query("INSERT INTO `" . DB_PREFIX . "category_section_auto` SET category_id = '" . (int)$category_id . "', `name` = '" . $category_name . "', `photo` = '" . $photo . "'");
 			}
 		}
-		return '555';
+	}
+	public function putCategorySubSectionName($data, $catalog_id){
+		foreach($data as $category){
+			$category_id   = $category->id;
+			$category_name = $category->name;
+			$code          = $category->code;
+			if($category->photo){
+				$photo = str_replace(' ', '&amp;', $category->photo);
+			}
+			else{
+				$photo = '';
+			}
+			$photo_preview = $category->photo_preview;
+			$parent_id     = $category->parent_id;
+			$this->db->query("INSERT INTO `" . DB_PREFIX . "category_to_subsection_auto` SET category_subsection_id = '" . (int)$category_id . "', `parent_id` = '" . (int)$parent_id . "', `catalog_id` ='".$catalog_id."'");
 
+			$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "category_subsection_auto WHERE category_id = '" . (int)$category_id."'");
+			if (!$query->num_rows) {
+				$this->db->query("INSERT INTO `" . DB_PREFIX . "category_subsection_auto` SET category_id = '" . (int)$category_id . "', `name` = '" . $category_name . "', `code` = '" . (int)$code . "', `photo` = '" . $photo . "', `photo_preview` = '" . $photo_preview . "'");
+			}
+		}
 	}
 	public function deleteCetegorySectionName(){
 		$this->db->query("DELETE FROM " . DB_PREFIX . "category_section_auto");
-		return '777';
+		$this->db->query("DELETE FROM " . DB_PREFIX . "category_to_section_auto");
+		$this->db->query("DELETE FROM " . DB_PREFIX . "category_subsection_auto");
+		$this->db->query("DELETE FROM " . DB_PREFIX . "category_to_subsection_auto");
 	}
 >>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 }

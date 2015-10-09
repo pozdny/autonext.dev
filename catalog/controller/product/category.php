@@ -139,10 +139,14 @@ class ControllerProductCategory extends Controller {
             $data['name_files'] = '';
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
 		$category_info = $this->model_catalog_category->getCategory($category_id); //echo '<pre>'; print_r($category_info); echo '</pre>';
 =======
 		$category_info = $this->model_catalog_category->getCategory($category_id); echo '<pre>'; print_r($category_info); echo '</pre>';
 >>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
+=======
+		$category_info = $this->model_catalog_category->getCategory($category_id); //echo '<pre>'; print_r($category_info); echo '</pre>';
+>>>>>>> 8fe03dce0a414ec0b622cde2d37f4a5a881a2319
 
 		if ($category_info) {
 			$this->document->setTitle($category_info['meta_title']);
@@ -491,5 +495,29 @@ class ControllerProductCategory extends Controller {
 				$this->response->setOutput($this->load->view('default/template/error/not_found.tpl', $data));
 			}
 		}
+	}
+	public function getApiData(){
+		$json = array();
+		$this->load->model('catalog/category');
+		if (isset($this->request->post['data'])) {
+			$data = json_decode(html_entity_decode($this->request->post['data']));
+			$action = $data->action;
+			if($action == 'getSectionsList'){
+				$catalog_id = $data->catalog_id;
+				$result = $this->model_catalog_category->getSectionsList($catalog_id);
+				$json['response'] = $result;
+			}
+			if($action == 'getSubSectionsList'){
+				$catalog_id = $data->params->catalog_id;
+				$section_id = $data->params->section_id;
+				$result = $this->model_catalog_category->getSubSectionsList($catalog_id, $section_id);
+				$json['response'] = $result;
+			}
+
+		}
+
+
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
 	}
 }

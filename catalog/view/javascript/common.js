@@ -481,172 +481,215 @@ $(document).delegate('.agree', 'click', function(e) {
 	}
 })(window.jQuery);
 
+/* ========================================================================
+ * API http://sklad.autotrade.su
+ * ======================================================================== */
+/**
+ * @catalog logic
+ * @constructor
+ */
 // ajax catalog */
 $(function(){
-	getUrlVars();
+	window.loader = $("#loader");
 	window.Catalog = new Catalog();
 
 });
 
 var Catalog = function(){
-	this.skladNov = [];
 	var requestUrl = 'https://api2.autotrade.su?json',
-		requestUrl2 = 'index.php?route=catalog/product/editCatalog&token=' + token,
+		requestUrl2 = 'index.php?route=product/category/getApiData',
 		login = 'brylev.pavel@inbox.ru',
 		password = '140191a',
 		salt = '1>6)/MI~{J',
-		buttonStart = $('#editAuto'),
-		hash = '',
+		hash = hex_md5(login + hex_md5(password) + salt),
 		_this = this;
+	var htmlCElems = {
+		apiContent:     $('#content'),
+		placeTo:        $('#content').find('h1'),
+		buttonSearch:   $('#searchAuto'),
+		buttonCategory: $('.getSectionsList'),
+		buttonSection:  '.getSubSectionsList'
+	};
 	$.ajaxSetup({
-		url:requestUrl,
+		url:requestUrl2,
 		type: "POST",
 		dataType:"json",
 		cache:false
 	});
-	hash = hex_md5(login + hex_md5(password) + salt);
 
-	this.getCatalogList = function(){
-		var request = {
-			"auth_key": hash,
-			"method":"getCatalogsList"
-		};
-		var data = 'data=' + JSON.stringify(request);
+	this.startAction = function(){
+		$(htmlCElems.buttonCategory).on('click', function(e){
+			e.preventDefault();
+			var catalog_id = $(this).data("key");
+			_this.getSectionsList(catalog_id);
 
-		$.ajax({
-			data: data,
-			success: function(data)
-			{
-				if(data !=''){
-					//console.log(data);
-					//_this.getSectionsList();
-					//ajaxFunc(requestUrl2, data);
-				}
-			},
-			error: function(obj, err)
-			{
-				console.log(err);
-			}
+		});
+		$(htmlCElems.apiContent).on('click', htmlCElems.buttonSection, function(e){
+			var section_id = $(this).data("key"); console.log(section_id);
+			_this.getSubSectionsList(section_id);
 		});
 	};
+	this.getSectionsList = function(catalog_id){
+		var  request = {
+			action: "getSectionsList",
+			catalog_id: catalog_id
+		};
+		var data = 'data=' + JSON.stringify(request);
+		$.ajax({
+			data: data,
+			beforeSend: function () {
+				elemShow(loader);
+			},
+			success: function (data) {
+				if(isError(data)) return false;
+				var body = new BodySection(data);
+				_this.pushBody(body);
+			},
+			error: function (obj, err) {
+				console.log(err);
+			}
+		}).done(function () {
+			elemHide(loader);
+		});
 
-	this.getSectionsList = function(){
+	};
+	this.getSubSectionsList = function(section_id){
+		var catalog_id = $(htmlCElems.apiContent).data('catalog_id');
 		var request = {
-			"auth_key":hash,
-			"method": "getSectionsList",
+			"action": "getSubSectionsList",
 			"params": {
-				"catalog_id": "36"
-
+				"catalog_id": catalog_id,
+				"section_id": section_id
 			}
 		};
-		var data = 'data=' + JSON.stringify(request);
-
+		var data = 'data=' + JSON.stringify(request); //console.log(data);
 		$.ajax({
 			data: data,
-			success: function(data)
-			{
-				if(data !=''){
-					//console.log(data);
-					//_this.getSubSectionsList();
-				}
+			beforeSend: function () {
+				elemShow(loader);
 			},
-			error: function(obj, err)
-			{
+			success: function (data) {
+				if(isError(data)) return false;
+				var body = new BodySection(data);
+				_this.pushBody(body);
+			},
+			error: function (obj, err) {
 				console.log(err);
 			}
+		}).done(function () {
+			elemHide(loader);
 		});
 	};
-	this.getSubSectionsList = function(){
-		var request = {
-			"auth_key":hash,
-			"method": "getSubSectionsList",
-			"params": {
-				"catalog_id": "36",
-				"section_id":"29"
+	this.pushBody = function(body){
+		if (!(body instanceof BodySection)) {
+			return;
+		}
+		htmlCElems.placeTo.after(body.getBody());
 
-			}
-		};
-		var data = 'data=' + JSON.stringify(request);
 
-		$.ajax({
-			data: data,
-			success: function(data)
-			{
-				if(data !=''){
-					//console.log(data);
-					//_this.getItemsByCatalog();
-				}
-			},
-			error: function(obj, err)
-			{
-				console.log(err);
-			}
-		});
 	};
-	this.getItemsByCatalog = function(){
-		var request = {
-			"auth_key":hash,
-			"method": "getItemsByCatalog",
-			"params":{
-				"catalog_id":"68",
-				"section_id":"113",
-				"subsection_ids":["6437"],
-				"filter_part_types":[],
-				"filter_brands":[],
-				"filter_names":[],
-				"orderBy":"",
-				"orderDirection":"",
-				"page":1,
-				"limit":20,
-				"with_stocks":0
-			},
-			"search_requests":"1"
-		};
-		var data = 'data=' + JSON.stringify(request);
-
-		$.ajax({
-			data: data,
-			success: function(data)
-			{
-				if(data !=''){
-					//console.log(data);
-
-				}
-			},
-			error: function(obj, err)
-			{
-				console.log(err);
-			}
-		});
-	};
-	//this.getStorageList();
-
-
-		_this.getCatalogList();
-
-
-
-
+	_this.startAction();
 };
-// параметры строки запроса браузера
-getUrlVars = function (){
-	var vars = [], hash;
-	var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-	for(var i = 0; i < hashes.length; i++)
-	{
-		hash = hashes[i].split('=');
-		vars.push(hash[0]);
-		vars[hash[0]] = hash[1];
+/* ========================================================================
+ * BODY_SECTIONS
+ * ======================================================================== */
+/**
+ * @param options {title}
+ * @constructor
+ */
+var BodySection = function(options){
+	var default_options = {
+		title: "Автозапчасти"
+	};
+	var htmlMsgElems = {
+		sectionMain: '<div id="sectionMain"></div>',
+		breadCrumbElem: '<ol class="breadcrumb"></ol>',
+		breadCrumbElemLi: '<li class="active"></li>',
+		sectionBody: '<div id="sectionBody"></div>',
+		spanElem: '<span></span>',
+		rowElem: '<div class="row"></div>',
+		sectionElem: '<div class="col-xs-4 getSubSectionsList list-group-item"></div>',
+		photoElem:'<a href="" class="thumbnail"><i class="fa fa-camera"></li></a>'
+
+	};
+	var sectionMain = $('#sectionMain');
+	options = $.extend(default_options, options);
+	this.title = options.title;
+	this.response = options['response'];
+    this.parent_name = this.response['parent_name'];
+	this.parent_id = this.response['parent_id'];
+	this.sections = this.response['sections'];
+	this.getBody = function(){
+		var body = $(htmlMsgElems.sectionMain),
+			breadcrumb = $(htmlMsgElems.breadCrumbElem),
+			sectionBody = $(htmlMsgElems.rowElem),
+			textChoose = '',
+			photo = '',
+			parentLength = this.parent_name.length;
+		if(parentLength == 1){
+			textChoose = "Выберите раздел:";
+			$('#content').data('catalog_id', this.parent_id);
+		}
+		else if(parentLength == 2){
+			textChoose = "Выберите подраздел:";
+			photo = htmlMsgElems.photoElem;
+		}
+		console.log(photo);
+		$.each(this.parent_name, function(ind, val){
+			breadcrumb
+				.append($(htmlMsgElems.breadCrumbElemLi)
+				   .append(val));
+
+		});
+		$.each(this.sections, function(ind, val){
+			var data_key = val.category_id;
+			
+			sectionBody
+				.append($(htmlMsgElems.sectionElem).attr("data-key", data_key)
+					.append(photo)
+					.append($('<h5>')
+						.append($('<strong>')
+							.append(val.name)))
+					);
+		});
+        body
+			.append(breadcrumb)
+			.append($(htmlMsgElems.sectionBody)
+				.append($(htmlMsgElems.spanElem).addClass('chooseInfo')
+					.append(textChoose))
+				.append(sectionBody)
+
+
+		);
+		sectionMain.remove();
+		return body;
 	}
-	window.token = vars['token'];
-	return vars;
 };
+function elemHide(obj){
+	obj.animate(
+		{
+			opacity: 0
+		},
+		500,
+		function(){
+			obj.css("display", "none");
+		}
+	);
+	obj.text('');
+}
+function elemShow(obj, txt){
+	obj.css("display", "block");
+	obj.animate({ opacity: 1 }, 500);
+	if(txt){
+		obj.text(txt);
+	}
+}
 
 ajaxFunc = function(requestUrl, arrayList){
 	$.ajaxSetup({
 		url:requestUrl,
 		dataType:"json",
-		type: "POST",
+		type: "POST"
 	});
 	var request = {
 		"action":"putMainCategory",
@@ -669,5 +712,8 @@ ajaxFunc = function(requestUrl, arrayList){
 		}
 	});
 };
+function isError(replay){
+	return (replay.error != null);
+}
 
 

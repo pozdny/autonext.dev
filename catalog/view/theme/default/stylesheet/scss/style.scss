@@ -4,6 +4,13 @@ $screen-sm-max:991px;
 $screen-md-min:992px;
 $screen-md-max:1999px;
 $screen-lg-min: 1200px;
+/*
+	==================
+	[IMPORT SCSS]
+	==================
+*/
+@import "api";
+
 /* product list */
 .product-thumb, .product-thumb-featured{
   border: 1px solid #e1d5d5;
@@ -280,7 +287,48 @@ header{
   }
 }
 
+/* Menu Fix For System -> Layout -> Banner */
+@-webkit-keyframes loaderSprite {
+  from {
+    background-position: 0px;
+  }
+  to {
+    background-position: -2000px;
+  }
+}
 
+@-moz-keyframes loaderSprite {
+  from {
+    background-position: 0px;
+  }
+  to {
+    background-position: -2000px;
+  }
+}
+
+@keyframes loaderSprite {
+  from {
+    background-position: 0px;
+  }
+  to {
+    background-position: -2000px;
+  }
+}
+
+#loader {
+  display: none;
+  opacity: 0;
+  position: fixed;
+  top:50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  background-image: url("../image/loader.png");
+  background-color: transparent;
+  -webkit-animation: loaderSprite 1s steps(20, end) infinite;
+  -moz-animation: loaderSprite 1s steps(20, end) infinite;
+  animation: loaderSprite 1s steps(20, end) infinite;
+}
 
 
 

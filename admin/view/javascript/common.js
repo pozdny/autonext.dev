@@ -339,23 +339,17 @@ $(document).ready(function() {
 $(function(){
 	getUrlVars();
 	window.loader = $("#loader");
-<<<<<<< HEAD
-=======
 	window.notification = $("#notificCatalogAuto");
->>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 	window.Catalog = new Catalog();
 
 });
 var Settings = {
-<<<<<<< HEAD
-	delayedTime: 10000,
-=======
 	delayedTime: 500,
 	delayedTimeSection: 1000
->>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 };
-var Catalog = function(){
+var Catalog = function() {
 	this.catalogList = [];
+	this.sectionList = [];
 	var requestUrl = 'https://api2.autotrade.su?json',
 		requestUrl2 = 'index.php?route=catalog/product/editCatalog&token=' + token,
 		login = 'brylev.pavel@inbox.ru',
@@ -363,190 +357,180 @@ var Catalog = function(){
 		salt = '1>6)/MI~{J',
 		buttonStart = $('#editAuto'),
 		hash = '',
-<<<<<<< HEAD
-	    _this = this;
-=======
 		lastDelayedTime = null,
+		lastDelayedTime2 = null,
 		_this = this;
->>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 	$.ajaxSetup({
-		url:requestUrl,
+		url: requestUrl,
 		type: "POST",
-		dataType:"json",
-		cache:false
+		dataType: "json",
+		cache: false
 	});
 	hash = hex_md5(login + hex_md5(password) + salt);
 
-	this.getCatalogList = function(){
+	this.getCatalogList = function () {
 		var request = {
 			"auth_key": hash,
-			"method":"getCatalogsList"
+			"method": "getCatalogsList"
 		};
 		var data = 'data=' + JSON.stringify(request);
 		$.ajax({
 			data: data,
-			beforeSend: function(){
-<<<<<<< HEAD
-				elemShow();
-=======
+			beforeSend: function () {
 				elemShow(loader);
->>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 			},
-			success: function(data)
-			{
-				if(data !=''){
-<<<<<<< HEAD
-					if(data.code !=''){
-						elemShow($('#notificCatalogAuto'));
-=======
-					if(data["code"]){
+			success: function (data) {
+				if (data != '') {
+					if (data["code"]) {
 						//console.log(data);
 						elemShow(notification, data["message"]);
->>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 					}
-					else{
+					else {
 						_this.catalogList = data;
 						_this.putMainCategory();
 					}
 
 				}
 			},
-			error: function(obj, err)
-			{
+			error: function (obj, err) {
 				console.log(err);
 			}
-		}).done(function(data){
-<<<<<<< HEAD
-			elemHide();
-=======
+		}).done(function (data) {
 			//elemHide(loader);
->>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 		});
 	};
 	/**
 	 * put main category auto
 	 */
-<<<<<<< HEAD
-    this.putMainCategory = function(){
-=======
-	this.putMainCategory = function(){
->>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
+	this.putMainCategory = function () {
 		var request = {
-			"action":"putMainCategory",
+			"action": "putMainCategory",
 			"list": _this.catalogList
 		};
 		ajaxFunc(requestUrl2, request);
-<<<<<<< HEAD
-		setTimeout(_this.getSectionsList(), Settings.delayedTime);
-	};
-
-	this.getSectionsList = function(){
-=======
 		setTimeout(_this.startSectionCicle, Settings.delayedTime);
 	};
 
-	this.startSectionCicle = function(){
+	this.startSectionCicle = function () {
 		var catalog_id,
 			delayed_time,
 			length = _this.catalogList.length;
 		var request = {
-			"action":"deleteCetegorySectionName"
+			"action": "deleteCetegorySectionName"
 		};
 		ajaxFunc(requestUrl2, request);
 
-		$.each(_this.catalogList, function(){
+		$.each(_this.catalogList, function () {
 			length--;
 			catalog_id = $(this)[0].id;
-			if(lastDelayedTime == null){
+			if (lastDelayedTime == null) {
 				delayed_time = Settings.delayedTimeSection;
 			}
-			else{
+			else {
 				delayed_time = lastDelayedTime;
 			}
 			lastDelayedTime = lastDelayedTime + 2000;//console.log(lastDelayedTime);
-			delayedGet(catalog_id, delayed_time, length);
+			var arr = {
+				"catalog_id": catalog_id
+			};
+
+			delayedGet(arr, delayed_time, length, 'section');
 
 		})
 	};
-	this.getSectionsList = function(catalog_id, length){ console.log(length);
->>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
+	this.getSectionsList = function (arr, length) {
+		console.log(length);
+		var catalog_id = arr["catalog_id"];
 		$.ajaxSetup({
-			url:requestUrl,
-			dataType:"json",
+			url: requestUrl,
+			dataType: "json",
 			type: "POST"
 		});
 		var request = {
-			"auth_key":hash,
+			"auth_key": hash,
 			"method": "getSectionsList",
 			"params": {
-<<<<<<< HEAD
-				"catalog_id": "36"
-
-			}
-		};
-		var data = 'data=' + JSON.stringify(request);
-
-		$.ajax({
-			data: data,
-			beforeSend: function(){
-				elemShow();
-			},
-			success: function(data)
-			{
-				if(data !=''){
-					console.log(data);
-=======
 				"catalog_id": catalog_id
 
 			}
 		};
 		var data = 'data=' + JSON.stringify(request); //console.log(data);
 
-		 $.ajax({
+		$.ajax({
 			data: data,
-			beforeSend: function(){
+			beforeSend: function () {
 				elemShow(loader);
 			},
-			success: function(data)
-			{
-				if(data["code"]){
+			success: function (data) {
+				if (data["code"]) {
 					//console.log(data);
 					elemShow(notification, data["message"]);
 				}
-				else{
-					console.log(data);
+				else {
+					//console.log(data);
 					var request = {
-						"action":"putCategorySectionName",
+						"action": "putCategorySectionName",
 						"list": data
 					};
 					ajaxFunc(requestUrl2, request);
->>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
-					//_this.getSubSectionsList();
+					_this.sectionList.push(data);
 				}
 			},
-			error: function(obj, err)
-			{
+			error: function (obj, err) {
 				console.log(err);
 			}
-		}).done(function(data){
-<<<<<<< HEAD
-			elemHide();
-=======
-			 if(!length){
-				 elemHide(loader);
-			 }
-			 elemHide(notification);
->>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
+		}).done(function () {
+			if (!length) {
+				lastDelayedTime = null;
+				//elemHide(loader);
+				//console.log(_this.sectionList);
+				_this.startSubSectionCicle();
+			}
+			elemHide(notification);
 		});
 	};
-	this.getSubSectionsList = function(){
-
+	this.startSubSectionCicle = function () {
+		var section_id,
+			catalog_id,
+			section = null,
+			delayed_time,
+			length = _this.sectionList.length;
+		$.each(_this.sectionList, function (num) {
+			section = $(this);
+			length--;
+			$.each(section, function () {
+				var _that = $(this)[0];
+				catalog_id = _that.parent_id;
+				section_id = _that.id;
+				if (lastDelayedTime == null) {
+					delayed_time = Settings.delayedTimeSection;
+				}
+				else {
+					delayed_time = lastDelayedTime;
+				}
+				lastDelayedTime = lastDelayedTime + 2000;//console.log(lastDelayedTime);
+				var arr = {
+					"catalog_id": catalog_id,
+					"section_id": section_id
+				};
+				delayedGet(arr, delayed_time, length, 'subsection');
+			});
+		})
+	};
+	this.getSubSectionsList = function (arr, length) { console.log(length);
+		var catalog_id = arr["catalog_id"],
+			section_id = arr["section_id"];
+		$.ajaxSetup({
+			url: requestUrl,
+			dataType: "json",
+			type: "POST"
+		});
 		var request = {
-			"auth_key":hash,
+			"auth_key": hash,
 			"method": "getSubSectionsList",
 			"params": {
-				"catalog_id": "36",
-				"section_id":"29"
+				"catalog_id": catalog_id,
+				"section_id": section_id
 
 			}
 		};
@@ -554,55 +538,81 @@ var Catalog = function(){
 
 		$.ajax({
 			data: data,
-			success: function(data)
-			{
-				if(data !=''){
+			beforeSend: function () {
+				elemShow(loader);
+			},
+			success: function (data) {
+				if (data != '') {
+
+					//var data = data['photo'].replace(re, "&amp;"); console.log(data);
+					$.map(data, function(val){
+						var re = /&/g;
+						if(val.photo){
+							var str = val.photo;
+							val.photo = val.photo.replace(re, " ");
+						}
+						if(val.name){
+							var str2 = val.name;
+							val.name = val.name.replace(re, " ");
+						}
+						return val;
+					});
 					//console.log(data);
-					//_this.getItemsByCatalog();
+					var request = {
+						"action": "putCategorySubSectionName",
+						"list": data,
+						"catalog_id":catalog_id
+					};
+					ajaxFunc(requestUrl2, request);
 				}
 			},
-			error: function(obj, err)
-			{
+			error: function (obj, err) {
 				console.log(err);
 			}
-		});
-	};
-	this.getItemsByCatalog = function(){
-		var request = {
-			"auth_key":hash,
-			"method": "getItemsByCatalog",
-			"params":{
-				"catalog_id":"68",
-				"section_id":"113",
-				"subsection_ids":["6437"],
-				"filter_part_types":[],
-				"filter_brands":[],
-				"filter_names":[],
-				"orderBy":"",
-				"orderDirection":"",
-				"page":1,
-				"limit":20,
-				"with_stocks":0
-			},
-			"search_requests":"1"
-		};
-		var data = 'data=' + JSON.stringify(request);
-
-		$.ajax({
-			data: data,
-			success: function(data)
-			{
-				if(data !=''){
-					//console.log(data);
-
-				}
-			},
-			error: function(obj, err)
-			{
-				console.log(err);
+		}).done(function () {
+			if (!length) {
+				lastDelayedTime = null;
+				elemHide(loader);
 			}
+			elemHide(notification);
 		});
 	};
+	/*this.getItemsByCatalog = function(){
+	 var request = {
+	 "auth_key":hash,
+	 "method": "getItemsByCatalog",
+	 "params":{
+	 "catalog_id":"68",
+	 "section_id":"113",
+	 "subsection_ids":["6437"],
+	 "filter_part_types":[],
+	 "filter_brands":[],
+	 "filter_names":[],
+	 "orderBy":"",
+	 "orderDirection":"",
+	 "page":1,
+	 "limit":20,
+	 "with_stocks":0
+	 },
+	 "search_requests":"1"
+	 };
+	 var data = 'data=' + JSON.stringify(request);
+
+	 $.ajax({
+	 data: data,
+	 success: function(data)
+	 {
+	 if(data !=''){
+	 //console.log(data);
+
+	 }
+	 },
+	 error: function(obj, err)
+	 {
+	 console.log(err);
+	 }
+	 });
+	 };*/
 	//this.getStorageList();
 
 	buttonStart.on('click', function(){
@@ -613,6 +623,7 @@ var Catalog = function(){
 
 
 };
+
 // параметры строки запроса браузера
 getUrlVars = function (){
 	var vars = [], hash;
@@ -636,18 +647,10 @@ ajaxFunc = function(requestUrl, request){
 
 	var data = "data=" + JSON.stringify(request);
 	$.ajax({
-<<<<<<< HEAD
-        data: data,
-		success: function(data)
-		{
-			if(data !=''){
-				console.log('234');
-=======
 		data: data,
 		success: function(data)
 		{
 			if(data !=''){
->>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 				//_this.getSectionsList();
 
 			}
@@ -659,12 +662,6 @@ ajaxFunc = function(requestUrl, request){
 	});
 };
 function elemHide(obj){
-<<<<<<< HEAD
-	if(!obj){
-		obj = loader;
-	}
-=======
->>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 	obj.animate(
 		{
 			opacity: 0
@@ -674,13 +671,6 @@ function elemHide(obj){
 			obj.css("display", "none");
 		}
 	);
-<<<<<<< HEAD
-}
-function elemShow(obj){
-	if(!obj) obj = loader;
-	obj.css("display", "block");
-	obj.animate({ opacity: 1 }, 500);
-=======
 	obj.text('');
 }
 function elemShow(obj, txt){
@@ -690,12 +680,16 @@ function elemShow(obj, txt){
 		obj.text(txt);
 	}
 }
-function delayedGet(catalog_id, time, length){
+function delayedGet(data, time, length, str){
 	setTimeout(function(){
-		window.Catalog.getSectionsList(catalog_id, length);
+		if(str == 'section'){
+			window.Catalog.getSectionsList(data, length);
+		}
+		else if(str == 'subsection'){
+			window.Catalog.getSubSectionsList(data, length);
+		}
 		//console.log(param);
 	}, time)
->>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 }
 
 

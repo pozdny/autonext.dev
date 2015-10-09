@@ -92,5 +92,69 @@ class ModelCatalogCategory extends Model {
             return 0;
         }
     }
+	public function getSectionsList($catalog_id){
+		$sql = "SELECT * FROM " . DB_PREFIX . "category_auto ca WHERE ca.category_id = ".(int)$catalog_id;
+		$query = $this->db->query($sql);
+		$category_name = $query->row['name'];
+
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "category_to_section_auto cts LEFT JOIN " . DB_PREFIX . "category_section_auto csa ON (cts.category_section_id = csa.category_id)  WHERE cts.parent_id = '" . (int)$catalog_id."' ORDER BY csa.name");
+		if ($query->num_rows) {
+			$section_data = array();
+			foreach ($query->rows as $result) {
+				$section_data[] = array(
+					'category_id'   => $result['category_id'],
+					'name'          => $result['name'],
+					'parent_id'     => $result['parent_id'],
+					'photo'         => $result['photo']
+				);
+			}
+			$parent_name = array();
+			$parent_name[] = $category_name;
+
+			return array(
+				'parent_name' => $parent_name,
+				'parent_id'   => $catalog_id,
+				'sections'    => $section_data
+			);
+		} else {
+			return 0;
+		}
+
+	}
+	public function getSubSectionsList($catalog_id, $section_id){
+		$sql = "SELECT * FROM " . DB_PREFIX . "category_auto ca WHERE ca.category_id = ".(int)$catalog_id;
+		$query = $this->db->query($sql);
+		$catalog_name = $query->row['name'];
+
+		$sql = "SELECT * FROM " . DB_PREFIX . "category_section_auto cs WHERE cs.category_id = ".(int)$section_id;
+		$query = $this->db->query($sql);
+		$section_name = $query->row['name'];
+
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "category_to_subsection_auto cts LEFT JOIN " . DB_PREFIX . "category_subsection_auto csa ON (cts.category_subsection_id = csa.category_id)  WHERE cts.parent_id = '" . (int)$section_id."' AND cts.catalog_id = '" . (int)$catalog_id."' ORDER BY csa.name");
+		if ($query->num_rows) {
+			$section_data = array();
+			foreach ($query->rows as $result) {
+				$section_data[] = array(
+					'category_id'   => $result['category_id'],
+					'name'          => $result['name'],
+					'parent_id'     => $result['parent_id'],
+					'photo'         => $result['photo']
+				);
+			}
+			$parent_name = array();
+			$parent_name[] = $catalog_name;
+			$parent_name[] = $section_name;
+			return array(
+				'parent_name' => $parent_name,
+				'parent_id'   => $catalog_id,
+				'parent_section_id'   => $section_id,
+				'sections'    => $section_data
+			);
+		} else {
+			return 0;
+		}
+
+	}
+
 
 }
