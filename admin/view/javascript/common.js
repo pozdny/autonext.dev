@@ -339,11 +339,20 @@ $(document).ready(function() {
 $(function(){
 	getUrlVars();
 	window.loader = $("#loader");
+<<<<<<< HEAD
+=======
+	window.notification = $("#notificCatalogAuto");
+>>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 	window.Catalog = new Catalog();
 
 });
 var Settings = {
+<<<<<<< HEAD
 	delayedTime: 10000,
+=======
+	delayedTime: 500,
+	delayedTimeSection: 1000
+>>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 };
 var Catalog = function(){
 	this.catalogList = [];
@@ -354,7 +363,12 @@ var Catalog = function(){
 		salt = '1>6)/MI~{J',
 		buttonStart = $('#editAuto'),
 		hash = '',
+<<<<<<< HEAD
 	    _this = this;
+=======
+		lastDelayedTime = null,
+		_this = this;
+>>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 	$.ajaxSetup({
 		url:requestUrl,
 		type: "POST",
@@ -372,13 +386,23 @@ var Catalog = function(){
 		$.ajax({
 			data: data,
 			beforeSend: function(){
+<<<<<<< HEAD
 				elemShow();
+=======
+				elemShow(loader);
+>>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 			},
 			success: function(data)
 			{
 				if(data !=''){
+<<<<<<< HEAD
 					if(data.code !=''){
 						elemShow($('#notificCatalogAuto'));
+=======
+					if(data["code"]){
+						//console.log(data);
+						elemShow(notification, data["message"]);
+>>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 					}
 					else{
 						_this.catalogList = data;
@@ -392,22 +416,60 @@ var Catalog = function(){
 				console.log(err);
 			}
 		}).done(function(data){
+<<<<<<< HEAD
 			elemHide();
+=======
+			//elemHide(loader);
+>>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 		});
 	};
 	/**
 	 * put main category auto
 	 */
+<<<<<<< HEAD
     this.putMainCategory = function(){
+=======
+	this.putMainCategory = function(){
+>>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 		var request = {
 			"action":"putMainCategory",
 			"list": _this.catalogList
 		};
 		ajaxFunc(requestUrl2, request);
+<<<<<<< HEAD
 		setTimeout(_this.getSectionsList(), Settings.delayedTime);
 	};
 
 	this.getSectionsList = function(){
+=======
+		setTimeout(_this.startSectionCicle, Settings.delayedTime);
+	};
+
+	this.startSectionCicle = function(){
+		var catalog_id,
+			delayed_time,
+			length = _this.catalogList.length;
+		var request = {
+			"action":"deleteCetegorySectionName"
+		};
+		ajaxFunc(requestUrl2, request);
+
+		$.each(_this.catalogList, function(){
+			length--;
+			catalog_id = $(this)[0].id;
+			if(lastDelayedTime == null){
+				delayed_time = Settings.delayedTimeSection;
+			}
+			else{
+				delayed_time = lastDelayedTime;
+			}
+			lastDelayedTime = lastDelayedTime + 2000;//console.log(lastDelayedTime);
+			delayedGet(catalog_id, delayed_time, length);
+
+		})
+	};
+	this.getSectionsList = function(catalog_id, length){ console.log(length);
+>>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 		$.ajaxSetup({
 			url:requestUrl,
 			dataType:"json",
@@ -417,6 +479,7 @@ var Catalog = function(){
 			"auth_key":hash,
 			"method": "getSectionsList",
 			"params": {
+<<<<<<< HEAD
 				"catalog_id": "36"
 
 			}
@@ -432,6 +495,32 @@ var Catalog = function(){
 			{
 				if(data !=''){
 					console.log(data);
+=======
+				"catalog_id": catalog_id
+
+			}
+		};
+		var data = 'data=' + JSON.stringify(request); //console.log(data);
+
+		 $.ajax({
+			data: data,
+			beforeSend: function(){
+				elemShow(loader);
+			},
+			success: function(data)
+			{
+				if(data["code"]){
+					//console.log(data);
+					elemShow(notification, data["message"]);
+				}
+				else{
+					console.log(data);
+					var request = {
+						"action":"putCategorySectionName",
+						"list": data
+					};
+					ajaxFunc(requestUrl2, request);
+>>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 					//_this.getSubSectionsList();
 				}
 			},
@@ -440,7 +529,14 @@ var Catalog = function(){
 				console.log(err);
 			}
 		}).done(function(data){
+<<<<<<< HEAD
 			elemHide();
+=======
+			 if(!length){
+				 elemHide(loader);
+			 }
+			 elemHide(notification);
+>>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 		});
 	};
 	this.getSubSectionsList = function(){
@@ -540,11 +636,18 @@ ajaxFunc = function(requestUrl, request){
 
 	var data = "data=" + JSON.stringify(request);
 	$.ajax({
+<<<<<<< HEAD
         data: data,
 		success: function(data)
 		{
 			if(data !=''){
 				console.log('234');
+=======
+		data: data,
+		success: function(data)
+		{
+			if(data !=''){
+>>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 				//_this.getSectionsList();
 
 			}
@@ -556,9 +659,12 @@ ajaxFunc = function(requestUrl, request){
 	});
 };
 function elemHide(obj){
+<<<<<<< HEAD
 	if(!obj){
 		obj = loader;
 	}
+=======
+>>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 	obj.animate(
 		{
 			opacity: 0
@@ -568,11 +674,28 @@ function elemHide(obj){
 			obj.css("display", "none");
 		}
 	);
+<<<<<<< HEAD
 }
 function elemShow(obj){
 	if(!obj) obj = loader;
 	obj.css("display", "block");
 	obj.animate({ opacity: 1 }, 500);
+=======
+	obj.text('');
+}
+function elemShow(obj, txt){
+	obj.css("display", "block");
+	obj.animate({ opacity: 1 }, 500);
+	if(txt){
+		obj.text(txt);
+	}
+}
+function delayedGet(catalog_id, time, length){
+	setTimeout(function(){
+		window.Catalog.getSectionsList(catalog_id, length);
+		//console.log(param);
+	}, time)
+>>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 }
 
 

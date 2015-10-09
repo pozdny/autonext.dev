@@ -1,5 +1,6 @@
 <?php
 class ControllerCommonColumnLeft extends Controller {
+<<<<<<< HEAD
 	public function index() {
 		$this->load->model('design/layout');
 
@@ -31,11 +32,45 @@ class ControllerCommonColumnLeft extends Controller {
 
 			$layout_id = $this->model_catalog_information->getInformationLayoutId($this->request->get['information_id']);
 		}
+=======
+    public function index() {
+        $this->load->model('design/layout');
+
+        if (isset($this->request->get['route'])) {
+            $route = (string)$this->request->get['route'];
+        } else {
+            $route = 'common/home';
+        }
+
+        $layout_id = 0;
+
+        if (($route == 'product/category') && isset($this->request->get['path'])) {
+            $this->load->model('catalog/category');
+
+            $path = explode('_', (string)$this->request->get['path']); //echo '<pre>'; print_r($path); echo '</pre>';
+
+            $layout_id = $this->model_catalog_category->getCategoryLayoutId(end($path));//echo '<pre>'; print_r(end($path)); echo '</pre>';
+        }
+
+        /*if ($route == 'product/product' && isset($this->request->get['product_id'])) {
+            $this->load->model('catalog/product');
+            $path = explode('_', (string)$this->request->get['path']); //echo '<pre>'; print_r($path); echo '</pre>';
+
+            $layout_id = $this->model_catalog_category->getCategoryLayoutId(end($path));//echo '<pre>'; print_r(end($path)); echo '</pre>';
+        }*/
+
+        if ($route == 'information/information' && isset($this->request->get['information_id'])) {
+            $this->load->model('catalog/information');
+
+            $layout_id = $this->model_catalog_information->getInformationLayoutId($this->request->get['information_id']);
+        }
+>>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
         if ($route == 'product/equipment') {
             $this->load->model('catalog/category');
             $layout_id = 3;//echo '<pre>'; print_r(end($path)); echo '</pre>';
         }
 
+<<<<<<< HEAD
 		if (!$layout_id) {
 			$layout_id = $this->model_design_layout->getLayout($route);
 		}
@@ -65,6 +100,37 @@ class ControllerCommonColumnLeft extends Controller {
 				}
 			}
 		}
+=======
+        if (!$layout_id) {
+            $layout_id = $this->model_design_layout->getLayout($route);
+        }
+
+        if (!$layout_id) {
+            $layout_id = $this->config->get('config_layout_id');
+        }
+
+        $this->load->model('extension/module');
+
+        $data['modules'] = array();
+
+        $modules = $this->model_design_layout->getLayoutModules($layout_id, 'column_left');
+
+        foreach ($modules as $module) {
+            $part = explode('.', $module['code']);
+
+            if (isset($part[0]) && $this->config->get($part[0] . '_status')) {
+                $data['modules'][] = $this->load->controller('module/' . $part[0]);
+            }
+
+            if (isset($part[1])) {
+                $setting_info = $this->model_extension_module->getModule($part[1]);
+
+                if ($setting_info && $setting_info['status']) {
+                    $data['modules'][] = $this->load->controller('module/' . $part[0], $setting_info);
+                }
+            }
+        }
+>>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
         //categories
 
         $data['categories'] = array();
@@ -145,7 +211,11 @@ class ControllerCommonColumnLeft extends Controller {
                             $categories = $this->model_catalog_category->getCategoriesAuto($cat_id);echo '<pre>'; print_r($categories); echo '</pre>';
                             foreach($categories as $category){
                                 $data['categories'][] = array(
+<<<<<<< HEAD
                                     'id'  => $category['category_id'],
+=======
+                                    'category_id'  => $category['category_id'],
+>>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
                                     'name'  => $category['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_catalog_product->getTotalProducts($filter_data) . ')' : ''),
                                     'href'  => $this->url->link('product/category', 'path=' . $category['parent_id'] . '_' . $category['category_id'] . $url),
                                     'children'    => '',
@@ -211,9 +281,17 @@ class ControllerCommonColumnLeft extends Controller {
         }
 //echo '<pre>';print_r($data['categories']); echo '</pre>';
         if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/common/column_left.tpl')) {
+<<<<<<< HEAD
 			return $this->load->view($this->config->get('config_template') . '/template/common/column_left.tpl', $data);
 		} else {
 			return $this->load->view('default/template/common/column_left.tpl', $data);
 		}
 	}
+=======
+            return $this->load->view($this->config->get('config_template') . '/template/common/column_left.tpl', $data);
+        } else {
+            return $this->load->view('default/template/common/column_left.tpl', $data);
+        }
+    }
+>>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 }

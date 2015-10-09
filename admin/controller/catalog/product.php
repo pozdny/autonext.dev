@@ -1490,6 +1490,7 @@ class ControllerCatalogProduct extends Controller {
 			$this->load->model('catalog/category');
 			$data = json_decode(html_entity_decode($this->request->post['data']));
 			$action = $data->action;
+<<<<<<< HEAD
 			$categories = $data->list;
 			if($action == 'putMainCategory'){
 				$result = $this->model_catalog_category->putMainCategoryAuto($categories);
@@ -1497,6 +1498,25 @@ class ControllerCatalogProduct extends Controller {
 		}
 		$json['action'] = $action;
 		$json['categories'] = $result;
+=======
+			if($action == 'putMainCategory'){
+				$categories = $data->list;
+				$this->model_catalog_category->putMainCategoryAuto($categories);
+			}
+			elseif($action == 'deleteCetegorySectionName'){
+				$result = $this->model_catalog_category->deleteCetegorySectionName();
+				$json['result'] = $result;
+			}
+			elseif($action == 'putCategorySectionName'){
+				$categories = $data->list;
+				$result = $this->model_catalog_category->putCategorySectionName($categories);
+				$json['result'] = $result;
+			}
+		}
+		$json['action'] = $action;
+
+
+>>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}

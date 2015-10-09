@@ -332,10 +332,17 @@ class ModelCatalogCategory extends Model {
 		$this->db->query("DELETE FROM " . DB_PREFIX . "category_auto");
 
 		foreach($data as $category){
+<<<<<<< HEAD
 			$category_id = $category->id;
 			$category_name = $category->name;
 			$parent_name = 'zapasnye_chasti';
 			$this->db->query("INSERT INTO `" . DB_PREFIX . "category_auto` SET category_id = '" . (int)$category->id . "', `name` = '" . $category_name . "', `parent_id` = '" . (int)$category_id . "', `parent_name` = '" . $parent_name . "'");
+=======
+			$id = $category->id;
+			$category_name = $category->name;
+			$parent_name = 'zapasnye_chasti';
+			$this->db->query("INSERT INTO `" . DB_PREFIX . "category_auto` SET category_id = '" . (int)$id . "', `name` = '" . $category_name . "', `parent_id` = '" . (int)$category_id . "', `parent_name` = '" . $parent_name . "'");
+>>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 		}
 		if ($query->num_rows) {
 			return $data;
@@ -343,4 +350,25 @@ class ModelCatalogCategory extends Model {
 			return 0;
 		}
 	}
+<<<<<<< HEAD
+=======
+	public function putCategorySectionName($data){
+
+		foreach($data as $category){
+			$category_id = $category->id;
+			$category_name = $category->name;
+			$category_photo = $category->photo;
+			$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "category_section_auto WHERE category_id = '" . (int)$category_id."'");
+			if (!$query->num_rows) {
+				$this->db->query("INSERT INTO `" . DB_PREFIX . "category_section_auto` SET category_id = '" . (int)$category_id . "', `name` = '" . $category_name . "', `photo` = '" . $category_photo . "'");
+			}
+		}
+		return '555';
+
+	}
+	public function deleteCetegorySectionName(){
+		$this->db->query("DELETE FROM " . DB_PREFIX . "category_section_auto");
+		return '777';
+	}
+>>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 }
