@@ -2,27 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5dc058ed-03b0-4aa8-ba98-ebf584933b9d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/catalog/view/theme/default/image/loader.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/catalog/view/theme/default/stylesheet/scss/_api.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/catalog/view/theme/default/stylesheet/api.css.map" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/catalog/view/theme/default/stylesheet/api.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/system/cache/cache.currency.1444326015" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/system/cache/cache.language.1444326015" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/catalog/controller/product/category.php" afterPath="$PROJECT_DIR$/catalog/controller/product/category.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/catalog/model/catalog/category.php" afterPath="$PROJECT_DIR$/catalog/model/catalog/category.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/system/modification/admin/model/catalog/category.php" afterPath="$PROJECT_DIR$/system/modification/admin/model/catalog/category.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/catalog/view/theme/default/template/product/category.tpl" afterPath="$PROJECT_DIR$/catalog/view/theme/default/template/product/category.tpl" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/catalog/controller/common/column_left.php" afterPath="$PROJECT_DIR$/catalog/controller/common/column_left.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/catalog/view/theme/default/template/common/column_left.tpl" afterPath="$PROJECT_DIR$/catalog/view/theme/default/template/common/column_left.tpl" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/admin/view/javascript/common.js" afterPath="$PROJECT_DIR$/admin/view/javascript/common.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/catalog/view/javascript/common.js" afterPath="$PROJECT_DIR$/catalog/view/javascript/common.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/catalog/view/theme/default/template/common/footer.tpl" afterPath="$PROJECT_DIR$/catalog/view/theme/default/template/common/footer.tpl" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/admin/controller/catalog/product.php" afterPath="$PROJECT_DIR$/admin/controller/catalog/product.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/catalog/view/theme/default/stylesheet/style.css.map" afterPath="$PROJECT_DIR$/catalog/view/theme/default/stylesheet/style.css.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/catalog/view/theme/default/stylesheet/style.css" afterPath="$PROJECT_DIR$/catalog/view/theme/default/stylesheet/style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/catalog/view/theme/default/stylesheet/stylesheet.css" afterPath="$PROJECT_DIR$/catalog/view/theme/default/stylesheet/stylesheet.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MOVED" beforePath="D:\Projects\www\autonext.dev\catalog\view\theme\default\stylesheet\style.scss" afterPath="$PROJECT_DIR$/catalog/view/theme/default/stylesheet/scss/style.scss" />
     </list>
     <ignored path="autonext.dev.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -43,7 +23,7 @@
     <favorites_list name="autonext.dev" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.585625">
+    <splitter split-orientation="horizontal" split-proportion="0.319375">
       <split-first>
         <leaf>
           <file leaf-file-name="category.php" pinned="false" current-in-tab="false">
@@ -232,8 +212,8 @@
           <file leaf-file-name="common.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/admin/view/javascript/common.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.9336235">
-                  <caret line="695" column="0" selection-start-line="695" selection-start-column="0" selection-end-line="695" selection-end-column="0" />
+                <state vertical-scroll-proportion="0.28618065">
+                  <caret line="660" column="9" selection-start-line="660" selection-start-column="9" selection-end-line="660" selection-end-column="9" />
                   <folding>
                     <marker date="1444357304833" expanded="true" signature="16444:16446" placeholder="{...}" />
                   </folding>
@@ -293,8 +273,8 @@
           <file leaf-file-name="column_left.php" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/catalog/controller/common/column_left.php">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.05711086">
-                  <caret line="211" column="29" selection-start-line="211" selection-start-column="29" selection-end-line="211" selection-end-column="29" />
+                <state vertical-scroll-proportion="0.88577825">
+                  <caret line="221" column="1" selection-start-line="221" selection-start-column="1" selection-end-line="221" selection-end-column="1" />
                   <folding />
                 </state>
               </provider>
@@ -389,8 +369,8 @@
         <option value="$PROJECT_DIR$/catalog/view/theme/default/template/common/column_left.tpl" />
         <option value="$PROJECT_DIR$/admin/view/template/common/footer.tpl" />
         <option value="$PROJECT_DIR$/admin/view/stylesheet/stylesheet.css" />
-        <option value="$PROJECT_DIR$/catalog/controller/common/column_left.php" />
         <option value="$PROJECT_DIR$/admin/view/javascript/common.js" />
+        <option value="$PROJECT_DIR$/catalog/controller/common/column_left.php" />
       </list>
     </option>
   </component>
@@ -751,6 +731,46 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="catalog" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="autonext.dev" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="autonext.dev" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="catalog" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controller" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="autonext.dev" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="autonext.dev" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="catalog" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controller" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="common" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1406,14 +1426,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/catalog/controller/common/column_left.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.05711086">
-          <caret line="211" column="29" selection-start-line="211" selection-start-column="29" selection-end-line="211" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/system/modification/admin/model/catalog/category.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1542,11 +1554,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/admin/view/javascript/common.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9336235">
-          <caret line="695" column="0" selection-start-line="695" selection-start-column="0" selection-end-line="695" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.28618065">
+          <caret line="660" column="9" selection-start-line="660" selection-start-column="9" selection-end-line="660" selection-end-column="9" />
           <folding>
             <marker date="1444357304833" expanded="true" signature="16444:16446" placeholder="{...}" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/catalog/controller/common/column_left.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.88577825">
+          <caret line="221" column="1" selection-start-line="221" selection-start-column="1" selection-end-line="221" selection-end-column="1" />
+          <folding />
         </state>
       </provider>
     </entry>
