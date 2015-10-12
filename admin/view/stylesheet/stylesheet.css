@@ -36,11 +36,7 @@ h1, h2, h3, h4, h5, h6, p {
 	color: #999999;
 	font-size: 11px;
 	padding: 0px;
-<<<<<<< HEAD
-	margin: 0px;	
-=======
 	margin: 0px;
->>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 }
 .breadcrumb li:last-child a {
 	color: #1e91cf;
@@ -52,11 +48,7 @@ h1, h2, h3, h4, h5, h6, p {
 	content: "/";
 	font-family: FontAwesome;
 	color: #BBBBBB;
-<<<<<<< HEAD
-	padding: 0 5px;	
-=======
 	padding: 0 5px;
->>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 }
 a:hover, a:focus {
 	text-decoration: none;
@@ -212,11 +204,7 @@ span.hidden-xs, span.hidden-sm, span.hidden-md, span.hidden-lg {
 }
 #menu > li > a {
 	color: #C4C4C4;
-<<<<<<< HEAD
-	font-size: 14px;	
-=======
 	font-size: 14px;
->>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 	padding-left: 13px;
 	border-bottom: 1px solid #585858;
 }
@@ -240,11 +228,7 @@ span.hidden-xs, span.hidden-sm, span.hidden-md, span.hidden-lg {
 	font-family: FontAwesome;
 	margin-left: 10px;
 	margin-right: 10px;
-<<<<<<< HEAD
-	transition: margin ease 0.5s;	
-=======
 	transition: margin ease 0.5s;
->>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 }
 #menu li li a:hover:before {
 	margin-right: 20px;
@@ -393,11 +377,7 @@ div.required .control-label:not(span):before, td.required:before {
 	margin-left: 4px;
 }
 fieldset legend {
-<<<<<<< HEAD
-	padding-bottom: 5px;	
-=======
 	padding-bottom: 5px;
->>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 }
 
 input[type="radio"], input[type="checkbox"] {
@@ -491,20 +471,12 @@ input[type="checkbox"]:checked::after, .checkbox input[type="checkbox"]:checked:
 	position: relative;
 }
 .panel-heading h3 i {
-<<<<<<< HEAD
-	margin-right: 8px;	
-=======
 	margin-right: 8px;
->>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 	-webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 .panel-heading i {
 	font-size: 16px;
-<<<<<<< HEAD
-	font-weight: 500;	
-=======
 	font-weight: 500;
->>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 }
 .panel-heading h3 {
 	font-size: 16px;
@@ -574,11 +546,7 @@ input[type="checkbox"]:checked::after, .checkbox input[type="checkbox"]:checked:
 	color: #FFF;
 }
 .tile .tile-heading .pull-right {
-<<<<<<< HEAD
-	transition: all 1s;	
-=======
 	transition: all 1s;
->>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 	opacity: 0.7;
 }
 .tile:hover .tile-heading .pull-right {
@@ -587,11 +555,7 @@ input[type="checkbox"]:checked::after, .checkbox input[type="checkbox"]:checked:
 .tile-body {
 	padding: 15px;
 	color: #FFFFFF;
-<<<<<<< HEAD
-	line-height: 48px;	
-=======
 	line-height: 48px;
->>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 }
 .tile .tile-body i {
 	font-size: 50px;
@@ -611,11 +575,9 @@ input[type="checkbox"]:checked::after, .checkbox input[type="checkbox"]:checked:
 }
 #column-left.active #stats {
 	display: block;
-<<<<<<< HEAD
-} 
-=======
+
 }
->>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
+
 #stats {
 	display: none;
 	border-radius: 2px;
@@ -634,11 +596,8 @@ input[type="checkbox"]:checked::after, .checkbox input[type="checkbox"]:checked:
 	color: #9d9d9d;
 	padding: 5px 10px;
 	border-bottom: 1px dotted #373737;
-<<<<<<< HEAD
 } 
-=======
-}
->>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
+
 #stats div:first-child {
 	margin-bottom: 4px;
 }
@@ -743,21 +702,13 @@ input[type="checkbox"]:checked::after, .checkbox input[type="checkbox"]:checked:
 	position: fixed;
 	top:50%;
 	left: 50%;
-<<<<<<< HEAD
-	width: 100px;
-	height: 100px;
-	background-image: url("../image/loader.png");
-	background-color: #00b3ee;
-	color:#fff;
-	padding:20px 10px 20px 30px;
-=======
 	width: 200px;
 	height: 100px;
 	text-align: center;
 	background-color: #006081;
 	color:#fff;
 	padding:5px;
->>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
 	border:1px solid #eee;
 	box-shadow: 0 2px 2px #dddddd;
+	z-index:3
 }

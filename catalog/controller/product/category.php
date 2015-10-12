@@ -514,4 +514,18 @@ class ControllerProductCategory extends Controller {
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}
+	public function searchApiResult(){
+		$json = array();
+
+		$this->load->model('catalog/category');
+		if (isset($this->request->post['data'])) {
+			$data = json_decode(html_entity_decode($this->request->post['data']));
+			/*$action = $data->action;
+			$list = $data->list;
+			$result = $this->model_catalog_category->putListItems($list);*/
+		}
+		$json['123'] = json_decode(html_entity_decode($this->request->post['data']));
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
+	}
 }

@@ -52,4 +52,8 @@ Please donate via PayPal to donate@opencart.com
 
 <!-- Theme created by Welford Media for OpenCart 2.0 www.welfordmedia.co.uk -->
 <div id="loader"></div>
+<div id="notificCatalogAuto">
+  <div class="close">x</div>
+  <div class="body"></div>
+</div>
 </body></html>

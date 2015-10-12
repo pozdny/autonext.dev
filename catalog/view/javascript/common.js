@@ -491,6 +491,7 @@ $(document).delegate('.agree', 'click', function(e) {
 // ajax catalog */
 $(function(){
 	window.loader = $("#loader");
+	window.notification = $("#notificCatalogAuto");
 	window.Catalog = new Catalog();
 
 });
@@ -498,6 +499,7 @@ $(function(){
 var Catalog = function(){
 	var requestUrl = 'https://api2.autotrade.su?json',
 		requestUrl2 = 'index.php?route=product/category/getApiData',
+		requestUrl3 = 'index.php?route=product/category/searchApiResult',
 		login = 'brylev.pavel@inbox.ru',
 		password = '140191a',
 		salt = '1>6)/MI~{J',
@@ -506,7 +508,8 @@ var Catalog = function(){
 	var htmlCElems = {
 		apiContent:     $('#content'),
 		placeTo:        $('#content').find('h1'),
-		buttonSearch:   $('#searchItems'),
+		buttonSearch:   '#searchItems',
+		buttonCloseN:   notification.find('.close'),
 		buttonCategory: $('.getSectionsList'),
 		buttonSection:  '.getSubSectionsList',
 		itemsSection:  '.getItemsByCatalog'
@@ -532,8 +535,18 @@ var Catalog = function(){
 		});
 		$(htmlCElems.apiContent).on('click', htmlCElems.itemsSection, function(e){
 			$(this).toggleClass('active');
-			//var item_id = $(this).data("key");
+			});
+		$(htmlCElems.apiContent).on('click', htmlCElems.buttonSearch, function(e){
+			var items = $('.getItemsByCatalog.active'); console.log(items.length);
+			var items_arr = [];
+			$.each(items, function(){
+				items_arr.push($(this).data("key"));
+			});
+			_this.getItemsByCatalog(items_arr);
 
+		});
+		htmlCElems.buttonCloseN.on('click', function(e){
+			elemHide($(this).parent());
 		});
 
 	};
@@ -599,13 +612,68 @@ var Catalog = function(){
 			elemHide(loader);
 		});
 	};
+	this.getItemsByCatalog = function(items){
+		var catalog_id = $(htmlCElems.apiContent).data('catalog_id'),
+			section_id = $(htmlCElems.apiContent).data('section_id');
+
+		console.log(items);
+		var request = {
+			"auth_key":hash,
+			"method": "getItemsByCatalog",
+			"params":{
+				"catalog_id":catalog_id,
+				"section_id":section_id,
+				"subsection_ids":items,
+				"filter_part_types":[],
+				"filter_brands":[],
+				"filter_names":[],
+				"orderBy":"",
+				"orderDirection":"",
+				"page":"",
+				"limit":"",
+				"with_stocks":0
+			},
+			"search_requests":"1"
+		};
+		var data = 'data=' + JSON.stringify(request);
+		$.ajax({
+			url:requestUrl,
+			data: data,
+			beforeSend: function () {
+				elemShow(loader);
+			},
+			success: function (data) {
+				if (data["code"] > 0) {
+					elemShow(notification, data["message"] + " <br>Попробуйте еще раз!");
+					setTimeout(function () {
+						elemHide(notification);
+					}, 2500);
+				}
+				else {
+					console.log('aaa');
+					var request = {
+						"catalog_id": catalog_id,
+						"section_id": section_id,
+						"action": "showResult",
+						"list": data
+					};
+					ajaxFunc(requestUrl3, request);
+				}
+				$('body,html').animate({scrollTop:0},800);
+			},
+			error: function (obj, err) {
+				console.log(err);
+			}
+		}).done(function () {
+			elemHide(loader);
+
+		});
+	};
 	this.pushBody = function(body){
 		if (!(body instanceof BodySection)) {
 			return;
 		}
 		htmlCElems.placeTo.after(body.getBody());
-
-
 	};
 	_this.startAction();
 };
@@ -639,6 +707,9 @@ var BodySection = function(options){
 	this.response = options['response'];
     this.parent_name = this.response['parent_name'];
 	this.parent_id = this.response['parent_id'];
+	if(this.response['parent_section_id']){
+		this.parent_section_id = this.response['parent_section_id'];
+	}
 	this.sections = this.response['sections'];
 	this.getBody = function(){
 		var body = $(htmlMsgElems.sectionMain),
@@ -652,8 +723,9 @@ var BodySection = function(options){
 			$('#content').data('catalog_id', this.parent_id);
 		}
 		else if(parentLength == 2){
-			textChoose = "Выберите подраздел:";
+			textChoose = 'Выберите подраздел: <span class="small-grey">(можно выбрать сразу несколько)';
 			photo = htmlMsgElems.photoElem;
+			$('#content').data('section_id', this.parent_section_id);
 		}
 		$.each(this.parent_name, function(ind, val){
 			breadcrumb
@@ -666,7 +738,6 @@ var BodySection = function(options){
 			if(parentLength == 1){
 				sectionBody
 					.append($(htmlMsgElems.sectionElem).attr("data-key", data_key)
-						.append(href)
 						.append($('<h5>')
 							.append($('<strong>')
 								.append(val.name)))
@@ -707,43 +778,39 @@ var BodySection = function(options){
 function elemHide(obj){
 	obj.animate(
 		{
-			opacity: 0
+			opacity: 0,
+			display: "none",
 		},
 		500,
 		function(){
-			obj.css("display", "none");
+			obj.find('.body').empty();
 		}
 	);
-	obj.text('');
 }
 function elemShow(obj, txt){
 	obj.css("display", "block");
 	obj.animate({ opacity: 1 }, 500);
 	if(txt){
-		obj.text(txt);
+		var body = obj.find('.body'); console.log(body);
+		body.append(txt);
 	}
 }
 
-ajaxFunc = function(requestUrl, arrayList){
+ajaxFunc = function(requestUrl, request){
 	$.ajaxSetup({
 		url:requestUrl,
 		dataType:"json",
 		type: "POST"
 	});
-	var request = {
-		"action":"putMainCategory",
-		"list": arrayList
-	};
 	var data = "data=" + JSON.stringify(request);
 	$.ajax({
 		data: data,
 		success: function(data)
 		{
 			if(data !=''){
-
 				//_this.getSectionsList();
-
 			}
+			console.log(data);
 		},
 		error: function(obj, err)
 		{

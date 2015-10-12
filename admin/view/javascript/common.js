@@ -543,7 +543,6 @@ var Catalog = function() {
 			},
 			success: function (data) {
 				if (data != '') {
-
 					//var data = data['photo'].replace(re, "&amp;"); console.log(data);
 					$.map(data, function(val){
 						var re = /&/g;
