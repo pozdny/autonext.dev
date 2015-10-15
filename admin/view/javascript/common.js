@@ -576,50 +576,37 @@ var Catalog = function() {
 			elemHide(notification);
 		});
 	};
-	/*this.getItemsByCatalog = function(){
+	this.getAllowedAndChoosenStoragesList = function(){
 	 var request = {
-	 "auth_key":hash,
-	 "method": "getItemsByCatalog",
-	 "params":{
-	 "catalog_id":"68",
-	 "section_id":"113",
-	 "subsection_ids":["6437"],
-	 "filter_part_types":[],
-	 "filter_brands":[],
-	 "filter_names":[],
-	 "orderBy":"",
-	 "orderDirection":"",
-	 "page":1,
-	 "limit":20,
-	 "with_stocks":0
-	 },
-	 "search_requests":"1"
+	 	"auth_key":hash,
+	 	"method": "getAllowedAndChoosenStoragesList",
 	 };
 	 var data = 'data=' + JSON.stringify(request);
-
 	 $.ajax({
-	 data: data,
+		 url: requestUrl,
+	 	 data: data,
 	 success: function(data)
 	 {
-	 if(data !=''){
-	 //console.log(data);
-
-	 }
+		 if(data !=''){
+			 var request = {
+				 "action": "putStoragesList",
+				 "list": data,
+			 };
+			 ajaxFunc(requestUrl2, request);
+		 }
 	 },
 	 error: function(obj, err)
 	 {
-	 console.log(err);
+	 	console.log(err);
 	 }
 	 });
-	 };*/
+	 };
 	//this.getStorageList();
 
 	buttonStart.on('click', function(){
 		_this.getCatalogList();
-
+		_this.getAllowedAndChoosenStoragesList();
 	});
-
-
 
 };
 

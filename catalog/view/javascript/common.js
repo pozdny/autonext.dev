@@ -493,9 +493,10 @@ $(function(){
 	window.loader = $("#loader");
 	window.notification = $("#notificCatalogAuto");
 	window.Catalog = new Catalog();
-
 });
-
+var Settings = {
+	delayedTime: 1000
+};
 var Catalog = function(){
 	var requestUrl = 'https://api2.autotrade.su?json',
 		requestUrl2 = 'index.php?route=product/category/getApiData',
@@ -504,7 +505,9 @@ var Catalog = function(){
 		password = '140191a',
 		salt = '1>6)/MI~{J',
 		hash = hex_md5(login + hex_md5(password) + salt),
-		_this = this;
+		_this = this,
+		href = '';
+
 	var htmlCElems = {
 		apiContent:     $('#content'),
 		placeTo:        $('#content').find('h1'),
@@ -512,7 +515,8 @@ var Catalog = function(){
 		buttonCloseN:   notification.find('.close'),
 		buttonCategory: $('.getSectionsList'),
 		buttonSection:  '.getSubSectionsList',
-		itemsSection:  '.getItemsByCatalog'
+		itemsSection:  '.getItemsByCatalog',
+		sectionBody:   '#sectionBody'
 	};
 	$.ajaxSetup({
 		url:requestUrl2,
@@ -520,35 +524,89 @@ var Catalog = function(){
 		dataType:"json",
 		cache:false
 	});
+    this.getHref = function(){
+		var arrUrl = getUrlVars(),
+			host = location.host,
+			pathname = location.pathname,
+			protocol = location.protocol + '//',
+			href = '',
+			pathname   = location.pathname;
+		    var arrUrl = getUrlVars();
+		   if(arrUrl.length > 1){
+			   var search = arrUrl[0];
+			   history.pushState(null, null, search);
+			   href = search;
+			}
+		    else{
+				href = protocol + host + pathname;
+			}
+			return href;
+	};
+	this.getCurrentHref = function(){
+		var arrUrl = getUrlVars(),
+			host = location.host,
+			pathname = location.pathname,
+			protocol = location.protocol + '//',
+			href = '',
+			pathname   = location.pathname;
+		var arrUrl = getUrlVars();
+			href = protocol + host + pathname;
 
+		return href;
+	};
 	this.startAction = function(){
-
 		$(htmlCElems.buttonCategory).on('click', function(e){
 			e.preventDefault();
 			var catalog_id = $(this).data("key");
+			history.pushState(null, null, href + '&apisearch=catalogs&catalog_id=' + catalog_id);
 			_this.getSectionsList(catalog_id);
 
 		});
 		$(htmlCElems.apiContent).on('click', htmlCElems.buttonSection, function(e){
 			var section_id = $(this).data("key");
+			var href = _this.getCurrentHref(); console.log(href);
+			history.pushState(null, null, href + '&section_id=' + section_id);
 			_this.getSubSectionsList(section_id);
 		});
 		$(htmlCElems.apiContent).on('click', htmlCElems.itemsSection, function(e){
-			$(this).toggleClass('active');
+			var that = $(this);
+			var act = false;
+			that.toggleClass('active');
+			$.each($(htmlCElems.itemsSection), function(ind){
+				if($(this).hasClass('active')){
+					act = true;
+				}
 			});
+			if(act){
+				$.each($(htmlCElems.itemsSection), function(ind){
+					if(!$(this).hasClass('active')){
+						$(this).addClass('disabled').attr({disabled:true});
+					}
+				});
+				$(htmlCElems.buttonSearch).removeClass('disabled').attr({disabled:false});
+			}
+			else{
+				$.each($(htmlCElems.itemsSection), function(ind){
+					$(this).removeClass('disabled').attr({disabled:false});
+				});
+				$(htmlCElems.buttonSearch).addClass('disabled').attr({disabled:true});
+			}
+		});
 		$(htmlCElems.apiContent).on('click', htmlCElems.buttonSearch, function(e){
-			var items = $('.getItemsByCatalog.active'); console.log(items.length);
+			var items = $('.getItemsByCatalog.active');
 			var items_arr = [];
 			$.each(items, function(){
 				items_arr.push($(this).data("key"));
 			});
-			_this.getItemsByCatalog(items_arr);
-
+			var item_id = items_arr[0];
+			$(htmlCElems.apiContent).data('item_id', item_id);
+			var href = _this.getCurrentHref();
+			history.pushState(null, null, href + '&subsection_id=' + item_id);
+			_this.getItemsByCatalog(items_arr, 1, 0);
 		});
 		htmlCElems.buttonCloseN.on('click', function(e){
 			elemHide($(this).parent());
 		});
-
 	};
 	this.getSectionsList = function(catalog_id){
 		var  request = {
@@ -557,6 +615,7 @@ var Catalog = function(){
 		};
 		var data = 'data=' + JSON.stringify(request);
 		$.ajax({
+			url:requestUrl2,
 			data: data,
 			beforeSend: function () {
 				elemShow(loader);
@@ -586,6 +645,7 @@ var Catalog = function(){
 		};
 		var data = 'data=' + JSON.stringify(request); //console.log(data);
 		$.ajax({
+			url:requestUrl2,
 			data: data,
 			beforeSend: function () {
 				elemShow(loader);
@@ -612,30 +672,99 @@ var Catalog = function(){
 			elemHide(loader);
 		});
 	};
-	this.getItemsByCatalog = function(items){
-		var catalog_id = $(htmlCElems.apiContent).data('catalog_id'),
-			section_id = $(htmlCElems.apiContent).data('section_id');
+	this.getItemsByCatalog = function(items, page, num){
+		if(!num){
+			var catalog_id = $(htmlCElems.apiContent).data('catalog_id'),
+				section_id = $(htmlCElems.apiContent).data('section_id');
+			var request = {
+				"auth_key":hash,
+				"method": "getItemsByCatalog",
+				"params":{
+					"catalog_id":catalog_id,
+					"section_id":section_id,
+					"subsection_ids":items,
+					"filter_part_types":[],
+					"filter_brands":[],
+					"filter_names":[],
+					"orderBy":"",
+					"orderDirection":"",
+					"page":page,
+					"limit":"20",
+					"with_stocks":0
+				},
+				"search_requests":"1"
+			};
+			var data = 'data=' + JSON.stringify(request);
+			$.ajax({
+				url:requestUrl,
+				data: data,
+				beforeSend: function () {
+					elemShow(loader);
+				},
+				success: function (data) {
+					if (data["code"] > 0) {
+						elemShow(notification, data["message"] + " <br>Попробуйте еще раз!");
+						setTimeout(function () {
+							elemHide(notification);
+						}, 2500);
+					}
+					else {
+						if(data['total'] > 20){
+							var page_total = Math.ceil(data['total']/20);
 
-		console.log(items);
+							_this.getItemsByCatalog(items, page, page_total);
+						}
+						else{
+							if(data['items']){
+								var items_arr = data['items'];
+								$.map(items_arr, function(ind, val){
+									var re = /&/g;
+									if(ind.photo){
+										var str = ind.photo;
+										ind.photo = ind.photo.replace(re, " ");
+									}
+									return ind;
+								});
+								var request = {
+									"catalog_id": catalog_id,
+									"section_id": section_id,
+									"action": "putData",
+									"list": data
+								};
+								ajaxFunc(requestUrl3, request);
+
+								console.log(items_arr);
+								var mass = {};
+								$.each(items_arr, function(ind, val){
+									mass[val['article']] = "1";
+								});
+								delayedGet(mass, Settings.delayedTime);
+							}
+						}
+					}
+					$('body,html').animate({scrollTop:0},800);
+				},
+				error: function (obj, err) {
+					console.log(err);
+				}
+			});
+		}
+		else{
+			--num;
+			page++;
+			_this.getItemsByCatalog(items, page, num);
+		}
+	};
+	this.getStocksAndPrices = function(list){
 		var request = {
 			"auth_key":hash,
-			"method": "getItemsByCatalog",
-			"params":{
-				"catalog_id":catalog_id,
-				"section_id":section_id,
-				"subsection_ids":items,
-				"filter_part_types":[],
-				"filter_brands":[],
-				"filter_names":[],
-				"orderBy":"",
-				"orderDirection":"",
-				"page":"",
-				"limit":"",
-				"with_stocks":0
-			},
-			"search_requests":"1"
+			"method": "getStocksAndPrices",
+			"params": {
+				"storages": 0,
+				"items": list
+			}
 		};
-		var data = 'data=' + JSON.stringify(request);
+		var data = 'data=' + JSON.stringify(request); //console.log(data);
 		$.ajax({
 			url:requestUrl,
 			data: data,
@@ -650,23 +779,40 @@ var Catalog = function(){
 					}, 2500);
 				}
 				else {
-					console.log('aaa');
-					var request = {
-						"catalog_id": catalog_id,
-						"section_id": section_id,
-						"action": "showResult",
-						"list": data
-					};
-					ajaxFunc(requestUrl3, request);
+					_this.putItemsQuantity(data["items"]);
 				}
-				$('body,html').animate({scrollTop:0},800);
+
+			},
+			error: function (obj, err) {
+				console.log(err);
+			}
+		});
+	};
+	this.putItemsQuantity = function(list){
+		var request = {
+			"action": "putItemsQuantity",
+			"list": list
+		};
+		var data = 'data=' + JSON.stringify(request); //console.log(data);
+		$.ajax({
+			url:requestUrl3,
+			data: data,
+			beforeSend: function () {
+				elemShow(loader);
+			},
+			success: function (data) {
+				console.log('0000');
+				var catalog_id = $(htmlCElems.apiContent).data('catalog_id'),
+					section_id = $(htmlCElems.apiContent).data('section_id'),
+					item_id = $(htmlCElems.apiContent).data('item_id');
+				$(htmlCElems.sectionBody).load('index.php?route=product/category/api_search_result&catalog_id=' + catalog_id + '&section_id=' + section_id + '&subsection_id=' + item_id);
+
 			},
 			error: function (obj, err) {
 				console.log(err);
 			}
 		}).done(function () {
 			elemHide(loader);
-
 		});
 	};
 	this.pushBody = function(body){
@@ -676,6 +822,8 @@ var Catalog = function(){
 		htmlCElems.placeTo.after(body.getBody());
 	};
 	_this.startAction();
+	href = _this.getHref();
+	getURLVar();
 };
 /* ========================================================================
  * BODY_SECTIONS
@@ -698,7 +846,7 @@ var BodySection = function(options){
 		sectionElem: '<div class="col-xs-4 getSubSectionsList list-group-item"></div>',
 		itemsElem: '<div class="col-xs-4 getItemsByCatalog list-group-item"></div>',
 		photoElem:'<i class="fa fa-camera"></li>',
-		searchElem:'<button class="btn btn-warning" id="searchItems">Найти</button>'
+		searchElem:'<button class="btn btn-warning disabled" id="searchItems" disabled="disabled">Найти</button>'
 
 	};
 	var sectionMain = $('#sectionMain');
@@ -723,7 +871,8 @@ var BodySection = function(options){
 			$('#content').data('catalog_id', this.parent_id);
 		}
 		else if(parentLength == 2){
-			textChoose = 'Выберите подраздел: <span class="small-grey">(можно выбрать сразу несколько)';
+			//textChoose = 'Выберите подраздел: <span class="small-grey">(можно выбрать сразу несколько)</span>';
+			textChoose = 'Выберите подраздел:';
 			photo = htmlMsgElems.photoElem;
 			$('#content').data('section_id', this.parent_section_id);
 		}
@@ -791,7 +940,7 @@ function elemShow(obj, txt){
 	obj.css("display", "block");
 	obj.animate({ opacity: 1 }, 500);
 	if(txt){
-		var body = obj.find('.body'); console.log(body);
+		var body = obj.find('.body');
 		body.append(txt);
 	}
 }
@@ -808,7 +957,12 @@ ajaxFunc = function(requestUrl, request){
 		success: function(data)
 		{
 			if(data !=''){
-				//_this.getSectionsList();
+				if (data['redirect']) {
+					var re = /&amp;/g;
+					data['redirect'] = data['redirect'].replace(re, "&");
+
+					//location = data['redirect'];
+				}
 			}
 			console.log(data);
 		},
@@ -821,8 +975,24 @@ ajaxFunc = function(requestUrl, request){
 function isError(replay){
 	return (replay.error != null);
 }
-$(document).ready(function() {
+// параметры строки запроса браузера
+getUrlVars = function (){
+	var vars = [], hash;
+	var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+	for(var i = 0; i < hashes.length; i++)
+	{
+		hash = hashes[i].split('=');
+		vars.push(hash[0]);
+		vars[hash[0]] = hash[1];
+	}
+	window.token = vars['token'];
+	return vars;
+};
 
-});
-
+delayedGet = function(data, time){
+	setTimeout(function(){
+			window.Catalog.getStocksAndPrices(data);
+		//console.log(param);
+	}, time)
+};
 

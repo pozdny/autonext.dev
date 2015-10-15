@@ -1,6 +1,9 @@
 <?php
 class ControllerProductCategory extends Controller {
 	public function index() {
+		/*if (isset($this->request->get['apisearch'])) {
+			$this->indexSearch();
+		}*/
 		$this->load->language('product/category');
 
 		$this->load->model('catalog/category');
@@ -509,8 +512,6 @@ class ControllerProductCategory extends Controller {
 			}
 
 		}
-
-
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}
@@ -519,13 +520,49 @@ class ControllerProductCategory extends Controller {
 
 		$this->load->model('catalog/category');
 		if (isset($this->request->post['data'])) {
-			$data = json_decode(html_entity_decode($this->request->post['data']));
-			/*$action = $data->action;
-			$list = $data->list;
-			$result = $this->model_catalog_category->putListItems($list);*/
+			$data =  json_decode(html_entity_decode($this->request->post['data']));
+			$action = $data->action;
+			if($action == 'putData'){
+				$catalog_id = $data->catalog_id;
+				$section_id = $data->section_id;
+				$list = $data->list;
+				$result = $this->model_catalog_category->putListItems($catalog_id, $section_id, $list);
+			}
+			elseif($action == 'putItemsQuantity'){
+				$list = $data->list;
+				$result = $this->model_catalog_category->putItemsQuantity($list);
+			}
 		}
-		$json['123'] = json_decode(html_entity_decode($this->request->post['data']));
+		$json['action'] = $action;
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
+	}
+
+	public function api_search_result()
+	{
+		$this->response->setOutput($this->indexSearch());
+	}
+	public function indexSearch(){
+		$data = array();
+		$this->load->model('catalog/category');
+		$catalog_id = $section_id = $subsection_id = '';
+		//echo '<pre>';print_r($this->request->get);echo '</pre>';
+
+		if (isset($this->request->get['catalog_id'])) {
+			$catalog_id = $this->request->get['catalog_id'];
+		}
+		if (isset($this->request->get['section_id'])) {
+			$section_id = $this->request->get['section_id'];
+		}
+		if (isset($this->request->get['subsection_id'])) {
+			$subsection_id = $this->request->get['subsection_id'];
+		}
+		$result = $this->model_catalog_category->getItems($catalog_id, $section_id, $subsection_id);
+echo '<pre>'; print_r($result); echo '</pre>';
+		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/product/api_search_result.tpl')) {
+			return $this->load->view($this->config->get('config_template') . '/template/product/api_search_result.tpl', $data);
+		} else {
+			return $this->load->view('default/template/product/api_search_result.tpl', $data);
+		}
 	}
 }

@@ -379,6 +379,21 @@ class ModelCatalogCategory extends Model {
 			}
 		}
 	}
+	public function putStoragesList($data){
+		$this->db->query("DELETE FROM " . DB_PREFIX . "storages_auto");
+		foreach($data as $storage){
+			$id      = $storage->id;
+			$legend  = $storage->legend;
+			$name    = $storage->name;
+			$name_en = $storage->name_en;
+			$address = $storage->address;
+			$geo     = $storage->geo;
+			$for_realization = $storage->for_realization;
+			$for_delivery = $storage->for_delivery;
+			$for_stocks = $storage->for_stocks;
+			$this->db->query("INSERT INTO `" . DB_PREFIX . "storages_auto` SET storage_id = '" . (int)$id . "', `legend` = '" . $legend . "', `name` ='".$name."', `name_en` ='".$name_en."', `address` ='".$address."', `geo` ='".$geo."', `for_realization` ='".(int)$for_realization."', `for_delivery` ='".(int)$for_delivery."', `for_stocks` ='".(int)$for_stocks."'");
+		}
+	}
 	public function deleteCetegorySectionName(){
 		$this->db->query("DELETE FROM " . DB_PREFIX . "category_section_auto");
 		$this->db->query("DELETE FROM " . DB_PREFIX . "category_to_section_auto");

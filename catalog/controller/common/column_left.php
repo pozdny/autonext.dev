@@ -18,7 +18,13 @@ class ControllerCommonColumnLeft extends Controller {
 
             $layout_id = $this->model_catalog_category->getCategoryLayoutId(end($path));//echo '<pre>'; print_r(end($path)); echo '</pre>';
         }
+        if (($route == 'product/category/api_search_result') && isset($this->request->get['path'])) {
+            $this->load->model('catalog/category');
 
+            $path = explode('_', (string)$this->request->get['path']); //echo '<pre>'; print_r($path); echo '</pre>';
+
+            $layout_id = $this->model_catalog_category->getCategoryLayoutId(end($path));//echo '<pre>'; print_r(end($path)); echo '</pre>';
+        }
         /*if ($route == 'product/product' && isset($this->request->get['product_id'])) {
             $this->load->model('catalog/product');
             $path = explode('_', (string)$this->request->get['path']); //echo '<pre>'; print_r($path); echo '</pre>';
@@ -68,7 +74,7 @@ class ControllerCommonColumnLeft extends Controller {
         //categories
 
         $data['categories'] = array();
-        if ($route == 'product/category'){
+        if ($route == 'product/category' || $route = 'product/category/api_search_result'){
             $this->load->model('catalog/category');
 
             if (isset($this->request->get['path'])) {

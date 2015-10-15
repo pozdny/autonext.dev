@@ -3,21 +3,20 @@
 	[IMPORT SCSS]
 	==================
 */
-#content .chooseInfo {
-  font-size: 1.3em;
-  margin-bottom: 10px;
-  display: block;
-  font-weight: bold; }
 #content #sectionMain .breadcrumb li {
   font-size: 0.9em; }
 #content #sectionMain .chooseInfo {
   width: 200px;
   float: left;
-  line-height: 1.2; }
+  line-height: 1.2;
+  text-align: left;
+  font-size: 1.3em;
+  margin-bottom: 15px;
+  display: block;
+  font-weight: bold; }
   #content #sectionMain .chooseInfo .small-grey {
     font-size: 0.6em;
-    color: #999;
-    text-align: left; }
+    color: #999; }
 #content #sectionMain #searchItems {
   float: right;
   margin-bottom: 5px;
@@ -31,11 +30,15 @@
   #content #sectionMain #sectionBody .list-group-item {
     background-color: #f9f9f9;
     border: 1px solid #ddd;
-    cursor: pointer;
     margin-bottom: -1px;
     margin-right: -1px;
     padding: 20px 25px;
-    min-height: 75px; }
+    min-height: 75px;
+    cursor: pointer; }
+    #content #sectionMain #sectionBody .list-group-item.getItemsByCatalog.disabled {
+      background: #F3F3F3;
+      pointer-events: none;
+      opacity: 0.65; }
     #content #sectionMain #sectionBody .list-group-item:first-child {
       -webkit-border-radius: 0;
       -moz-border-radius: 0;

@@ -321,21 +321,6 @@ class ModelCatalogCategory extends Model {
 
 		return $query->row['total'];
 	}
-	public function putMainCategoryAuto($data){
-<<<<<<< HEAD
-		echo '<pre>'; print_r($data); echo '</pre>';
-
-=======
-		$sql = "SELECT * FROM " . DB_PREFIX . "download_files df WHERE df.category_id = ".(int)$data;
->>>>>>> 5503fd6a8d21a27b8f4d7092f48940e272a1d080
-		/*$query = $this->db->query($sql);
-
-		if ($query->num_rows) {
-			return $query->rows;
-		} else {
-			return 0;
-		}*/
-	}
 
 
 }

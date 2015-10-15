@@ -142,5 +142,79 @@ class ModelCatalogCategory extends Model {
 
 	}
 
+	public function putListItems($catalog_id, $section_id, $data){
 
+		if(isset($data->part_types)){
+			$part_types = $data->part_types;
+			foreach($part_types as $key=>$value){
+				$section_section_id = $key;
+				$name = $value;
+				$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "category_section_section_auto css  WHERE css.section_id = '" . $section_section_id ."'");
+				if (!$query->num_rows) {
+					$this->db->query("INSERT INTO " . DB_PREFIX . "category_section_section_auto SET `section_id` = '" . (int)$section_section_id . "',`parent_id` = '" . (int)$catalog_id . "',  `name` = '" . $name . "'");
+				}
+				else{
+					$this->db->query("UPDATE " . DB_PREFIX . "category_section_section_auto SET `parent_id` = '" . (int)$catalog_id . "',  `name` = '" . $name . "' WHERE section_id = '" . $section_section_id ."'");
+
+				}
+			}
+ 		}
+		if(isset($data->items)){
+			$items = $data->items;
+			foreach($items as $key=>$value){
+				$article = $key;
+				$item_id = $value->id;
+				$name = $value->name;
+				$cat_id = $value->cat_id;
+				$part_type_id = $value->part_type_id;
+				$model_id = $value->model_id;
+				$manufacturer_id = $value->manufacturer_id;
+				if($value->photo){
+					$photo = str_replace(' ', '&amp;', $value->photo);
+				}
+				else{
+					$photo = '';
+				}
+				$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "category_items_auto cia  WHERE cia.item_id = '" . $item_id ."'");
+				if (!$query->num_rows) {
+					$this->db->query("INSERT INTO " . DB_PREFIX . "category_items_auto SET `item_id` = '" . (int)$item_id . "',  `name` = '" . $name . "', `cat_id` = '" . (int)$cat_id . "', `part_type_id` = '" . (int)$part_type_id . "' ,`model_id` = '" . (int)$model_id . "', `manufacturer_id` = '" . (int)$manufacturer_id . "', `photo` = '" . $photo . "' , `article` = '" . (int)$article . "'");
+				}
+				else{
+					$this->db->query("UPDATE " . DB_PREFIX . "category_items_auto SET `name` = '" . $name . "', `cat_id` = '" . (int)$cat_id . "', `part_type_id` = '" . (int)$part_type_id . "' ,`model_id` = '" . (int)$model_id . "', `manufacturer_id` = '" . (int)$manufacturer_id . "', `photo` = '" . $photo . "' , `article` = '" . (int)$article . "' WHERE item_id = '" . $item_id ."' ");
+				}
+			}
+		}
+
+	}
+	public function putItemsQuantity($data){
+		foreach($data as $key=>$value){
+			$item_id = $value->id;
+			$stocks = $value->stocks;
+			foreach($stocks as $key2=>$stock){
+				$storage_id = $stock->id;
+				$quantity = $stock->quantity_unpacked;
+				if($quantity == ' '){
+					$quantity = '+';
+				}
+				$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "items_auto_quantity iqa  WHERE iqa.item_id = '" . $item_id ."' AND iqa.storage_id = '" . $storage_id ."'");
+				if (!$query->num_rows) {
+					$this->db->query("INSERT INTO " . DB_PREFIX . "items_auto_quantity SET `item_id` = '" . (int)$item_id . "',  `storage_id` = '" . (int)$storage_id . "', `quantity` = '" . $quantity . "'");
+				}
+				else{
+					$this->db->query("UPDATE " . DB_PREFIX . "items_auto_quantity SET `quantity` = '" . $quantity . "' WHERE item_id = '" . $item_id ."' AND storage_id = '" . $storage_id ."'");
+				}
+			}
+		}
+	}
+	public function getItems($catalog_id, $section_id, $item_id){
+		$query = $this->db->query("SELECT *, ca.name as category_name, cssa.name as part_type FROM " . DB_PREFIX . "category_items_auto caa LEFT JOIN " . DB_PREFIX . "category_auto ca ON (caa.cat_id = ca.category_id) LEFT JOIN " . DB_PREFIX . "category_section_section_auto cssa ON (caa.part_type_id = cssa.section_id) WHERE caa.cat_id = '" . $catalog_id ."' AND caa.manufacturer_id = '" . $section_id ."' AND caa.model_id = '" . $item_id ."' ORDER BY caa.part_type_id");
+		if ($query->num_rows) {
+			foreach ($query->rows as $result) {
+				$product_data[$result['part_type_id']][] = $result;
+			}
+			return $product_data;
+		} else {
+			return 0;
+		}
+	}
 }

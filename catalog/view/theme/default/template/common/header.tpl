@@ -110,8 +110,6 @@
 
   </div>
 </header>
-
-
   <nav id="menu"  style="width: 100%;">
       <div class="container">
     <div class="navbar-header"><span id="category" class="visible-xs">Меню</span>

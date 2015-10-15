@@ -1507,6 +1507,10 @@ class ControllerCatalogProduct extends Controller {
 				$catalog_id = $data->catalog_id;
 				$this->model_catalog_category->putCategorySubSectionName($categories, $catalog_id);
 			}
+			elseif($action == 'putStoragesList'){
+				$storages = $data->list;
+				$this->model_catalog_category->putStoragesList($storages);
+			}
 
 		}
 		$json['action'] = $action;
