@@ -38,6 +38,7 @@
         padding: 20px 25px;
         min-height: 75px;
         cursor: pointer;
+        text-align: left;
 
         &.getItemsByCatalog{
           &.disabled{
@@ -85,6 +86,37 @@
       }
       .rowBody{
         clear:both;
+      }
+      .result-table{
+        table{
+          thead{
+            tr > th{
+              font-size: 0.8em;
+            }
+
+          }
+          a{
+            &.section-photo{
+              &:focus{
+                color:#450b09;
+              }
+              &:hover{
+                color:#23527c;
+              }
+            }
+          }
+          & > tbody > tr > td{
+            text-align: center;
+          }
+          & > tbody > tr > td:nth-child(11){
+            text-align: right;
+            width:80px;
+            min-width:80px;
+          }
+          & > tbody > tr > td:nth-child(-n+2){
+            text-align: left;
+          }
+        }
       }
     }
   }

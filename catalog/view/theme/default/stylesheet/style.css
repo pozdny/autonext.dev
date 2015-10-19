@@ -34,7 +34,8 @@
     margin-right: -1px;
     padding: 20px 25px;
     min-height: 75px;
-    cursor: pointer; }
+    cursor: pointer;
+    text-align: left; }
     #content #sectionMain #sectionBody .list-group-item.getItemsByCatalog.disabled {
       background: #F3F3F3;
       pointer-events: none;
@@ -66,6 +67,20 @@
         color: #fff; }
   #content #sectionMain #sectionBody .rowBody {
     clear: both; }
+  #content #sectionMain #sectionBody .result-table table thead tr > th {
+    font-size: 0.8em; }
+  #content #sectionMain #sectionBody .result-table table a.section-photo:focus {
+    color: #450b09; }
+  #content #sectionMain #sectionBody .result-table table a.section-photo:hover {
+    color: #23527c; }
+  #content #sectionMain #sectionBody .result-table table > tbody > tr > td {
+    text-align: center; }
+  #content #sectionMain #sectionBody .result-table table > tbody > tr > td:nth-child(11) {
+    text-align: right;
+    width: 80px;
+    min-width: 80px; }
+  #content #sectionMain #sectionBody .result-table table > tbody > tr > td:nth-child(-n+2) {
+    text-align: left; }
 
 #notificCatalogAuto {
   display: none;
@@ -313,6 +328,7 @@ header {
   left: 50%;
   width: 100px;
   height: 100px;
+  z-index: 99;
   background-image: url("../image/loader.png");
   background-color: transparent;
   -webkit-animation: loaderSprite 1s steps(20, end) infinite;

@@ -17,9 +17,21 @@
     <?php } else { ?>
     <?php $class = 'col-sm-12'; ?>
     <?php } ?>
-    <div id="content" class="<?php echo $class; ?>">
+    <?php
+      if($catalog_id) {
+         $data_catalog_id = 'data-catalog_Id="'.$catalog_id.'"';
+      }
+      if($section_id) {
+         $data_section_id = 'data-section_Id="'.$section_id.'"';
+      }
+    ?>
+    <div id="content" class="<?php echo $class; ?>" <?php echo $data_catalog_id; ?> <?php echo $data_section_id; ?>>
       <?php echo $content_top; ?>
+      <?php if($apisearch){ ?>
+          <?php echo $apisearch; ?>
+      <?php } else { ?>
       <h1><?php echo $heading_title; ?></h1>
+
         <?php if($catone){  ?>
             <?php if ($form_order) { ?>
             <?php echo $form_order; ?>
@@ -184,8 +196,11 @@
         <div class="pull-right"><a href="<?php echo $continue; ?>" class="btn btn-primary"><?php echo $button_continue; ?></a></div>
       </div>
       <?php } ?>
-      <?php echo $content_bottom; ?></div>
-    <?php echo $column_right; ?></div>
+      <?php echo $content_bottom; ?>
+      <?php }  ?>
+    </div>
+    <?php echo $column_right; ?>
+  </div>
 </div>
 <?php echo $footer; ?>
 <script type="text/javascript"><!--

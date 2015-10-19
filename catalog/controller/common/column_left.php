@@ -154,8 +154,8 @@ class ControllerCommonColumnLeft extends Controller {
                             foreach($categories as $category){
                                 $data['categories'][] = array(
                                     'category_id'  => $category['category_id'],
-                                    'name'  => $category['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_catalog_product->getTotalProducts($filter_data) . ')' : ''),
-                                    'href'  => $this->url->link('product/category', 'path=' . $category['parent_id'] . '_' . $category['category_id'] . $url),
+                                    'name'  => $category['name'],
+                                    'href'  => $this->url->link('product/category', 'path=' . $category['parent_id'] . '&apisearch=catalogs&catalog_id=' . $category['category_id']),
                                     'children'    => '',
                                     'active'   => in_array($category['category_id'], $parts),
                                 );

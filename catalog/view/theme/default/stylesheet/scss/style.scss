@@ -323,6 +323,7 @@ header{
   left: 50%;
   width: 100px;
   height: 100px;
+  z-index: 99;
   background-image: url("../image/loader.png");
   background-color: transparent;
   -webkit-animation: loaderSprite 1s steps(20, end) infinite;

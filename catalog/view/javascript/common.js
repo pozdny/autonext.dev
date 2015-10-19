@@ -506,11 +506,14 @@ var Catalog = function(){
 		salt = '1>6)/MI~{J',
 		hash = hex_md5(login + hex_md5(password) + salt),
 		_this = this,
-		href = '';
+		href = '',
+		lastDelayedTime = null,
+		itemsArr = {};
 
 	var htmlCElems = {
 		apiContent:     $('#content'),
-		placeTo:        $('#content').find('h1'),
+		//placeTo:        $('#content').find('h1'),
+		placeTo:        $('#content'),
 		buttonSearch:   '#searchItems',
 		buttonCloseN:   notification.find('.close'),
 		buttonCategory: $('.getSectionsList'),
@@ -557,6 +560,7 @@ var Catalog = function(){
 	this.startAction = function(){
 		$(htmlCElems.buttonCategory).on('click', function(e){
 			e.preventDefault();
+			href = _this.getHref();
 			var catalog_id = $(this).data("key");
 			history.pushState(null, null, href + '&apisearch=catalogs&catalog_id=' + catalog_id);
 			_this.getSectionsList(catalog_id);
@@ -602,7 +606,7 @@ var Catalog = function(){
 			$(htmlCElems.apiContent).data('item_id', item_id);
 			var href = _this.getCurrentHref();
 			history.pushState(null, null, href + '&subsection_id=' + item_id);
-			_this.getItemsByCatalog(items_arr, 1, 0);
+			_this.getItemsByCatalog(items_arr, 1);
 		});
 		htmlCElems.buttonCloseN.on('click', function(e){
 			elemHide($(this).parent());
@@ -654,15 +658,7 @@ var Catalog = function(){
 				if(isError(data)) return false;
 				var body = new BodySection(data);
 				_this.pushBody(body);
-				var sectionPhoto = $('.section-photo');
-				$.each(sectionPhoto, function(){
-					$(this).magnificPopup({
-						type:'image',
-					});
-					$(this).on('click', function(e){
-						e.preventDefault();
-					})
-				});
+				_this.attachPhoto();
 				$('body,html').animate({scrollTop:0},800);
 			},
 			error: function (obj, err) {
@@ -672,99 +668,28 @@ var Catalog = function(){
 			elemHide(loader);
 		});
 	};
-	this.getItemsByCatalog = function(items, page, num){
-		if(!num){
-			var catalog_id = $(htmlCElems.apiContent).data('catalog_id'),
-				section_id = $(htmlCElems.apiContent).data('section_id');
-			var request = {
-				"auth_key":hash,
-				"method": "getItemsByCatalog",
-				"params":{
-					"catalog_id":catalog_id,
-					"section_id":section_id,
-					"subsection_ids":items,
-					"filter_part_types":[],
-					"filter_brands":[],
-					"filter_names":[],
-					"orderBy":"",
-					"orderDirection":"",
-					"page":page,
-					"limit":"20",
-					"with_stocks":0
-				},
-				"search_requests":"1"
-			};
-			var data = 'data=' + JSON.stringify(request);
-			$.ajax({
-				url:requestUrl,
-				data: data,
-				beforeSend: function () {
-					elemShow(loader);
-				},
-				success: function (data) {
-					if (data["code"] > 0) {
-						elemShow(notification, data["message"] + " <br>Попробуйте еще раз!");
-						setTimeout(function () {
-							elemHide(notification);
-						}, 2500);
-					}
-					else {
-						if(data['total'] > 20){
-							var page_total = Math.ceil(data['total']/20);
-
-							_this.getItemsByCatalog(items, page, page_total);
-						}
-						else{
-							if(data['items']){
-								var items_arr = data['items'];
-								$.map(items_arr, function(ind, val){
-									var re = /&/g;
-									if(ind.photo){
-										var str = ind.photo;
-										ind.photo = ind.photo.replace(re, " ");
-									}
-									return ind;
-								});
-								var request = {
-									"catalog_id": catalog_id,
-									"section_id": section_id,
-									"action": "putData",
-									"list": data
-								};
-								ajaxFunc(requestUrl3, request);
-
-								console.log(items_arr);
-								var mass = {};
-								$.each(items_arr, function(ind, val){
-									mass[val['article']] = "1";
-								});
-								delayedGet(mass, Settings.delayedTime);
-							}
-						}
-					}
-					$('body,html').animate({scrollTop:0},800);
-				},
-				error: function (obj, err) {
-					console.log(err);
-				}
-			});
-		}
-		else{
-			--num;
-			page++;
-			_this.getItemsByCatalog(items, page, num);
-		}
-	};
-	this.getStocksAndPrices = function(list){
+	this.getItemsByCatalog = function(items, page){
+		var catalog_id = $(htmlCElems.apiContent).data('catalog_id'),
+			section_id = $(htmlCElems.apiContent).data('section_id');
 		var request = {
 			"auth_key":hash,
-			"method": "getStocksAndPrices",
-			"params": {
-				"storages": 0,
-				"items": list
-			}
+			"method": "getItemsByCatalog",
+			"params":{
+				"catalog_id":catalog_id,
+				"section_id":section_id,
+				"subsection_ids":items,
+				"filter_part_types":[],
+				"filter_brands":[],
+				"filter_names":[],
+				"orderBy":"",
+				"orderDirection":"",
+				"page":page,
+				"limit":"20",
+				"with_stocks":0
+			},
+			"search_requests":"1"
 		};
-		var data = 'data=' + JSON.stringify(request); //console.log(data);
+		var data = 'data=' + JSON.stringify(request);
 		$.ajax({
 			url:requestUrl,
 			data: data,
@@ -779,7 +704,84 @@ var Catalog = function(){
 					}, 2500);
 				}
 				else {
-					_this.putItemsQuantity(data["items"]);
+					if(data['items']){
+						var items_arr = data['items'];
+						var page_total = Math.ceil(data['total']/20),
+							delayed_time;
+						$.map(items_arr, function(ind, val){
+							var re = /&/g;
+							if(ind.photo){
+								var str = ind.photo;
+								ind.photo = ind.photo.replace(re, " ");
+							}
+							return ind;
+						});
+						var request = {
+							"catalog_id": catalog_id,
+							"section_id": section_id,
+							"action": "putData",
+							"list": data
+						};
+						ajaxFunc(requestUrl3, request);
+						console.log(items_arr);
+						var mass = {};
+						$.each(items_arr, function(ind, val){
+							mass[val['article']] = "1";
+						});
+						//delayedGet(mass, Settings.delayedTime);
+						if(page_total > 1){ console.log('yes');
+							$.each(items_arr, function(ind, val){
+								itemsArr[val['article']] = "1";
+							});
+							var length = page_total; console.log(length);
+							for(var i = 1; i < page_total; i++ ){
+								length--;
+								if (lastDelayedTime == null) {
+									delayed_time = Settings.delayedTime;
+								}
+								else {
+									delayed_time = lastDelayedTime;
+								}
+								lastDelayedTime = lastDelayedTime + 3500;//console.log(lastDelayedTime);
+								delayedGet(items, delayed_time, i+1, length, 'itemsCicle');
+							}
+						}
+						else{
+							delayedGet(mass,  Settings.delayedTime, 0, 0);
+						}
+					}
+				}
+				$('body,html').animate({scrollTop:0},800);
+			},
+			error: function (obj, err) {
+				console.log(err);
+			}
+		});
+
+
+	};
+	this.getStocksAndPrices = function(list, length){
+		var request = {
+			"auth_key":hash,
+			"method": "getStocksAndPrices",
+			"params": {
+				"storages": 0,
+				"items": list
+			}
+		};
+		var data = 'data=' + JSON.stringify(request); //console.log(data);
+		$.ajax({
+			url:requestUrl,
+			data: data,
+			success: function (data) {
+				if (data["code"] > 0) {
+					elemShow(notification, data["message"] + " <br>Попробуйте еще раз!");
+					setTimeout(function () {
+						elemHide(notification);
+					}, 2500);
+				}
+				else {
+					_this.putItemsQuantity(data["items"], length);
 				}
 
 			},
@@ -788,7 +790,7 @@ var Catalog = function(){
 			}
 		});
 	};
-	this.putItemsQuantity = function(list){
+	this.putItemsQuantity = function(list, length){
 		var request = {
 			"action": "putItemsQuantity",
 			"list": list
@@ -797,32 +799,119 @@ var Catalog = function(){
 		$.ajax({
 			url:requestUrl3,
 			data: data,
-			beforeSend: function () {
-				elemShow(loader);
-			},
 			success: function (data) {
-				console.log('0000');
-				var catalog_id = $(htmlCElems.apiContent).data('catalog_id'),
-					section_id = $(htmlCElems.apiContent).data('section_id'),
-					item_id = $(htmlCElems.apiContent).data('item_id');
-				$(htmlCElems.sectionBody).load('index.php?route=product/category/api_search_result&catalog_id=' + catalog_id + '&section_id=' + section_id + '&subsection_id=' + item_id);
+				if(!length){
+					_this.loadBody();
+				}
 
 			},
 			error: function (obj, err) {
 				console.log(err);
 			}
 		}).done(function () {
-			elemHide(loader);
+			if (!length) {
+				elemHide(loader);
+			}
+		});
+	};
+	this.getItemsByCatalogCicle = function(items, page, length){
+		var catalog_id = $(htmlCElems.apiContent).data('catalog_id'),
+			section_id = $(htmlCElems.apiContent).data('section_id');
+		var request = {
+			"auth_key":hash,
+			"method": "getItemsByCatalog",
+			"params":{
+				"catalog_id":catalog_id,
+				"section_id":section_id,
+				"subsection_ids":items,
+				"filter_part_types":[],
+				"filter_brands":[],
+				"filter_names":[],
+				"orderBy":"",
+				"orderDirection":"",
+				"page":page,
+				"limit":"20",
+				"with_stocks":0
+			},
+			"search_requests":"1"
+		};
+		var data = 'data=' + JSON.stringify(request);
+		 $.ajax({
+			url:requestUrl,
+			data: data,
+			beforeSend: function () {
+				elemShow(loader);
+			},
+			success: function (data) {
+				if (data["code"] > 0) {
+					elemShow(notification, data["message"] + " <br>Попробуйте еще раз!");
+					setTimeout(function () {
+						elemHide(notification);
+					}, 2500);
+				}
+				else {
+					if(data['items']){
+						var items_arr = data['items'];
+						var request = {
+							"catalog_id": catalog_id,
+							"section_id": section_id,
+							"action": "putData",
+							"list": data
+						};
+						ajaxFunc(requestUrl3, request);
+						itemsArr = {};
+						$.each(items_arr, function(ind, val){
+							itemsArr[val['article']] = "1";
+						});
+					}
+				}
+
+			},
+			error: function (obj, err) {
+				console.log(err);
+			}
+		 }).done(function () {
+			  delayedGet(itemsArr, Settings.delayedTime, 0, 1);
+			  if (length == 1) {console.log(itemsArr);
+			  	  lastDelayedTime = null;
+			  	  elemHide(loader);
+				  _this.loadBody();
+			  }
+		 });
+
+	};
+	this.loadBody = function(){
+		var catalog_id = $(htmlCElems.apiContent).data('catalog_id'),
+		 section_id = $(htmlCElems.apiContent).data('section_id'),
+		 item_id = $(htmlCElems.apiContent).data('item_id');
+		 $(htmlCElems.sectionBody).load('index.php?route=product/category/api_search_result&catalog_id=' + catalog_id + '&section_id=' + section_id + '&subsection_id=' + item_id,
+		 function(){
+		 _this.attachPhoto();
+		 }
+
+		 );
+	};
+	this.attachPhoto = function(){
+		var sectionPhoto = $('.section-photo');
+		$.each(sectionPhoto, function(){
+			$(this).magnificPopup({
+				type:'image',
+			});
+			$(this).on('click', function(e){
+				e.preventDefault();
+			})
 		});
 	};
 	this.pushBody = function(body){
 		if (!(body instanceof BodySection)) {
 			return;
 		}
-		htmlCElems.placeTo.after(body.getBody());
+		htmlCElems.placeTo.empty();
+		//htmlCElems.placeTo.after(body.getBody());
+		htmlCElems.placeTo.append(body.getBody());
 	};
 	_this.startAction();
-	href = _this.getHref();
+	//href = _this.getHref();
 	getURLVar();
 };
 /* ========================================================================
@@ -837,6 +926,7 @@ var BodySection = function(options){
 		title: "Автозапчасти"
 	};
 	var htmlMsgElems = {
+		title: '<h1></h1>',
 		sectionMain: '<div id="sectionMain"></div>',
 		breadCrumbElem: '<ol class="breadcrumb"></ol>',
 		breadCrumbElemLi: '<li class="active"></li>',
@@ -845,7 +935,7 @@ var BodySection = function(options){
 		rowElem: '<div class="row rowBody"></div>',
 		sectionElem: '<div class="col-xs-4 getSubSectionsList list-group-item"></div>',
 		itemsElem: '<div class="col-xs-4 getItemsByCatalog list-group-item"></div>',
-		photoElem:'<i class="fa fa-camera"></li>',
+		photoElem:'<i class="fa fa-camera"></i>',
 		searchElem:'<button class="btn btn-warning disabled" id="searchItems" disabled="disabled">Найти</button>'
 
 	};
@@ -860,6 +950,7 @@ var BodySection = function(options){
 	}
 	this.sections = this.response['sections'];
 	this.getBody = function(){
+		var title = $(htmlMsgElems.title).append(this.title);
 		var body = $(htmlMsgElems.sectionMain),
 			breadcrumb = $(htmlMsgElems.breadCrumbElem),
 			sectionBody = $(htmlMsgElems.rowElem),
@@ -911,6 +1002,7 @@ var BodySection = function(options){
 			var searchButton = htmlMsgElems.searchElem;
 		}
         body
+			.append(title)
 			.append(breadcrumb)
 			.append($(htmlMsgElems.sectionBody)
 				.append($(htmlMsgElems.spanElem).addClass('chooseInfo')
@@ -989,9 +1081,14 @@ getUrlVars = function (){
 	return vars;
 };
 
-delayedGet = function(data, time){
+delayedGet = function(data, time, page, length, str){
 	setTimeout(function(){
-			window.Catalog.getStocksAndPrices(data);
+		if(str == 'itemsCicle'){
+			window.Catalog.getItemsByCatalogCicle(data, page, length);
+		}
+		else{
+			window.Catalog.getStocksAndPrices(data, length);
+		}
 		//console.log(param);
 	}, time)
 };

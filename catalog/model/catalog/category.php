@@ -4,7 +4,15 @@ class ModelCatalogCategory extends Model {
 		$query = $this->db->query("SELECT DISTINCT *, ua.keyword as alias  FROM " . DB_PREFIX . "category c LEFT JOIN " . DB_PREFIX . "category_description cd ON (c.category_id = cd.category_id) LEFT JOIN " . DB_PREFIX . "url_alias ua ON (ua.query LIKE 'category_id=".$category_id."') LEFT JOIN " . DB_PREFIX . "category_to_store c2s ON (c.category_id = c2s.category_id) WHERE c.category_id = '" . (int)$category_id . "' AND cd.language_id = '" . (int)$this->config->get('config_language_id') . "' AND c2s.store_id = '" . (int)$this->config->get('config_store_id') . "' AND c.status = '1'");
 		return $query->row;
 	}
+	public function getCategoryByName($keyword) {
+		$query = $this->db->query("SELECT DISTINCT * FROM " . DB_PREFIX . "url_alias WHERE keyword LIKE '".$keyword."'");
+		if ($query->num_rows) {
+			return $query->row['query'];
+		} else {
+			return 0;
+		}
 
+	}
 	public function getCategories($parent_id = 0) {
 		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "category c LEFT JOIN " . DB_PREFIX . "category_description cd ON (c.category_id = cd.category_id) LEFT JOIN " . DB_PREFIX . "category_to_store c2s ON (c.category_id = c2s.category_id) WHERE c.parent_id = '" . (int)$parent_id . "' AND cd.language_id = '" . (int)$this->config->get('config_language_id') . "' AND c2s.store_id = '" . (int)$this->config->get('config_store_id') . "'  AND c.status = '1' ORDER BY c.sort_order, LCASE(cd.name)");
 		return $query->rows;
@@ -12,6 +20,10 @@ class ModelCatalogCategory extends Model {
 	public function getCategoriesAuto($cat_id = array()) {
 		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "category_auto");
 		return $query->rows;
+	}
+	public function getCategoryAutoById($category_id) {
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "category_auto WHERE category_id=".$category_id);
+		return $query->row;
 	}
 	public function getCategoryFilters($category_id) {
 		$implode = array();
@@ -107,6 +119,16 @@ class ModelCatalogCategory extends Model {
 		}
 
 	}
+	public function getSectionAutoById($section_id){
+		$sql = "SELECT * FROM " . DB_PREFIX . "category_section_auto csa WHERE csa.category_id = ".(int)$section_id;
+		$query = $this->db->query($sql);
+		if ($query->num_rows) {
+			return $query->row;
+		} else {
+			return 0;
+		}
+
+	}
 	public function getSubSectionsList($catalog_id, $section_id){
 		$sql = "SELECT * FROM " . DB_PREFIX . "category_auto ca WHERE ca.category_id = ".(int)$catalog_id;
 		$query = $this->db->query($sql);
@@ -139,7 +161,6 @@ class ModelCatalogCategory extends Model {
 		} else {
 			return 0;
 		}
-
 	}
 
 	public function putListItems($catalog_id, $section_id, $data){
@@ -171,6 +192,7 @@ class ModelCatalogCategory extends Model {
 				$manufacturer_id = $value->manufacturer_id;
 				if($value->photo){
 					$photo = str_replace(' ', '&amp;', $value->photo);
+					$photo = str_replace('#', '%23', $photo);
 				}
 				else{
 					$photo = '';
@@ -184,12 +206,12 @@ class ModelCatalogCategory extends Model {
 				}
 			}
 		}
-
 	}
 	public function putItemsQuantity($data){
 		foreach($data as $key=>$value){
 			$item_id = $value->id;
 			$stocks = $value->stocks;
+			$price = $value->price;
 			foreach($stocks as $key2=>$stock){
 				$storage_id = $stock->id;
 				$quantity = $stock->quantity_unpacked;
@@ -199,21 +221,76 @@ class ModelCatalogCategory extends Model {
 				$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "items_auto_quantity iqa  WHERE iqa.item_id = '" . $item_id ."' AND iqa.storage_id = '" . $storage_id ."'");
 				if (!$query->num_rows) {
 					$this->db->query("INSERT INTO " . DB_PREFIX . "items_auto_quantity SET `item_id` = '" . (int)$item_id . "',  `storage_id` = '" . (int)$storage_id . "', `quantity` = '" . $quantity . "'");
+
 				}
 				else{
 					$this->db->query("UPDATE " . DB_PREFIX . "items_auto_quantity SET `quantity` = '" . $quantity . "' WHERE item_id = '" . $item_id ."' AND storage_id = '" . $storage_id ."'");
 				}
 			}
+			$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "category_items_auto cia  WHERE cia.item_id = '" . $item_id ."'");
+			if ($query->num_rows) {
+				$this->db->query("UPDATE " . DB_PREFIX . "category_items_auto SET `price` = '" . $price . "' WHERE item_id = '" . $item_id ."'");
+			}
 		}
 	}
 	public function getItems($catalog_id, $section_id, $item_id){
-		$query = $this->db->query("SELECT *, ca.name as category_name, cssa.name as part_type FROM " . DB_PREFIX . "category_items_auto caa LEFT JOIN " . DB_PREFIX . "category_auto ca ON (caa.cat_id = ca.category_id) LEFT JOIN " . DB_PREFIX . "category_section_section_auto cssa ON (caa.part_type_id = cssa.section_id) WHERE caa.cat_id = '" . $catalog_id ."' AND caa.manufacturer_id = '" . $section_id ."' AND caa.model_id = '" . $item_id ."' ORDER BY caa.part_type_id");
+		$product_data = $item_data = array();
+		$model_name = $model_photo = '';
+		$query = $this->db->query("SELECT *, ca.name as category_name, cssa.name as part_type, csubsa.name as model_name, csubsa.photo as model_photo, caa.name as item_name, caa.photo as item_photo  FROM " . DB_PREFIX . "category_items_auto caa LEFT JOIN " . DB_PREFIX . "category_auto ca ON (caa.cat_id = ca.category_id) LEFT JOIN " . DB_PREFIX . "category_section_section_auto cssa ON (caa.part_type_id = cssa.section_id) LEFT JOIN " . DB_PREFIX . "category_subsection_auto csubsa ON (csubsa.category_id = caa.model_id) WHERE caa.cat_id = '" . $catalog_id ."' AND caa.manufacturer_id = '" . $section_id ."' AND caa.model_id = '" . $item_id ."' ORDER BY caa.part_type_id");
 		if ($query->num_rows) {
 			foreach ($query->rows as $result) {
-				$product_data[$result['part_type_id']][] = $result;
+				$model_name = $result['model_name'];
+				$model_photo = $result['model_photo'];
+				$part_type = $result['part_type'];
+				if($part_type == ''){
+					$part_type = 'Вид запасной части не указан';
+				}
+				$query2 = $this->db->query("SELECT *, sa.name as storage_name FROM " . DB_PREFIX . "items_auto_quantity iaq LEFT JOIN " . DB_PREFIX . "category_items_auto cia ON (iaq.item_id = cia.item_id) LEFT JOIN " . DB_PREFIX . "storages_auto sa ON (iaq.storage_id = sa.storage_id) WHERE iaq.item_id = '" . $result["item_id"] ."'");
+				if ($query2->num_rows) {
+					$storage_quantity = array();
+					foreach ($query2->rows as $result2){
+						$storage_quantity[] = array(
+							"storage_id" => $result2["storage_id"],
+							"storage_name" => $result2["storage_name"],
+							"legend" => $result2["legend"],
+							"address" => $result2["address"],
+							"storage_name_en" => $result2["name_en"],
+							"quantity" => $result2["quantity"]
+						);
+					}
+				}
+				$items_data[$part_type][] = array(
+					"item_id" => $result["item_id"],
+					"name"    => $result["item_name"],
+					"category_id"  => $result["category_id"],
+					"section_id"  => $result["section_id"],
+					"part_type_id" => $result["part_type_id"],
+					"model_id" => $result["model_id"],
+					"manufacturer_id" => $result["manufacturer_id"],
+					"photo" => $result["item_photo"],
+					"price" => $result["price"] ." р.",
+					"part_type_name" => $result["part_type"],
+					"storage_quantity" => $storage_quantity
+
+				);
+
 			}
-			return $product_data;
+			$product_data = array(
+				"model_name" => $model_name,
+				"model_photo" => $model_photo,
+				"items" => $items_data
+			);
+ 			return $product_data;
 		} else {
+			return 0;
+		}
+	}
+	public function getStorages(){
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "storages_auto");
+		if ($query->num_rows) {
+			return $query->rows;
+		}
+		else{
 			return 0;
 		}
 	}
