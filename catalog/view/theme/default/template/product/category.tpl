@@ -21,8 +21,14 @@
       if($catalog_id) {
          $data_catalog_id = 'data-catalog_Id="'.$catalog_id.'"';
       }
+      else{
+        $data_catalog_id = '';
+      }
       if($section_id) {
          $data_section_id = 'data-section_Id="'.$section_id.'"';
+      }
+      else{
+        $data_section_id = '';
       }
     ?>
     <div id="content" class="<?php echo $class; ?>" <?php echo $data_catalog_id; ?> <?php echo $data_section_id; ?>>

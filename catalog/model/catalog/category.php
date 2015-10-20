@@ -259,21 +259,25 @@ class ModelCatalogCategory extends Model {
 						);
 					}
 				}
-				$items_data[$part_type][] = array(
-					"item_id" => $result["item_id"],
-					"name"    => $result["item_name"],
-					"category_id"  => $result["category_id"],
-					"section_id"  => $result["section_id"],
-					"part_type_id" => $result["part_type_id"],
-					"model_id" => $result["model_id"],
-					"manufacturer_id" => $result["manufacturer_id"],
-					"photo" => $result["item_photo"],
-					"price" => $result["price"] ." р.",
-					"part_type_name" => $result["part_type"],
-					"storage_quantity" => $storage_quantity
+				else{
+					$storage_quantity = null;
+				}
+				if(sizeof($storage_quantity) > 0){
+					$items_data[$part_type][] = array(
+						"item_id" => $result["item_id"],
+						"name"    => $result["item_name"],
+						"category_id"  => $result["category_id"],
+						"section_id"  => $result["section_id"],
+						"part_type_id" => $result["part_type_id"],
+						"model_id" => $result["model_id"],
+						"manufacturer_id" => $result["manufacturer_id"],
+						"photo" => $result["item_photo"],
+						"price" => $result["price"] ." р.",
+						"part_type_name" => $result["part_type"],
+						"storage_quantity" => $storage_quantity
 
-				);
-
+					);
+				}
 			}
 			$product_data = array(
 				"model_name" => $model_name,

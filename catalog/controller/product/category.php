@@ -561,7 +561,8 @@ class ControllerProductCategory extends Controller {
 		if($get == 'yes'){
 			$data = array();
 			$data['breadcrumbs_api'] = array();
-			$sections = $subsections = $chooseInfo = '';
+			$sections = $subsections = $items = $chooseInfo = '';
+			$storages = array();
 			$category_info = $this->model_catalog_category->getCategory($category_id);
 			if (isset($this->request->get['catalog_id'])) {
 				$catalog_id = $this->request->get['catalog_id'];
@@ -577,7 +578,12 @@ class ControllerProductCategory extends Controller {
 			}else{
 				$section_auto_info = '';
 			}
-
+			if (isset($this->request->get['subsection_id'])) {
+				$subsection_id = $this->request->get['subsection_id'];
+				//$subsection_auto_info = $this->model_catalog_category->getSectionAutoById($section_id);
+			}else{
+				//$section_auto_info = '';
+			}
 			if($category_info){
 				$data['heading_title'] = $category_info['name'];
 			}
@@ -603,11 +609,19 @@ class ControllerProductCategory extends Controller {
 				$results = $this->model_catalog_category->getSectionsList($catalog_id);//echo '<pre>'; print_r($results); echo '</pre>';
 				$sections = $results['sections'];
 			}
-			elseif(isset($this->request->get['catalog_id']) && isset($this->request->get['section_id'])){
+			elseif(isset($this->request->get['catalog_id']) && isset($this->request->get['section_id']) && !isset($this->request->get['subsection_id'])){
 				$chooseInfo = "Выберите подраздел:";
 				$sections = '';
 				$results = $this->model_catalog_category->getSubSectionsList($catalog_id, $section_id);//echo '<pre>'; print_r($results); echo '</pre>';
 				$subsections = $results['sections'];
+			}
+			elseif(isset($this->request->get['catalog_id']) && isset($this->request->get['section_id']) && isset($this->request->get['subsection_id'])){
+				$sections = '';
+				$subsections = '';
+				$results = $this->model_catalog_category->getItems($catalog_id, $section_id, $subsection_id);//echo '<pre>'; print_r($results); echo '</pre>';
+				$items = $results;
+				//storages
+				$storages = $this->model_catalog_category->getStorages(); //echo '<pre>'; print_r($result); echo '</pre>';
 			}
 			else{
 				$sections = '';
@@ -615,6 +629,8 @@ class ControllerProductCategory extends Controller {
 			$data['chooseInfo'] = $chooseInfo;
 			$data['sections'] = $sections;
 			$data['subsections'] = $subsections;
+			$data['results'] = $items;
+			$data['storages'] = $storages;
 			if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/product/api_search_result_full.tpl')) {
 				return $this->load->view($this->config->get('config_template') . '/template/product/api_search_result_full.tpl', $data);
 			} else {

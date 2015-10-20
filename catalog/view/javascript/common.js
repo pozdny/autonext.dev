@@ -495,7 +495,8 @@ $(function(){
 	window.Catalog = new Catalog();
 });
 var Settings = {
-	delayedTime: 1000
+	delayedTime: 1000,
+	delayedTime2: 100
 };
 var Catalog = function(){
 	var requestUrl = 'https://api2.autotrade.su?json',
@@ -508,6 +509,7 @@ var Catalog = function(){
 		_this = this,
 		href = '',
 		lastDelayedTime = null,
+		lastDelayedTime2 = null,
 		itemsArr = {};
 
 	var htmlCElems = {
@@ -568,7 +570,7 @@ var Catalog = function(){
 		});
 		$(htmlCElems.apiContent).on('click', htmlCElems.buttonSection, function(e){
 			var section_id = $(this).data("key");
-			var href = _this.getCurrentHref(); console.log(href);
+			var href = _this.getCurrentHref();
 			history.pushState(null, null, href + '&section_id=' + section_id);
 			_this.getSubSectionsList(section_id);
 		});
@@ -604,8 +606,11 @@ var Catalog = function(){
 			});
 			var item_id = items_arr[0];
 			$(htmlCElems.apiContent).data('item_id', item_id);
-			var href = _this.getCurrentHref();
-			history.pushState(null, null, href + '&subsection_id=' + item_id);
+			var href = _this.getCurrentHref(); console.log(href);
+			var patt = new RegExp("subsection_id=" + item_id);
+			var res = patt.test(href);
+			console.log(res);
+			if(!res) history.pushState(null, null, href + '&subsection_id=' + item_id);
 			_this.getItemsByCatalog(items_arr, 1);
 		});
 		htmlCElems.buttonCloseN.on('click', function(e){
@@ -698,10 +703,11 @@ var Catalog = function(){
 			},
 			success: function (data) {
 				if (data["code"] > 0) {
-					elemShow(notification, data["message"] + " <br>Попробуйте еще раз!");
+					//console.log('error');
+					/*elemShow(notification, data["message"] + " <br>Попробуйте еще раз!");
 					setTimeout(function () {
 						elemHide(notification);
-					}, 2500);
+					}, 2500);*/
 				}
 				else {
 					if(data['items']){
@@ -723,28 +729,30 @@ var Catalog = function(){
 							"list": data
 						};
 						ajaxFunc(requestUrl3, request);
-						console.log(items_arr);
 						var mass = {};
 						$.each(items_arr, function(ind, val){
 							mass[val['article']] = "1";
 						});
 						//delayedGet(mass, Settings.delayedTime);
-						if(page_total > 1){ console.log('yes');
+						if(page_total > 1){
 							$.each(items_arr, function(ind, val){
 								itemsArr[val['article']] = "1";
 							});
-							var length = page_total; console.log(length);
+							var time = Settings.delayedTime2 + 2000;console.log(time);
+							delayedGet(itemsArr,  time, 0, 1);
+							var length = page_total;
 							for(var i = 1; i < page_total; i++ ){
-								length--;
+							 length--;
 								if (lastDelayedTime == null) {
-									delayed_time = Settings.delayedTime;
+									delayed_time = time + 1000;
 								}
 								else {
 									delayed_time = lastDelayedTime;
 								}
-								lastDelayedTime = lastDelayedTime + 3500;//console.log(lastDelayedTime);
-								delayedGet(items, delayed_time, i+1, length, 'itemsCicle');
+							  lastDelayedTime = lastDelayedTime + 5000;//console.log(lastDelayedTime);
+							   delayedGet(items, delayed_time, i+1, length, 'itemsCicle');
 							}
+
 						}
 						else{
 							delayedGet(mass,  Settings.delayedTime, 0, 0);
@@ -758,9 +766,8 @@ var Catalog = function(){
 			}
 		});
 
-
 	};
-	this.getStocksAndPrices = function(list, length){
+	this.getStocksAndPrices = function(list, page, length){
 		var request = {
 			"auth_key":hash,
 			"method": "getStocksAndPrices",
@@ -775,13 +782,13 @@ var Catalog = function(){
 			data: data,
 			success: function (data) {
 				if (data["code"] > 0) {
-					elemShow(notification, data["message"] + " <br>Попробуйте еще раз!");
+					/*elemShow(notification, data["message"] + " <br>Попробуйте еще раз!");
 					setTimeout(function () {
 						elemHide(notification);
-					}, 2500);
+					}, 2500);*/
 				}
 				else {
-					_this.putItemsQuantity(data["items"], length);
+					_this.putItemsQuantity(data["items"], page, length);
 				}
 
 			},
@@ -790,7 +797,7 @@ var Catalog = function(){
 			}
 		});
 	};
-	this.putItemsQuantity = function(list, length){
+	this.putItemsQuantity = function(list, num, length){console.log(num);
 		var request = {
 			"action": "putItemsQuantity",
 			"list": list
@@ -803,15 +810,19 @@ var Catalog = function(){
 				if(!length){
 					_this.loadBody();
 				}
-
+				if(num == 1){
+					_this.loadBody();
+					elemHide(loader);
+				}
 			},
 			error: function (obj, err) {
 				console.log(err);
 			}
 		}).done(function () {
-			if (!length) {
+			if (!length ) {
 				elemHide(loader);
 			}
+
 		});
 	};
 	this.getItemsByCatalogCicle = function(items, page, length){
@@ -852,6 +863,15 @@ var Catalog = function(){
 				else {
 					if(data['items']){
 						var items_arr = data['items'];
+						var delayed_time;
+						$.map(items_arr, function(ind, val){
+							var re = /&/g;
+							if(ind.photo){
+								var str = ind.photo;
+								ind.photo = ind.photo.replace(re, " ");
+							}
+							return ind;
+						});
 						var request = {
 							"catalog_id": catalog_id,
 							"section_id": section_id,
@@ -863,6 +883,14 @@ var Catalog = function(){
 						$.each(items_arr, function(ind, val){
 							itemsArr[val['article']] = "1";
 						});
+						if (lastDelayedTime2 == null) {
+							delayed_time = Settings.delayedTime;
+						}
+						else {
+							delayed_time = lastDelayedTime2;
+						} console.log(delayed_time);
+						lastDelayedTime2 = lastDelayedTime2 + 500;
+						delayedGet(itemsArr, delayed_time, length, 1);
 					}
 				}
 
@@ -871,11 +899,10 @@ var Catalog = function(){
 				console.log(err);
 			}
 		 }).done(function () {
-			  delayedGet(itemsArr, Settings.delayedTime, 0, 1);
-			  if (length == 1) {console.log(itemsArr);
+			  if (length == 1) {
 			  	  lastDelayedTime = null;
-			  	  elemHide(loader);
-				  _this.loadBody();
+			  	  //elemHide(loader);
+				  //_this.loadBody();
 			  }
 		 });
 
@@ -1056,7 +1083,6 @@ ajaxFunc = function(requestUrl, request){
 					//location = data['redirect'];
 				}
 			}
-			console.log(data);
 		},
 		error: function(obj, err)
 		{
@@ -1087,7 +1113,7 @@ delayedGet = function(data, time, page, length, str){
 			window.Catalog.getItemsByCatalogCicle(data, page, length);
 		}
 		else{
-			window.Catalog.getStocksAndPrices(data, length);
+			window.Catalog.getStocksAndPrices(data, page, length);
 		}
 		//console.log(param);
 	}, time)
