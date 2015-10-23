@@ -47,9 +47,9 @@ class ModelCatalogCategory extends Model {
 			}
 		}
 
-
+		
 		if ($data['keyword']) {
-
+		
 			$this->db->query("INSERT INTO " . DB_PREFIX . "url_alias SET query = 'category_id=" . (int)$category_id . "', keyword = '" . $this->db->escape($data['keyword']) . "'");
 		}
 
@@ -317,87 +317,10 @@ class ModelCatalogCategory extends Model {
 
 		return $query->row['total'];
 	}
-
+	
 	public function getTotalCategoriesByLayoutId($layout_id) {
 		$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "category_to_layout WHERE layout_id = '" . (int)$layout_id . "'");
 
 		return $query->row['total'];
-	}
-	public function putMainCategoryAuto($data){
-		$sql = "SELECT * FROM " . DB_PREFIX . "url_alias ua WHERE ua.keyword LIKE 'avtozapchasti'";
-		$query = $this->db->query($sql);
-		$category_id_str = $query->row['query'];
-		$pos = strpos($category_id_str, '=');
-		$category_id = substr($category_id_str, $pos + 1);
-		$this->db->query("DELETE FROM " . DB_PREFIX . "category_auto");
-
-		foreach($data as $category){
-			$id = $category->id;
-			$category_name = $category->name;
-			$parent_name = 'avtozapchasti';
-			$this->db->query("INSERT INTO `" . DB_PREFIX . "category_auto` SET category_id = '" . (int)$id . "', `name` = '" . $category_name . "', `parent_id` = '" . (int)$category_id . "', `parent_name` = '" . $parent_name . "'");
-		}
-		if ($query->num_rows) {
-			return $data;
-		} else {
-			return 0;
-		}
-	}
-	public function putCategorySectionName($data){
-
-		foreach($data as $category){
-			$category_id = $category->id;
-			$category_name = $category->name;
-			$photo = $category->photo;
-			$parent_id = $category->parent_id;
-			$this->db->query("INSERT INTO `" . DB_PREFIX . "category_to_section_auto` SET category_section_id = '" . (int)$category_id . "', `parent_id` = '" . (int)$parent_id . "'");
-
-			$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "category_section_auto WHERE category_id = '" . (int)$category_id."'");
-			if (!$query->num_rows) {
-				$this->db->query("INSERT INTO `" . DB_PREFIX . "category_section_auto` SET category_id = '" . (int)$category_id . "', `name` = '" . $category_name . "', `photo` = '" . $photo . "'");
-			}
-		}
-	}
-	public function putCategorySubSectionName($data, $catalog_id){
-		foreach($data as $category){
-			$category_id   = $category->id;
-			$category_name = $category->name;
-			$code          = $category->code;
-			if($category->photo){
-				$photo = str_replace(' ', '&amp;', $category->photo);
-			}
-			else{
-				$photo = '';
-			}
-			$photo_preview = $category->photo_preview;
-			$parent_id     = $category->parent_id;
-			$this->db->query("INSERT INTO `" . DB_PREFIX . "category_to_subsection_auto` SET category_subsection_id = '" . (int)$category_id . "', `parent_id` = '" . (int)$parent_id . "', `catalog_id` ='".$catalog_id."'");
-
-			$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "category_subsection_auto WHERE category_id = '" . (int)$category_id."'");
-			if (!$query->num_rows) {
-				$this->db->query("INSERT INTO `" . DB_PREFIX . "category_subsection_auto` SET category_id = '" . (int)$category_id . "', `name` = '" . $category_name . "', `code` = '" . (int)$code . "', `photo` = '" . $photo . "', `photo_preview` = '" . $photo_preview . "'");
-			}
-		}
-	}
-	public function putStoragesList($data){
-		$this->db->query("DELETE FROM " . DB_PREFIX . "storages_auto");
-		foreach($data as $storage){
-			$id      = $storage->id;
-			$legend  = $storage->legend;
-			$name    = $storage->name;
-			$name_en = $storage->name_en;
-			$address = $storage->address;
-			$geo     = $storage->geo;
-			$for_realization = $storage->for_realization;
-			$for_delivery = $storage->for_delivery;
-			$for_stocks = $storage->for_stocks;
-			$this->db->query("INSERT INTO `" . DB_PREFIX . "storages_auto` SET storage_id = '" . (int)$id . "', `legend` = '" . $legend . "', `name` ='".$name."', `name_en` ='".$name_en."', `address` ='".$address."', `geo` ='".$geo."', `for_realization` ='".(int)$for_realization."', `for_delivery` ='".(int)$for_delivery."', `for_stocks` ='".(int)$for_stocks."'");
-		}
-	}
-	public function deleteCetegorySectionName(){
-		$this->db->query("DELETE FROM " . DB_PREFIX . "category_section_auto");
-		$this->db->query("DELETE FROM " . DB_PREFIX . "category_to_section_auto");
-		$this->db->query("DELETE FROM " . DB_PREFIX . "category_subsection_auto");
-		$this->db->query("DELETE FROM " . DB_PREFIX . "category_to_subsection_auto");
-	}
+	}	
 }

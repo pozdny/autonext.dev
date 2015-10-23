@@ -4,6 +4,7 @@
     <file url="file://$PROJECT_DIR$/admin/controller/dashboard/map.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/admin/view/javascript/common.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/catalog/model/catalog/category.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/catalog/view/theme/default/template/common/footer.tpl" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/catalog/view/theme/default/template/product/api_search_result.tpl" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/catalog/view/theme/default/template/product/api_search_result_full.tpl" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/system/modification/admin/model/catalog/category.php" charset="UTF-8" />

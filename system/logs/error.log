@@ -9800,3 +9800,255 @@
 2015-10-20 14:03:12 - PHP Notice:  Undefined variable: results in D:\Projects\www\autonext.dev\catalog\view\theme\default\template\product\api_search_result_full.tpl on line 56
 2015-10-20 14:05:43 - PHP Notice:  Undefined variable: items in D:\Projects\www\autonext.dev\catalog\view\theme\default\template\product\api_search_result_full.tpl on line 38
 2015-10-20 14:06:33 - PHP Notice:  Undefined variable: storages in D:\Projects\www\autonext.dev\catalog\view\theme\default\template\product\api_search_result_full.tpl on line 46
+2015-10-22 7:09:32 - PHP Notice:  Undefined variable: category_id in D:\Projects\www\autonext.dev\catalog\controller\product\category.php on line 8
+2015-10-22 7:09:32 - PHP Notice:  Undefined index: path in D:\Projects\www\autonext.dev\catalog\controller\product\category.php on line 118
+2015-10-22 7:09:32 - PHP Notice:  Undefined index: path in D:\Projects\www\autonext.dev\catalog\controller\product\form_order.php on line 5
+2015-10-22 7:13:46 - PHP Notice:  Undefined variable: category_id in D:\Projects\www\autonext.dev\catalog\controller\product\category.php on line 8
+2015-10-22 7:13:46 - PHP Notice:  Undefined index: path in D:\Projects\www\autonext.dev\catalog\controller\product\category.php on line 118
+2015-10-22 7:13:46 - PHP Notice:  Undefined index: path in D:\Projects\www\autonext.dev\catalog\controller\product\form_order.php on line 5
+2015-10-22 7:22:53 - PHP Notice:  Undefined index: path in D:\Projects\www\autonext.dev\catalog\model\catalog\category.php on line 97
+2015-10-22 9:51:06 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 385
+2015-10-22 9:51:06 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 386
+2015-10-22 9:51:06 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 387
+2015-10-22 9:51:06 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 388
+2015-10-22 9:51:06 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 389
+2015-10-22 9:51:06 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 390
+2015-10-22 9:51:06 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 391
+2015-10-22 9:51:06 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 392
+2015-10-22 9:51:06 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 393
+2015-10-22 9:51:06 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 385
+2015-10-22 9:51:06 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 386
+2015-10-22 9:51:06 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 387
+2015-10-22 9:51:06 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 388
+2015-10-22 9:51:06 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 389
+2015-10-22 9:51:06 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 390
+2015-10-22 9:51:06 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 391
+2015-10-22 9:51:06 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 392
+2015-10-22 9:51:06 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 393
+2015-10-22 9:51:06 - PHP Notice:  Error: Duplicate entry '0' for key 'PRIMARY'<br />Error No: 1062<br />INSERT INTO `oc_storages_auto` SET storage_id = '0', `legend` = '', `name` ='', `name_en` ='', `address` ='', `geo` ='', `for_realization` ='0', `for_delivery` ='0', `for_stocks` ='0' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-22 9:57:01 - PHP Notice:  Undefined property: stdClass::$action in D:\Projects\www\autonext.dev\admin\controller\catalog\product.php on line 1492
+2015-10-22 10:00:42 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-22 10:00:42 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-22 10:00:42 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-22 10:00:42 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-22 10:00:42 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-22 10:00:42 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-22 10:00:42 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-22 10:00:42 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-22 10:00:42 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-22 10:00:42 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-22 10:00:42 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-22 10:00:42 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-22 10:00:42 - PHP Notice:  Error: Duplicate entry '0-0-36' for key 'PRIMARY'<br />Error No: 1062<br />INSERT INTO `oc_category_to_subsection_auto` SET category_subsection_id = '0', `parent_id` = '0', `catalog_id` ='36' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-22 10:00:44 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-22 10:00:44 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-22 10:00:44 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-22 10:00:44 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-22 10:00:44 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-22 10:00:44 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-22 10:00:44 - PHP Notice:  Error: Duplicate entry '0-0-36' for key 'PRIMARY'<br />Error No: 1062<br />INSERT INTO `oc_category_to_subsection_auto` SET category_subsection_id = '0', `parent_id` = '0', `catalog_id` ='36' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-22 10:00:44 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-22 10:00:44 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-22 10:00:44 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-22 10:00:44 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-22 10:00:44 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-22 10:00:44 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-22 10:00:44 - PHP Notice:  Error: Duplicate entry '0-0-36' for key 'PRIMARY'<br />Error No: 1062<br />INSERT INTO `oc_category_to_subsection_auto` SET category_subsection_id = '0', `parent_id` = '0', `catalog_id` ='36' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-22 10:00:46 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-22 10:00:46 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-22 10:00:46 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-22 10:00:46 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-22 10:00:46 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-22 10:00:46 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-22 10:00:46 - PHP Notice:  Error: Duplicate entry '0-0-36' for key 'PRIMARY'<br />Error No: 1062<br />INSERT INTO `oc_category_to_subsection_auto` SET category_subsection_id = '0', `parent_id` = '0', `catalog_id` ='36' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-22 10:00:46 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-22 10:00:46 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-22 10:00:46 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-22 10:00:46 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-22 10:00:46 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-22 10:00:46 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-22 10:00:46 - PHP Notice:  Error: Duplicate entry '0-0-36' for key 'PRIMARY'<br />Error No: 1062<br />INSERT INTO `oc_category_to_subsection_auto` SET category_subsection_id = '0', `parent_id` = '0', `catalog_id` ='36' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-22 10:00:49 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-22 10:00:49 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-22 10:00:49 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-22 10:00:49 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-22 10:00:49 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-22 10:00:49 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-22 10:00:49 - PHP Notice:  Error: Duplicate entry '0-0-36' for key 'PRIMARY'<br />Error No: 1062<br />INSERT INTO `oc_category_to_subsection_auto` SET category_subsection_id = '0', `parent_id` = '0', `catalog_id` ='36' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-22 10:00:49 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-22 10:00:49 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-22 10:00:49 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-22 10:00:49 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-22 10:00:49 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-22 10:00:49 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-22 10:00:49 - PHP Notice:  Error: Duplicate entry '0-0-36' for key 'PRIMARY'<br />Error No: 1062<br />INSERT INTO `oc_category_to_subsection_auto` SET category_subsection_id = '0', `parent_id` = '0', `catalog_id` ='36' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-22 10:00:50 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-22 10:00:50 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-22 10:00:50 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-22 10:00:50 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-22 10:00:50 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-22 10:00:50 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-22 10:00:50 - PHP Notice:  Error: Duplicate entry '0-0-36' for key 'PRIMARY'<br />Error No: 1062<br />INSERT INTO `oc_category_to_subsection_auto` SET category_subsection_id = '0', `parent_id` = '0', `catalog_id` ='36' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-22 10:00:50 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-22 10:00:50 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-22 10:00:50 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-22 10:00:50 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-22 10:00:50 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-22 10:00:50 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-22 10:00:50 - PHP Notice:  Error: Duplicate entry '0-0-36' for key 'PRIMARY'<br />Error No: 1062<br />INSERT INTO `oc_category_to_subsection_auto` SET category_subsection_id = '0', `parent_id` = '0', `catalog_id` ='36' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-22 10:00:52 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-22 10:00:52 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-22 10:00:52 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-22 10:00:52 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-22 10:00:52 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-22 10:00:52 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-22 10:00:52 - PHP Notice:  Error: Duplicate entry '0-0-36' for key 'PRIMARY'<br />Error No: 1062<br />INSERT INTO `oc_category_to_subsection_auto` SET category_subsection_id = '0', `parent_id` = '0', `catalog_id` ='36' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-22 10:00:52 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-22 10:00:52 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-22 10:00:52 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-22 10:00:52 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-22 10:00:52 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-22 10:00:52 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-22 10:00:52 - PHP Notice:  Error: Duplicate entry '0-0-36' for key 'PRIMARY'<br />Error No: 1062<br />INSERT INTO `oc_category_to_subsection_auto` SET category_subsection_id = '0', `parent_id` = '0', `catalog_id` ='36' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-22 10:00:55 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-22 10:00:55 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-22 10:00:55 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-22 10:00:55 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-22 10:00:55 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-22 10:00:55 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-22 10:00:55 - PHP Notice:  Error: Duplicate entry '0-0-36' for key 'PRIMARY'<br />Error No: 1062<br />INSERT INTO `oc_category_to_subsection_auto` SET category_subsection_id = '0', `parent_id` = '0', `catalog_id` ='36' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-22 10:00:55 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-22 10:00:55 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-22 10:00:55 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-22 10:00:55 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-22 10:00:55 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-22 10:00:55 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-22 10:00:55 - PHP Notice:  Error: Duplicate entry '0-0-36' for key 'PRIMARY'<br />Error No: 1062<br />INSERT INTO `oc_category_to_subsection_auto` SET category_subsection_id = '0', `parent_id` = '0', `catalog_id` ='36' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-22 10:00:56 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-22 10:00:56 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-22 10:00:56 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-22 10:00:56 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-22 10:00:56 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-22 10:00:56 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-22 10:00:56 - PHP Notice:  Error: Duplicate entry '0-0-36' for key 'PRIMARY'<br />Error No: 1062<br />INSERT INTO `oc_category_to_subsection_auto` SET category_subsection_id = '0', `parent_id` = '0', `catalog_id` ='36' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-22 10:00:56 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-22 10:00:56 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-22 10:00:56 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-22 10:00:56 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-22 10:00:56 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-22 10:00:56 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-22 10:00:56 - PHP Notice:  Error: Duplicate entry '0-0-36' for key 'PRIMARY'<br />Error No: 1062<br />INSERT INTO `oc_category_to_subsection_auto` SET category_subsection_id = '0', `parent_id` = '0', `catalog_id` ='36' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-22 10:00:58 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-22 10:00:58 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-22 10:00:58 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-22 10:00:58 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-22 10:00:58 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-22 10:00:58 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-22 10:00:58 - PHP Notice:  Error: Duplicate entry '0-0-36' for key 'PRIMARY'<br />Error No: 1062<br />INSERT INTO `oc_category_to_subsection_auto` SET category_subsection_id = '0', `parent_id` = '0', `catalog_id` ='36' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-22 10:00:58 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-22 10:00:58 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-22 10:00:58 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-22 10:00:58 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-22 10:00:58 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-22 10:00:58 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-22 10:00:58 - PHP Notice:  Error: Duplicate entry '0-0-36' for key 'PRIMARY'<br />Error No: 1062<br />INSERT INTO `oc_category_to_subsection_auto` SET category_subsection_id = '0', `parent_id` = '0', `catalog_id` ='36' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-22 10:01:00 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-22 10:01:00 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-22 10:01:00 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-22 10:01:00 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-22 10:01:00 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-22 10:01:00 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-22 10:01:00 - PHP Notice:  Error: Duplicate entry '0-0-36' for key 'PRIMARY'<br />Error No: 1062<br />INSERT INTO `oc_category_to_subsection_auto` SET category_subsection_id = '0', `parent_id` = '0', `catalog_id` ='36' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-22 10:01:00 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-22 10:01:00 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-22 10:01:00 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-22 10:01:00 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-22 10:01:00 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-22 10:01:00 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-22 10:01:00 - PHP Notice:  Error: Duplicate entry '0-0-36' for key 'PRIMARY'<br />Error No: 1062<br />INSERT INTO `oc_category_to_subsection_auto` SET category_subsection_id = '0', `parent_id` = '0', `catalog_id` ='36' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-22 10:01:02 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-22 10:01:02 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-22 10:01:02 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-22 10:01:02 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-22 10:01:02 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-22 10:01:02 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-22 10:01:02 - PHP Notice:  Error: Duplicate entry '0-0-36' for key 'PRIMARY'<br />Error No: 1062<br />INSERT INTO `oc_category_to_subsection_auto` SET category_subsection_id = '0', `parent_id` = '0', `catalog_id` ='36' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-22 10:01:02 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-22 10:01:02 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-22 10:01:02 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-22 10:01:02 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-22 10:01:02 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-22 10:01:02 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-22 10:01:02 - PHP Notice:  Error: Duplicate entry '0-0-36' for key 'PRIMARY'<br />Error No: 1062<br />INSERT INTO `oc_category_to_subsection_auto` SET category_subsection_id = '0', `parent_id` = '0', `catalog_id` ='36' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-22 10:01:04 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-22 10:01:04 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-22 10:01:04 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-22 10:01:04 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-22 10:01:04 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-22 10:01:04 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-22 10:01:04 - PHP Notice:  Error: Duplicate entry '0-0-36' for key 'PRIMARY'<br />Error No: 1062<br />INSERT INTO `oc_category_to_subsection_auto` SET category_subsection_id = '0', `parent_id` = '0', `catalog_id` ='36' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-22 10:01:04 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-22 10:01:04 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-22 10:01:04 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-22 10:01:04 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-22 10:01:04 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-22 10:01:04 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-22 10:01:04 - PHP Notice:  Error: Duplicate entry '0-0-36' for key 'PRIMARY'<br />Error No: 1062<br />INSERT INTO `oc_category_to_subsection_auto` SET category_subsection_id = '0', `parent_id` = '0', `catalog_id` ='36' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-22 12:39:53 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-22 12:39:53 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-22 12:39:53 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-22 12:39:53 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-22 12:39:53 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-22 12:39:53 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-22 12:39:53 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-22 12:39:53 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-22 12:39:53 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-22 12:39:53 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-22 12:39:53 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-22 12:39:53 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-22 12:39:53 - PHP Notice:  Error: Duplicate entry '0-0-36' for key 'PRIMARY'<br />Error No: 1062<br />INSERT INTO `oc_category_to_subsection_auto` SET category_subsection_id = '0', `parent_id` = '0', `catalog_id` ='36' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-22 12:57:30 - PHP Notice:  Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'NESSA #N30  97-01', `code` = '18567', `photo` = '', `photo_preview` = ''' at line 1<br />Error No: 1064<br />INSERT INTO `oc_category_subsection_auto` SET category_id = '12999102', `name` = 'NISSAN R'NESSA #N30  97-01', `code` = '18567', `photo` = '', `photo_preview` = '' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-22 12:57:30 - PHP Notice:  Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'NESSA NU30  00- 4WD', `code` = '18603', `photo` = '', `photo_preview` = ''' at line 1<br />Error No: 1064<br />INSERT INTO `oc_category_subsection_auto` SET category_id = '13035102', `name` = 'NISSAN R'NESSA NU30  00- 4WD', `code` = '18603', `photo` = '', `photo_preview` = '' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-23 11:21:54 - PHP Notice:  Undefined variable: items_data in D:\Projects\www\autonext.dev\catalog\model\catalog\category.php on line 306
+2015-10-23 11:21:54 - PHP Warning:  Invalid argument supplied for foreach() in D:\Projects\www\autonext.dev\catalog\view\theme\default\template\product\api_search_result.tpl on line 25
+2015-10-23 11:40:24 - PHP Notice:  Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'NESSA #N30  97-01', `code` = '18567', `photo` = '', `photo_preview` = ''' at line 1<br />Error No: 1064<br />INSERT INTO `oc_category_subsection_auto` SET category_id = '12999102', `name` = 'NISSAN R'NESSA #N30  97-01', `code` = '18567', `photo` = '', `photo_preview` = '' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-23 11:40:24 - PHP Notice:  Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'NESSA NU30  00- 4WD', `code` = '18603', `photo` = '', `photo_preview` = ''' at line 1<br />Error No: 1064<br />INSERT INTO `oc_category_subsection_auto` SET category_id = '13035102', `name` = 'NISSAN R'NESSA NU30  00- 4WD', `code` = '18603', `photo` = '', `photo_preview` = '' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-23 11:41:47 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-23 11:41:47 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-23 11:41:47 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-23 11:41:47 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-23 11:41:47 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-23 11:41:47 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-23 11:41:47 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 363
+2015-10-23 11:41:47 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 364
+2015-10-23 11:41:47 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 365
+2015-10-23 11:41:47 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 366
+2015-10-23 11:41:47 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 372
+2015-10-23 11:41:47 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\system\modification\admin\model\catalog\category.php on line 373
+2015-10-23 11:41:47 - PHP Notice:  Error: Duplicate entry '0-0-91102' for key 'PRIMARY'<br />Error No: 1062<br />INSERT INTO `oc_category_to_subsection_auto` SET category_subsection_id = '0', `parent_id` = '0', `catalog_id` ='91102' in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-23 12:51:24 - PHP Notice:  Undefined variable: items_data in D:\Projects\www\autonext.dev\catalog\model\catalog\category.php on line 307
+2015-10-23 12:51:24 - PHP Warning:  Invalid argument supplied for foreach() in D:\Projects\www\autonext.dev\catalog\view\theme\default\template\product\api_search_result.tpl on line 25
+2015-10-23 12:52:22 - PHP Notice:  Undefined variable: items_data in D:\Projects\www\autonext.dev\catalog\model\catalog\category.php on line 307
+2015-10-23 12:52:22 - PHP Warning:  Invalid argument supplied for foreach() in D:\Projects\www\autonext.dev\catalog\controller\product\category.php on line 623
+2015-10-23 12:53:30 - PHP Notice:  Undefined variable: items_data in D:\Projects\www\autonext.dev\catalog\model\catalog\category.php on line 310
+2015-10-23 12:53:30 - PHP Warning:  Invalid argument supplied for foreach() in D:\Projects\www\autonext.dev\catalog\controller\product\category.php on line 623
+2015-10-23 12:53:56 - PHP Notice:  Undefined variable: items_data in D:\Projects\www\autonext.dev\catalog\model\catalog\category.php on line 310
+2015-10-23 12:53:56 - PHP Warning:  Invalid argument supplied for foreach() in D:\Projects\www\autonext.dev\catalog\controller\product\category.php on line 623
+2015-10-23 13:49:47 - PHP Notice:  Undefined index: model_photo in D:\Projects\www\autonext.dev\catalog\view\theme\default\template\product\api_search_result_full.tpl on line 59
+2015-10-23 13:49:47 - PHP Notice:  Undefined index: items in D:\Projects\www\autonext.dev\catalog\view\theme\default\template\product\api_search_result_full.tpl on line 64
+2015-10-23 13:49:47 - PHP Warning:  Invalid argument supplied for foreach() in D:\Projects\www\autonext.dev\catalog\view\theme\default\template\product\api_search_result_full.tpl on line 64
+2015-10-23 13:50:09 - PHP Notice:  Undefined index: model_photo in D:\Projects\www\autonext.dev\catalog\view\theme\default\template\product\api_search_result_full.tpl on line 59
+2015-10-23 13:50:09 - PHP Notice:  Undefined index: items in D:\Projects\www\autonext.dev\catalog\view\theme\default\template\product\api_search_result_full.tpl on line 64
+2015-10-23 13:50:09 - PHP Warning:  Invalid argument supplied for foreach() in D:\Projects\www\autonext.dev\catalog\view\theme\default\template\product\api_search_result_full.tpl on line 64
+2015-10-23 13:50:33 - PHP Notice:  Undefined index: model_photo in D:\Projects\www\autonext.dev\catalog\view\theme\default\template\product\api_search_result_full.tpl on line 59
+2015-10-23 13:50:33 - PHP Notice:  Undefined index: items in D:\Projects\www\autonext.dev\catalog\view\theme\default\template\product\api_search_result_full.tpl on line 64
+2015-10-23 13:50:33 - PHP Warning:  Invalid argument supplied for foreach() in D:\Projects\www\autonext.dev\catalog\view\theme\default\template\product\api_search_result_full.tpl on line 64
+2015-10-23 14:02:50 - PHP Notice:  Undefined variable: result in D:\Projects\www\autonext.dev\catalog\controller\product\category.php on line 628
+2015-10-23 14:02:50 - PHP Notice:  Undefined variable: result in D:\Projects\www\autonext.dev\catalog\controller\product\category.php on line 628
+2015-10-23 14:04:26 - PHP Notice:  Undefined index: tax_class_id in D:\Projects\www\autonext.dev\catalog\controller\product\category.php on line 627
+2015-10-23 14:04:46 - PHP Notice:  Undefined index: tax_class_id in D:\Projects\www\autonext.dev\catalog\controller\product\category.php on line 627
+2015-10-23 14:05:38 - PHP Notice:  Error: Unknown column 'css.tax_class_id' in 'field list'<br />Error No: 1054<br />SELECT *, ca.name as category_name, cssa.name as part_type, csubsa.name as model_name, csubsa.photo as model_photo, caa.name as item_name, caa.photo as item_photo, css.tax_class_id as tax_class_id  FROM oc_category_items_auto caa LEFT JOIN oc_category_auto ca ON (caa.cat_id = ca.category_id) LEFT JOIN oc_category_section_section_auto cssa ON (caa.part_type_id = cssa.section_id) LEFT JOIN oc_category_subsection_auto csubsa ON (csubsa.category_id = caa.model_id) WHERE caa.cat_id = '77' AND caa.manufacturer_id = '3' AND caa.model_id = '183' ORDER BY caa.part_type_id in D:\Projects\www\autonext.dev\system\library\db\mysqli.php on line 41
+2015-10-23 14:05:38 - PHP Notice:  Trying to get property of non-object in D:\Projects\www\autonext.dev\catalog\model\catalog\category.php on line 260
+2015-10-23 14:05:38 - PHP Warning:  Invalid argument supplied for foreach() in D:\Projects\www\autonext.dev\catalog\controller\product\category.php on line 623
+2015-10-23 14:05:38 - PHP Warning:  Invalid argument supplied for foreach() in D:\Projects\www\autonext.dev\catalog\view\theme\default\template\product\api_search_result_full.tpl on line 64
+2015-10-23 14:05:55 - PHP Notice:  Undefined index: tax_class_id in D:\Projects\www\autonext.dev\catalog\controller\product\category.php on line 627

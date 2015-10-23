@@ -1514,9 +1514,10 @@ class ControllerCatalogProduct extends Controller {
 
 		}
 		$json['action'] = $action;
-
+		//$json['action'] = '567';
 
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}
+
 }

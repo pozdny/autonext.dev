@@ -8,6 +8,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name='yandex-verification' content='6efcad9edcae05ac' />
 <title><?php echo $title; ?></title>
 <base href="<?php echo $base; ?>" />
 <?php if ($description) { ?>
@@ -26,9 +27,11 @@
 
 <link href="catalog/view/javascript/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 <link href="//fonts.googleapis.com/css?family=Open+Sans:400,400i,300,700" rel="stylesheet" type="text/css" />
+
 <link href="catalog/view/theme/default/stylesheet/stylesheet.css" rel="stylesheet">
+
 <link href="catalog/view/theme/default/stylesheet/style.css" rel="stylesheet">
-<link href="catalog/view/theme/default/stylesheet/less.css" rel="stylesheet">
+    <link href="catalog/view/theme/default/stylesheet/grid.css" rel="stylesheet">
 <?php foreach ($styles as $style) { ?>
 <link href="<?php echo $style['href']; ?>" type="text/css" rel="<?php echo $style['rel']; ?>" media="<?php echo $style['media']; ?>" />
 <?php } ?>
@@ -39,33 +42,14 @@
 <?php foreach ($scripts as $script) { ?>
 <script src="<?php echo $script; ?>" type="text/javascript"></script>
 <?php } ?>
-<link type="image/x-icon" href="http://avtonext-nsk.ru/favicon.ico" rel="icon">
-<link type="image/x-icon" href="http://avtonext-nsk.ru/favicon.ico" rel="shortcut icon">
+<link type="image/x-icon" href="favicon.ico" rel="icon">
+<link type="image/x-icon" href="favicon.ico" rel="shortcut icon">
 <?php echo $google_analytics; ?>
-
-    <!--скрипт добавления класса active для списка меню-->
-    <script type="text/javascript">
-        $(function () {
-            $('.menu-stom a').each(function () {
-                var location = window.location.href;
-                var link = this.href;
-                var result = location.match(link);
-                if(result != null) {
-                    $(this).addClass('active-pro');
-                }
-            });
-        });
-
-    </script>
-
-<!-- BEGIN JIVOSITE CODE {literal} -->
-<script type='text/javascript'>
-(function(){ var widget_id = 'Trqpd8eALf';
-var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);})();</script>
-<!-- {/literal} END JIVOSITE CODE -->
-
-
-
+    <!-- BEGIN JIVOSITE CODE {literal} -->
+    <script type='text/javascript'>
+        (function(){ var widget_id = 'Trqpd8eALf';
+            var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);})();</script>
+    <!-- {/literal} END JIVOSITE CODE -->
 </head>
 <body class="<?php echo $class; ?>">
 <div id="general">
@@ -110,22 +94,23 @@ var s = document.createElement('script'); s.type = 'text/javascript'; s.async = 
           <?php } ?>
         </div>
       </div>
-      <div class="col-sm-5" style="margin-top: 20px;"><!--<?php echo $search; ?>-->
+      <div class="col-sm-5" id="slogan"><!--<?php echo $search; ?>-->
           <p class="lozung-head">Движение</p>
           <p class="lozung-head2">во всех</p>
           <p class="lozung-head3">направления<img src="image/logo-x.png" style="width:30px;"></p>
       </div>
-      <div class="col-sm-3" style="margin-top: 20px;">
-          
+      <div class="col-sm-3" id="header-right">
+          <div id="phone">
+              <div id="icon_block">
+                  <i class="fa fa-phone"></i>
+              </div>
+              <div id="num_phone"><?php echo $telephone; ?></div>
+          </div>
           <?php echo $cart; ?>
           <?php echo $search; ?>
       </div>
     </div>
-    <div class="row">
-        <div class="col-xs-3 col-xs-offset-9">
 
-        </div>
-    </div>
   </div>
 </header>
 

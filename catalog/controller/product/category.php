@@ -619,13 +619,32 @@ class ControllerProductCategory extends Controller {
 				$sections = '';
 				$subsections = '';
 				$results = $this->model_catalog_category->getItems($catalog_id, $section_id, $subsection_id);//echo '<pre>'; print_r($results); echo '</pre>';
-				$items = $results;
+				$arr_item = $results['items'];echo '<pre>'; print_r($arr_item); echo '</pre>';
+				$tax_class_id = $results["tax_class_id"];
+				foreach($arr_item as &$item){
+					foreach($item as $key=>&$value){
+						foreach($value as $key2=>&$value2){
+							if($key2 == 'price'){
+								$value2 = $this->currency->format($this->tax->calculate($value2, $tax_class_id, $this->config->get('config_tax')));
+							}
+
+						}
+					}
+
+				}
+				$items = array(
+					"model_name" => $results["model_name"],
+					"model_photo" => $results["model_photo"],
+					"items" => $arr_item
+				);
+
 				//storages
-				$storages = $this->model_catalog_category->getStorages(); //echo '<pre>'; print_r($result); echo '</pre>';
+				$storages = $this->model_catalog_category->getStorages(); //echo '<pre>'; print_r($storages); echo '</pre>';
 			}
 			else{
-				$sections = '';
+				$sections = 'Данных нет';
 			}
+			echo '<pre>'; print_r($items); echo '</pre>';
 			$data['chooseInfo'] = $chooseInfo;
 			$data['sections'] = $sections;
 			$data['subsections'] = $subsections;
@@ -652,7 +671,13 @@ class ControllerProductCategory extends Controller {
 			if (isset($this->request->get['subsection_id'])) {
 				$subsection_id = $this->request->get['subsection_id'];
 			}
-			$result = $this->model_catalog_category->getItems($catalog_id, $section_id, $subsection_id);
+			$result_item = $this->model_catalog_category->getItems($catalog_id, $section_id, $subsection_id);
+			if(sizeof($result_item['items']) > 0){
+				$result = $result_item;
+			}
+			else{
+				$result = null;
+			}
 			//storages
 			$storages = $this->model_catalog_category->getStorages(); //echo '<pre>'; print_r($result); echo '</pre>';
 			$data['storages'] = $storages;

@@ -10,15 +10,24 @@
           <?php foreach ($informations as $information) { ?>
           <li><a href="<?php echo $information['href']; ?>"><?php echo $information['title']; ?></a></li>
           <?php } ?>
-          <li><a href="<?php echo $contact; ?>"><?php echo $text_contact; ?></a></li>
         </ul>
       </div>
       <?php } ?>
+
+      <div class="col-sm-3">
+        <h5><?php echo $text_information; ?></h5>
+        <ul class="list-unstyled">
+          <li><a href="<?php echo $contact; ?>"><?php echo $text_contact; ?></a></li>
+          <li><a href="<?php echo $sitemap; ?>"><?php echo $text_sitemap; ?></a></li>
+          <li><a href="http://vk.com/avtonext_nsk" target="blank">Мы в Контакте</a></li>
+        </ul>
+      </div>
+
       <div class="col-sm-3">
         <h5><?php echo $text_service; ?></h5>
         <ul class="list-unstyled">
-          <!--<li><a href="<?php echo $return; ?>"><?php echo $text_return; ?></a></li>-->
-          <li><a href="<?php echo $sitemap; ?>"><?php echo $text_sitemap; ?></a></li>
+          <li><a href="http://мегапром.рф" target="blank">ООО Компания "МегаПром"</a></li>
+          <!--<li><a href="<?php echo $sitemap; ?>"><?php echo $text_sitemap; ?></a></li>-->
         </ul>
       </div>
       <!--<div class="col-sm-3">
@@ -42,6 +51,44 @@
     </div>
     <hr>
     <p><?php echo $powered; ?></p>
+
+
+
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+      (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+          try {
+            w.yaCounter31616503 = new
+                    Ya.Metrika({id:31616503,
+                       webvisor:true,
+                       clickmap:true,
+                       trackLinks:true,
+                       accurateTrackBounce:true});
+          } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+                s = d.createElement("script"),
+                f = function () { n.parentNode.insertBefore(s,
+                        n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = (d.location.protocol == "https:" ? "https:" :
+                        "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+          d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+      })(document, window, "yandex_metrika_callbacks");
+    </script>
+    <noscript><div><img src="//mc.yandex.ru/watch/31616503"
+                        style="position:absolute; left:-9999px;" alt=""
+                /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+
+
+
   </div>
 </footer>
 

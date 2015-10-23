@@ -1,15 +1,15 @@
 <div id="sectionMain">
     <h1><?php echo $heading_title; ?></h1>
-    <ol class="breadcrumb">
-        <?php foreach ($breadcrumbs_api as $i=>$breadcrumb) { ?>
-        <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
+    <ul class="breadcrumb">
+        <?php foreach($breadcrumbs_api as $i=>$breadcrumb){ ?>
+            <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
         <?php } ?>
-    </ol>
+    </ul>
     <?php if($sections || $subsections){ ?>
         <div id="sectionBody">
             <div class="chooseInfo"><?php echo $chooseInfo; ?></div>
             <?php if($subsections){ ?>
-                <button id="searchItems" class="btn btn-warning">Найти</button>
+                <button id="searchItems" class="btn btn-warning disabled">Найти</button>
             <?php } ?>
             <div class="row rowBody">
                 <?php if($sections){ ?>
@@ -50,12 +50,12 @@
                         <?php } ?>
                         <?php } ?>
                         <th class="price text-center">Цена</th>
-                        <!--<th class="notice text-center">В корзину</th>-->
+                        <th class="notice text-center">В корзину</th>
                     </tr>
                     <tbody>
 
                     <tr>
-                        <th class="" colspan="11">
+                        <th class="" colspan="12">
                             <?php if($results['model_photo']) { ?>
                             <a class="section-photo" href="<?php echo $results['model_photo']; ?>"><i class="fa fa-camera"></i></a>
                             <?php } ?>
@@ -63,7 +63,7 @@
                     </tr>
                     <?php foreach($results['items'] as $key=>$item){ ?>
                     <tr>
-                        <th class="" colspan="11"><?php echo $key; ?></th>
+                        <th class="" colspan="12"><?php echo $key; ?></th>
                     </tr>
                     <?php foreach($item as $items){ ?>
                     <tr>
@@ -77,7 +77,7 @@
                         <td><?php echo $quantity['quantity']; ?></td>
                         <?php } ?>
                         <td class="td_price"><?php echo $items['price']; ?></td>
-                        <!--<td class="td_price">В корзину</td>-->
+                        <td class="cart-button"><i class="fa fa-shopping-cart"></i></td>
                     </tr>
 
                     <?php } ?>

@@ -144,7 +144,7 @@ class ControllerCommonColumnLeft extends Controller {
                             'text' => $category_info['name'],
                             'href' => $this->url->link('product/category', 'path=' . $path . $url)
                         );
-                        if($category_info['alias'] == 'zapasnye-chasti'){
+                        if($category_info['alias'] == 'avtozapchasti'){
                             $data['getSectionsList'] = 'getSectionsList';
                             $cat_id = array();
                             if(sizeof($arr_path) <= 1){

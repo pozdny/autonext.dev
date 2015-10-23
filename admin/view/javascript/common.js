@@ -374,7 +374,9 @@ var Catalog = function() {
 			"method": "getCatalogsList"
 		};
 		var data = 'data=' + JSON.stringify(request);
+
 		$.ajax({
+			url: requestUrl,
 			data: data,
 			beforeSend: function () {
 				elemShow(loader);
@@ -457,6 +459,7 @@ var Catalog = function() {
 		var data = 'data=' + JSON.stringify(request); //console.log(data);
 
 		$.ajax({
+			url: requestUrl,
 			data: data,
 			beforeSend: function () {
 				elemShow(loader);
@@ -537,6 +540,7 @@ var Catalog = function() {
 		var data = 'data=' + JSON.stringify(request);
 
 		$.ajax({
+			url: requestUrl,
 			data: data,
 			beforeSend: function () {
 				elemShow(loader);
@@ -572,6 +576,7 @@ var Catalog = function() {
 			if (!length) {
 				lastDelayedTime = null;
 				elemHide(loader);
+				elemShow(notification, "Загрузка каталога с http://sklad.autotrade.su завершена!");
 			}
 			elemHide(notification);
 		});
@@ -604,14 +609,21 @@ var Catalog = function() {
 	//this.getStorageList();
 
 	buttonStart.on('click', function(){
-		_this.getCatalogList();
-		_this.getAllowedAndChoosenStoragesList();
+		var result = confirm("Вы уверены, что хотите запустить обновление каталога Автозапчастей?");
+		if(result){
+			delayedGet(null, Settings.delayedTime, '', 'getAllowedAndChoosenStoragesList');
+			delayedGet(null, Settings.delayedTime + 1000, '', 'getCatalogList');
+		}
+		else{
+			return false;
+		}
+
 	});
 
 };
 
 // параметры строки запроса браузера
-getUrlVars = function (){
+function getUrlVars(){
 	var vars = [], hash;
 	var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
 	for(var i = 0; i < hashes.length; i++)
@@ -622,9 +634,9 @@ getUrlVars = function (){
 	}
 	window.token = vars['token'];
 	return vars;
-};
+}
 
-ajaxFunc = function(requestUrl, request){
+function ajaxFunc(requestUrl, request){
 	$.ajaxSetup({
 		url:requestUrl,
 		dataType:"json",
@@ -646,7 +658,7 @@ ajaxFunc = function(requestUrl, request){
 			console.log(err);
 		}
 	});
-};
+}
 function elemHide(obj){
 	obj.animate(
 		{
@@ -673,6 +685,12 @@ function delayedGet(data, time, length, str){
 		}
 		else if(str == 'subsection'){
 			window.Catalog.getSubSectionsList(data, length);
+		}
+		else if(str == 'getAllowedAndChoosenStoragesList'){
+			window.Catalog.getAllowedAndChoosenStoragesList();
+		}
+		else if(str == 'getCatalogList'){
+			window.Catalog.getCatalogList();
 		}
 		//console.log(param);
 	}, time)

@@ -7,7 +7,10 @@ class ModelCatalogCategory extends Model {
 	public function getCategoryByName($keyword) {
 		$query = $this->db->query("SELECT DISTINCT * FROM " . DB_PREFIX . "url_alias WHERE keyword LIKE '".$keyword."'");
 		if ($query->num_rows) {
-			return $query->row['query'];
+			$category_id_str = $query->row['query'];
+			$pos = strpos($category_id_str, '=');
+			$category_id = substr($category_id_str, $pos + 1);
+			return $category_id;
 		} else {
 			return 0;
 		}
@@ -18,7 +21,7 @@ class ModelCatalogCategory extends Model {
 		return $query->rows;
 	}
 	public function getCategoriesAuto($cat_id = array()) {
-		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "category_auto");
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "category_auto ORDER BY name");
 		return $query->rows;
 	}
 	public function getCategoryAutoById($category_id) {
@@ -95,6 +98,8 @@ class ModelCatalogCategory extends Model {
 		$query = $this->db->query($sql);
 		$category_name = $query->row['name'];
 
+		$category_id = $this->getCategoryByName('avtozapchasti');
+
 		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "category_to_section_auto cts LEFT JOIN " . DB_PREFIX . "category_section_auto csa ON (cts.category_section_id = csa.category_id)  WHERE cts.parent_id = '" . (int)$catalog_id."' ORDER BY csa.name");
 		if ($query->num_rows) {
 			$section_data = array();
@@ -106,9 +111,14 @@ class ModelCatalogCategory extends Model {
 					'photo'         => $result['photo']
 				);
 			}
-			$parent_name = array();
-			$parent_name[] = $category_name;
 
+
+            $cat_data = array(
+				'name' => $category_name,
+				'href' => $this->url->link('product/category', 'path=' . $category_id ).'&apisearch=catalog&catalog_id='.$catalog_id
+			);
+			$parent_name = array();
+			$parent_name[] = $cat_data;
 			return array(
 				'parent_name' => $parent_name,
 				'parent_id'   => $catalog_id,
@@ -134,6 +144,8 @@ class ModelCatalogCategory extends Model {
 		$query = $this->db->query($sql);
 		$catalog_name = $query->row['name'];
 
+		$category_id = $this->getCategoryByName('avtozapchasti');
+
 		$sql = "SELECT * FROM " . DB_PREFIX . "category_section_auto cs WHERE cs.category_id = ".(int)$section_id;
 		$query = $this->db->query($sql);
 		$section_name = $query->row['name'];
@@ -149,9 +161,17 @@ class ModelCatalogCategory extends Model {
 					'photo'         => $result['photo']
 				);
 			}
+			$cat_data = array(
+				'name' => $catalog_name,
+				'href' => $this->url->link('product/category', 'path=' . $category_id ).'&apisearch=catalog&catalog_id='.$catalog_id
+			);
+			$sec_data = array(
+				'name' => $section_name,
+				'href' => $this->url->link('product/category', 'path=' . $category_id ).'&apisearch=catalog&catalog_id='.$catalog_id.'&section_id='.$section_id
+			);
 			$parent_name = array();
-			$parent_name[] = $catalog_name;
-			$parent_name[] = $section_name;
+			$parent_name[] = $cat_data;
+			$parent_name[] = $sec_data;
 			return array(
 				'parent_name' => $parent_name,
 				'parent_id'   => $catalog_id,
@@ -234,7 +254,7 @@ class ModelCatalogCategory extends Model {
 		}
 	}
 	public function getItems($catalog_id, $section_id, $item_id){
-		$product_data = $item_data = array();
+		$product_data = $items_data = array();
 		$model_name = $model_photo = '';
 		$query = $this->db->query("SELECT *, ca.name as category_name, cssa.name as part_type, csubsa.name as model_name, csubsa.photo as model_photo, caa.name as item_name, caa.photo as item_photo  FROM " . DB_PREFIX . "category_items_auto caa LEFT JOIN " . DB_PREFIX . "category_auto ca ON (caa.cat_id = ca.category_id) LEFT JOIN " . DB_PREFIX . "category_section_section_auto cssa ON (caa.part_type_id = cssa.section_id) LEFT JOIN " . DB_PREFIX . "category_subsection_auto csubsa ON (csubsa.category_id = caa.model_id) WHERE caa.cat_id = '" . $catalog_id ."' AND caa.manufacturer_id = '" . $section_id ."' AND caa.model_id = '" . $item_id ."' ORDER BY caa.part_type_id");
 		if ($query->num_rows) {
@@ -242,6 +262,7 @@ class ModelCatalogCategory extends Model {
 				$model_name = $result['model_name'];
 				$model_photo = $result['model_photo'];
 				$part_type = $result['part_type'];
+				$tax_class_id = $result['tax_class_id'];
 				if($part_type == ''){
 					$part_type = 'Вид запасной части не указан';
 				}
@@ -262,7 +283,8 @@ class ModelCatalogCategory extends Model {
 				else{
 					$storage_quantity = null;
 				}
-				if(sizeof($storage_quantity) > 0){
+				//echo '<pre>'; print_r($result); echo '</pre>';
+				if(sizeof($storage_quantity) > 0 && $result["price"]){
 					$items_data[$part_type][] = array(
 						"item_id" => $result["item_id"],
 						"name"    => $result["item_name"],
@@ -272,16 +294,19 @@ class ModelCatalogCategory extends Model {
 						"model_id" => $result["model_id"],
 						"manufacturer_id" => $result["manufacturer_id"],
 						"photo" => $result["item_photo"],
-						"price" => $result["price"] ." р.",
+						"price" => $result["price"],
 						"part_type_name" => $result["part_type"],
-						"storage_quantity" => $storage_quantity
+						"storage_quantity" => $storage_quantity,
+						"tax_class_id" => $result["tax_class_id"]
 
 					);
 				}
+
 			}
 			$product_data = array(
 				"model_name" => $model_name,
 				"model_photo" => $model_photo,
+				"tax_class_id" => $tax_class_id,
 				"items" => $items_data
 			);
  			return $product_data;

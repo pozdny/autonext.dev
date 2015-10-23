@@ -52,7 +52,7 @@
           <?php } ?>
       </div>
       <?php } ?>
-      <?php if(!$catone){  ?>
+      <?php if(!$catone && !$oborudovanie_show){  ?>
         <?php if ($form_order) { ?>
         <?php echo $form_order; ?>
         <?php } ?>

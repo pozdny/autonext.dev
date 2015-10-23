@@ -1,6 +1,16 @@
 <?php
 class ControllerProductCategory extends Controller {
 	public function index() {
+		if (isset($this->request->get['apisearch'])) {
+			if (isset($this->request->get['path'])) {
+				$category_id = $this->request->get['path'];
+			}
+			$data['apisearch'] = $this->indexSearch('yes', $category_id);
+
+		}
+		else{
+			$data['apisearch'] = '';
+		}
 		$this->load->language('product/category');
 
 		$this->load->model('catalog/category');
@@ -8,11 +18,18 @@ class ControllerProductCategory extends Controller {
 		$this->load->model('catalog/product');
 
 		$this->load->model('tool/image');
-        if (isset($this->request->get['route'])) {
-            $route = (string)$this->request->get['route'];
-        } else {
-            $route = 'common/home';
-        }
+		$data['catalog_id'] = $data['section_id'] = '';
+		if (isset($this->request->get['catalog_id'])) {
+			$data['catalog_id'] = $this->request->get['catalog_id'];
+		}
+		if (isset($this->request->get['section_id'])) {
+			$data['section_id'] = $this->request->get['section_id'];
+		}
+		if (isset($this->request->get['route'])) {
+			$route = (string)$this->request->get['route'];
+		} else {
+			$route = 'common/home';
+		}
 		if (isset($this->request->get['filter'])) {
 			$filter = $this->request->get['filter'];
 		} else {
@@ -86,55 +103,65 @@ class ControllerProductCategory extends Controller {
 						'text' => $category_info['name'],
 						'href' => $this->url->link('product/category', 'path=' . $path . $url)
 					);
+					$category_name = $category_info['name'];
+					if($category_name == 'Оборудование'){
+						$data['oborudovanie_show'] = true;
+					}
+					else{
+						$data['oborudovanie_show'] = false;
+					}
 				}
 			}
 		} else {
 			$category_id = 0;
 		}
-        $arr_path = explode('_', $this->request->get['path']);
+		$arr_path = explode('_', $this->request->get['path']);
 
+		if(sizeof($arr_path) > 1 ){
+			$data['catone'] = 0;
+		}
+		else{
+			$data['catone'] = $category_id;
+		}
 
-        if(sizeof($arr_path) > 1){
-            $data['catone'] = 0;
-        }
-        else{
-             $data['catone'] = $category_id;
-        }
-        $data['form_order'] = $this->load->controller('product/form_order');
+		$data['form_order'] = $this->load->controller('product/form_order');
 
-        if ($route == 'product/category' && isset($this->request->get['path'])) {
-            $data['name_files'] = array();
-            $path = explode('_', (string)$this->request->get['path']);
-            $arr_path = explode('_', $this->request->get['path']);
-            if(sizeof($arr_path) == 1){
-                $this->load->language('product/category');
-                $data["title_links_down_prezent"] = $this->language->get('title_links_down_prezent');
-                $data["title_links_down_price"] = $this->language->get('title_links_down_price');
-                $cat_id = (int)array_pop($arr_path);
-                $res = $this->model_catalog_category->getLink($cat_id);
+		if ($route == 'product/category' && isset($this->request->get['path'])) {
+			$data['name_files'] = array();
+			$path = explode('_', (string)$this->request->get['path']);
+			$arr_path = explode('_', $this->request->get['path']);
+			if(sizeof($arr_path) == 1){
+				$this->load->language('product/category');
+				$data["title_links_down_prezent"] = $this->language->get('title_links_down_prezent');
+				$data["title_links_down_price"] = $this->language->get('title_links_down_price');
+				$cat_id = (int)array_pop($arr_path);
+				$res = $this->model_catalog_category->getLink($cat_id);
 
-                $data['name_files'] = $res;
-            }
-            else{
-                $cat_id = '';
+				$data['name_files'] = $res;
+			}
+			else{
+				$cat_id = '';
 
-            }
-            if($cat_id == 69){
-                $data['prezentaciya'] = 'yes';
-            }
-            else{
-                $data['prezentaciya'] = '';
-            }
+			}
+			if($cat_id == 69){
+				$data['prezentaciya'] = 'yes';
+			}
+			else{
+				$data['prezentaciya'] = '';
+			}
 
-            $layout_id = $this->model_catalog_category->getCategoryLayoutId(end($path));
-        }
-        else{
-            $data['name_files'] = '';
-        }
-		$category_info = $this->model_catalog_category->getCategory($category_id);
+			$layout_id = $this->model_catalog_category->getCategoryLayoutId(end($path));
+		}
+		else{
+			$data['name_files'] = '';
+		}
+
+		$category_info = $this->model_catalog_category->getCategory($category_id); //echo '<pre>'; print_r($category_info); echo '</pre>';
 
 		if ($category_info) {
 			$this->document->setTitle($category_info['meta_title']);
+			$this->document->addScript('catalog/view/javascript/jquery/magnific/jquery.magnific-popup.min.js');
+			$this->document->addStyle('catalog/view/javascript/jquery/magnific/magnific-popup.css');
 			$this->document->setDescription($category_info['meta_description']);
 			$this->document->setKeywords($category_info['meta_keyword']);
 			$this->document->addLink($this->url->link('product/category', 'path=' . $this->request->get['path']), 'canonical');
@@ -234,19 +261,19 @@ class ControllerProductCategory extends Controller {
 
 ///////////////////////////////////////////
 
-                if (($this->config->get('config_customer_price') && $this->customer->isLogged()) || !$this->config->get('config_customer_price')) {
+				if (($this->config->get('config_customer_price') && $this->customer->isLogged()) || !$this->config->get('config_customer_price')) {
 
-                    if($result['price'] != 0){
-                        $price = $this->currency->format($this->tax->calculate($this->currency->convert($result['price'], $this->config->get('config_currency'), $this->config->get('config_currency_out')),  $result['tax_class_id'], $this->config->get('config_tax')), $this->config->get('config_currency_out'), '');
-                    }
-                    else{
-                        $price = $result['price_opt_big'] + $result['price_opt_big']*0.3;
-                        $price = $this->currency->format($this->tax->calculate($this->currency->convert($price, $this->config->get('config_currency'), $this->config->get('config_currency_out')),  $result['tax_class_id'], $this->config->get('config_tax')), $this->config->get('config_currency_out'), '');
-                    }
-                } else {
-                    $price = $this->currency->format($this->tax->calculate($this->currency->convert(0, $this->config->get('config_currency'), $this->config->get('config_currency_out')),  $result['tax_class_id'], $this->config->get('config_tax')), $this->config->get('config_currency_out'), '');;
+					if($result['price'] != 0){
+						$price = $this->currency->format($this->tax->calculate($this->currency->convert($result['price'], $this->config->get('config_currency'), $this->config->get('config_currency_out')),  $result['tax_class_id'], $this->config->get('config_tax')), $this->config->get('config_currency_out'), '');
+					}
+					else{
+						$price = $result['price_opt_big'] + $result['price_opt_big']*0.3;
+						$price = $this->currency->format($this->tax->calculate($this->currency->convert($price, $this->config->get('config_currency'), $this->config->get('config_currency_out')),  $result['tax_class_id'], $this->config->get('config_tax')), $this->config->get('config_currency_out'), '');
+					}
+				} else {
+					$price = $this->currency->format($this->tax->calculate($this->currency->convert(0, $this->config->get('config_currency'), $this->config->get('config_currency_out')),  $result['tax_class_id'], $this->config->get('config_tax')), $this->config->get('config_currency_out'), '');;
 
-                }
+				}
 
 				if ((float)$result['special']) {
 					$special = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')));
@@ -417,7 +444,6 @@ class ControllerProductCategory extends Controller {
 			$data['content_bottom'] = $this->load->controller('common/content_bottom');
 			$data['footer'] = $this->load->controller('common/footer');
 			$data['header'] = $this->load->controller('common/header');
-
 			if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/product/category.tpl')) {
 				$this->response->setOutput($this->load->view($this->config->get('config_template') . '/template/product/category.tpl', $data));
 			} else {
@@ -480,5 +506,163 @@ class ControllerProductCategory extends Controller {
 				$this->response->setOutput($this->load->view('default/template/error/not_found.tpl', $data));
 			}
 		}
+	}
+	public function getApiData(){
+		$json = array();
+		$this->load->model('catalog/category');
+		if (isset($this->request->post['data'])) {
+			$data = json_decode(html_entity_decode($this->request->post['data']));
+			$action = $data->action;
+			if($action == 'getSectionsList'){
+				$catalog_id = $data->catalog_id;
+				$result = $this->model_catalog_category->getSectionsList($catalog_id);
+				$json['response'] = $result;
+			}
+			if($action == 'getSubSectionsList'){
+				$catalog_id = $data->params->catalog_id;
+				$section_id = $data->params->section_id;
+				$result = $this->model_catalog_category->getSubSectionsList($catalog_id, $section_id);
+				$json['response'] = $result;
+			}
+
+		}
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
+	}
+	public function searchApiResult(){
+		$json = array();
+
+		$this->load->model('catalog/category');
+		if (isset($this->request->post['data'])) {
+			$data =  json_decode(html_entity_decode($this->request->post['data']));
+			$action = $data->action;
+			if($action == 'putData'){
+				$catalog_id = $data->catalog_id;
+				$section_id = $data->section_id;
+				$list = $data->list;
+				$result = $this->model_catalog_category->putListItems($catalog_id, $section_id, $list);
+			}
+			elseif($action == 'putItemsQuantity'){
+				$list = $data->list;
+				$result = $this->model_catalog_category->putItemsQuantity($list);
+			}
+		}
+		$json['action'] = $action;
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
+	}
+
+	public function api_search_result()
+	{
+		$this->response->setOutput($this->indexSearch('no'));
+	}
+	public function indexSearch($get, $category_id = ''){
+		$this->load->model('catalog/category');
+		if($get == 'yes'){
+			$data = array();
+			$data['breadcrumbs_api'] = array();
+			$sections = $subsections = $items = $chooseInfo = '';
+			$storages = array();
+			$category_info = $this->model_catalog_category->getCategory($category_id);
+			if (isset($this->request->get['catalog_id'])) {
+				$catalog_id = $this->request->get['catalog_id'];
+				$category_auto_info = $this->model_catalog_category->getCategoryAutoById($catalog_id);
+			}
+			else{
+				$catalog_id = '';
+				$category_auto_info = '';
+			}
+			if (isset($this->request->get['section_id'])) {
+				$section_id = $this->request->get['section_id'];
+				$section_auto_info = $this->model_catalog_category->getSectionAutoById($section_id);
+			}else{
+				$section_auto_info = '';
+			}
+			if (isset($this->request->get['subsection_id'])) {
+				$subsection_id = $this->request->get['subsection_id'];
+				//$subsection_auto_info = $this->model_catalog_category->getSectionAutoById($section_id);
+			}else{
+				//$section_auto_info = '';
+			}
+			if($category_info){
+				$data['heading_title'] = $category_info['name'];
+			}
+			else{
+				$data['heading_title'] = 'Запасные части';
+			}
+
+//echo '<pre>'; print_r($section_auto_info); echo '</pre>';
+			if($category_auto_info){
+				$data['breadcrumbs_api'][] = array(
+					'text' => $category_auto_info['name'],
+					'href'  => $this->url->link('product/category', 'path=' . $category_id ).'&apisearch=catalog&catalog_id='.$catalog_id
+				);
+			}
+			if($section_auto_info){
+				$data['breadcrumbs_api'][] = array(
+					'text' => $section_auto_info['name'],
+					'href'  => $this->url->link('product/category', 'path=' . $category_id ).'&apisearch=catalog&catalog_id='.$catalog_id.'&section_id='.$section_id
+				);
+			}
+			if (isset($this->request->get['catalog_id']) && !isset($this->request->get['section_id'])) {
+				$chooseInfo = "Выберите раздел:";
+				$results = $this->model_catalog_category->getSectionsList($catalog_id);//echo '<pre>'; print_r($results); echo '</pre>';
+				$sections = $results['sections'];
+			}
+			elseif(isset($this->request->get['catalog_id']) && isset($this->request->get['section_id']) && !isset($this->request->get['subsection_id'])){
+				$chooseInfo = "Выберите подраздел:";
+				$sections = '';
+				$results = $this->model_catalog_category->getSubSectionsList($catalog_id, $section_id);//echo '<pre>'; print_r($results); echo '</pre>';
+				$subsections = $results['sections'];
+			}
+			elseif(isset($this->request->get['catalog_id']) && isset($this->request->get['section_id']) && isset($this->request->get['subsection_id'])){
+				$sections = '';
+				$subsections = '';
+				$results = $this->model_catalog_category->getItems($catalog_id, $section_id, $subsection_id);//echo '<pre>'; print_r($results); echo '</pre>';
+				$items = $results;
+				//storages
+				$storages = $this->model_catalog_category->getStorages(); //echo '<pre>'; print_r($storages); echo '</pre>';
+			}
+			else{
+				$sections = 'Данных нет';
+			}
+			$data['chooseInfo'] = $chooseInfo;
+			$data['sections'] = $sections;
+			$data['subsections'] = $subsections;
+			$data['results'] = $items;
+			$data['storages'] = $storages;
+			if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/product/api_search_result_full.tpl')) {
+				return $this->load->view($this->config->get('config_template') . '/template/product/api_search_result_full.tpl', $data);
+			} else {
+				return $this->load->view('default/template/product/api_search_result_full.tpl', $data);
+			}
+		}
+		else{
+			$data = array();
+
+			$catalog_id = $section_id = $subsection_id = '';
+			//echo '<pre>';print_r($this->request->get);echo '</pre>';
+
+			if (isset($this->request->get['catalog_id'])) {
+				$catalog_id = $this->request->get['catalog_id'];
+			}
+			if (isset($this->request->get['section_id'])) {
+				$section_id = $this->request->get['section_id'];
+			}
+			if (isset($this->request->get['subsection_id'])) {
+				$subsection_id = $this->request->get['subsection_id'];
+			}
+			$result = $this->model_catalog_category->getItems($catalog_id, $section_id, $subsection_id);
+			//storages
+			$storages = $this->model_catalog_category->getStorages(); //echo '<pre>'; print_r($result); echo '</pre>';
+			$data['storages'] = $storages;
+			$data['results'] = $result;
+			if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/product/api_search_result.tpl')) {
+				return $this->load->view($this->config->get('config_template') . '/template/product/api_search_result.tpl', $data);
+			} else {
+				return $this->load->view('default/template/product/api_search_result.tpl', $data);
+			}
+		}
+
 	}
 }

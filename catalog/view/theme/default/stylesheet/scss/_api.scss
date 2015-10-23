@@ -3,6 +3,19 @@
     .breadcrumb{
       li{
         font-size:0.9em;
+        & a{
+          color: #5e5e5e;
+          &:hover{
+            color:#337ab7;
+          }
+        }
+      }
+      & > li + li::before {
+        content: "";
+        padding: 0;
+      }
+      & > li:after{
+        top: -4px;
       }
     }
     .chooseInfo{
@@ -24,6 +37,9 @@
       margin-bottom: 5px;
       width:100px;
       padding:5px;
+      &:focus{
+        outline:none;
+      }
     }
     #sectionBody{
       margin:10px 0 20px;
@@ -91,7 +107,8 @@
         table{
           thead{
             tr > th{
-              font-size: 0.8em;
+              font-size: 0.7em;
+
             }
 
           }
@@ -105,17 +122,52 @@
               }
             }
           }
+          & > tbody > tr > th{
+            font-size:0.9em;
+
+          }
           & > tbody > tr > td{
             text-align: center;
+            font-size:0.8em;
           }
           & > tbody > tr > td:nth-child(11){
             text-align: right;
             width:80px;
             min-width:80px;
+            font-weight: bold;
+            font-size:1.1em;
           }
           & > tbody > tr > td:nth-child(-n+2){
             text-align: left;
           }
+
+          .cart-button{
+            &:hover{
+              cursor:pointer;
+
+            }
+            &:hover .fa-shopping-cart{
+              opacity: 1;
+              transform: scale(1,1) rotate(0.1deg);
+            }
+            .fa-shopping-cart{
+              color:#C22B2D;
+              font-size:1.5em;
+              opacity: 0.7;
+              transition: all 0.2s ease 0s;
+              &:hover{
+                cursor:pointer;
+
+
+              }
+            }
+          }
+
+        }
+        .result_empty{
+          font-size:1em;
+          text-align: center;
+          color: #C22B2D;
         }
       }
     }

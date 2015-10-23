@@ -5,6 +5,15 @@
 */
 #content #sectionMain .breadcrumb li {
   font-size: 0.9em; }
+  #content #sectionMain .breadcrumb li a {
+    color: #5e5e5e; }
+    #content #sectionMain .breadcrumb li a:hover {
+      color: #337ab7; }
+#content #sectionMain .breadcrumb > li + li::before {
+  content: "";
+  padding: 0; }
+#content #sectionMain .breadcrumb > li:after {
+  top: -4px; }
 #content #sectionMain .chooseInfo {
   width: 200px;
   float: left;
@@ -22,6 +31,8 @@
   margin-bottom: 5px;
   width: 100px;
   padding: 5px; }
+  #content #sectionMain #searchItems:focus {
+    outline: none; }
 #content #sectionMain #sectionBody {
   margin: 10px 0 20px;
   padding: 0 15px;
@@ -68,19 +79,40 @@
   #content #sectionMain #sectionBody .rowBody {
     clear: both; }
   #content #sectionMain #sectionBody .result-table table thead tr > th {
-    font-size: 0.8em; }
+    font-size: 0.7em; }
   #content #sectionMain #sectionBody .result-table table a.section-photo:focus {
     color: #450b09; }
   #content #sectionMain #sectionBody .result-table table a.section-photo:hover {
     color: #23527c; }
+  #content #sectionMain #sectionBody .result-table table > tbody > tr > th {
+    font-size: 0.9em; }
   #content #sectionMain #sectionBody .result-table table > tbody > tr > td {
-    text-align: center; }
+    text-align: center;
+    font-size: 0.8em; }
   #content #sectionMain #sectionBody .result-table table > tbody > tr > td:nth-child(11) {
     text-align: right;
     width: 80px;
-    min-width: 80px; }
+    min-width: 80px;
+    font-weight: bold;
+    font-size: 1.1em; }
   #content #sectionMain #sectionBody .result-table table > tbody > tr > td:nth-child(-n+2) {
     text-align: left; }
+  #content #sectionMain #sectionBody .result-table table .cart-button:hover {
+    cursor: pointer; }
+  #content #sectionMain #sectionBody .result-table table .cart-button:hover .fa-shopping-cart {
+    opacity: 1;
+    transform: scale(1, 1) rotate(0.1deg); }
+  #content #sectionMain #sectionBody .result-table table .cart-button .fa-shopping-cart {
+    color: #C22B2D;
+    font-size: 1.5em;
+    opacity: 0.7;
+    transition: all 0.2s ease 0s; }
+    #content #sectionMain #sectionBody .result-table table .cart-button .fa-shopping-cart:hover {
+      cursor: pointer; }
+  #content #sectionMain #sectionBody .result-table .result_empty {
+    font-size: 1em;
+    text-align: center;
+    color: #C22B2D; }
 
 #notificCatalogAuto {
   display: none;

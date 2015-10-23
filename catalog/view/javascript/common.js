@@ -606,7 +606,7 @@ var Catalog = function(){
 			});
 			var item_id = items_arr[0];
 			$(htmlCElems.apiContent).data('item_id', item_id);
-			var href = _this.getCurrentHref(); console.log(href);
+			var href = _this.getCurrentHref();
 			var patt = new RegExp("subsection_id=" + item_id);
 			var res = patt.test(href);
 			console.log(res);
@@ -855,10 +855,10 @@ var Catalog = function(){
 			},
 			success: function (data) {
 				if (data["code"] > 0) {
-					elemShow(notification, data["message"] + " <br>Попробуйте еще раз!");
+					/*elemShow(notification, data["message"] + " <br>Попробуйте еще раз!");
 					setTimeout(function () {
 						elemHide(notification);
-					}, 2500);
+					}, 2500);*/
 				}
 				else {
 					if(data['items']){
@@ -888,7 +888,7 @@ var Catalog = function(){
 						}
 						else {
 							delayed_time = lastDelayedTime2;
-						} console.log(delayed_time);
+						}
 						lastDelayedTime2 = lastDelayedTime2 + 500;
 						delayedGet(itemsArr, delayed_time, length, 1);
 					}
@@ -955,8 +955,8 @@ var BodySection = function(options){
 	var htmlMsgElems = {
 		title: '<h1></h1>',
 		sectionMain: '<div id="sectionMain"></div>',
-		breadCrumbElem: '<ol class="breadcrumb"></ol>',
-		breadCrumbElemLi: '<li class="active"></li>',
+		breadCrumbElem: '<ul class="breadcrumb"></ul>',
+		breadCrumbElemLi: '<li></li>',
 		sectionBody: '<div id="sectionBody"></div>',
 		spanElem: '<div class="chooseInfo"></div>',
 		rowElem: '<div class="row rowBody"></div>',
@@ -970,6 +970,9 @@ var BodySection = function(options){
 	options = $.extend(default_options, options);
 	this.title = options.title;
 	this.response = options['response'];
+	if(this.response == 0){
+		return;
+	}
     this.parent_name = this.response['parent_name'];
 	this.parent_id = this.response['parent_id'];
 	if(this.response['parent_section_id']){
@@ -977,6 +980,12 @@ var BodySection = function(options){
 	}
 	this.sections = this.response['sections'];
 	this.getBody = function(){
+		if(this.response == 0){
+			var body = $(htmlMsgElems.sectionMain);
+			body.append('Данных нет');
+			sectionMain.remove();
+			return body;
+		}
 		var title = $(htmlMsgElems.title).append(this.title);
 		var body = $(htmlMsgElems.sectionMain),
 			breadcrumb = $(htmlMsgElems.breadCrumbElem),
@@ -994,10 +1003,13 @@ var BodySection = function(options){
 			photo = htmlMsgElems.photoElem;
 			$('#content').data('section_id', this.parent_section_id);
 		}
-		$.each(this.parent_name, function(ind, val){
+		$.each(this.parent_name, function(ind, val){ console.log(ind);
 			breadcrumb
 				.append($(htmlMsgElems.breadCrumbElemLi)
-				   .append(val));
+					.append($('<a href="' + val.href + '">')
+						.append(val.name)
+				));
+
 
 		});
 		$.each(this.sections, function(ind, val){
@@ -1044,16 +1056,17 @@ var BodySection = function(options){
 	}
 };
 function elemHide(obj){
-	obj.animate(
+	obj
+		.animate(
 		{
-			opacity: 0,
-			display: "none",
+			opacity: 0
 		},
 		500,
 		function(){
+			obj.css("display", "none");
 			obj.find('.body').empty();
-		}
-	);
+		});
+	//obj.css("display", "none");
 }
 function elemShow(obj, txt){
 	obj.css("display", "block");
@@ -1064,7 +1077,7 @@ function elemShow(obj, txt){
 	}
 }
 
-ajaxFunc = function(requestUrl, request){
+function ajaxFunc(requestUrl, request){
 	$.ajaxSetup({
 		url:requestUrl,
 		dataType:"json",
@@ -1089,12 +1102,12 @@ ajaxFunc = function(requestUrl, request){
 			console.log(err);
 		}
 	});
-};
+}
 function isError(replay){
 	return (replay.error != null);
 }
 // параметры строки запроса браузера
-getUrlVars = function (){
+function getUrlVars(){
 	var vars = [], hash;
 	var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
 	for(var i = 0; i < hashes.length; i++)
@@ -1105,9 +1118,9 @@ getUrlVars = function (){
 	}
 	window.token = vars['token'];
 	return vars;
-};
+}
 
-delayedGet = function(data, time, page, length, str){
+function delayedGet(data, time, page, length, str){
 	setTimeout(function(){
 		if(str == 'itemsCicle'){
 			window.Catalog.getItemsByCatalogCicle(data, page, length);
@@ -1117,5 +1130,5 @@ delayedGet = function(data, time, page, length, str){
 		}
 		//console.log(param);
 	}, time)
-};
+}
 

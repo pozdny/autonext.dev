@@ -855,4 +855,12 @@ a.thumbnail:hover{
     border:1px solid #cecece;
     border-width: 1px;
 }
-
+.img_socseti{
+	width:20px;
+	margin-right:5px;
+}
+a.link_socseti:active,
+a.link_socseti:focus
+{
+	color:#450b09;
+}

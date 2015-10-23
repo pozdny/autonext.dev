@@ -8,14 +8,23 @@
 <column id="column-left" class="col-sm-3 hidden-xs">
     <div class="list-group">
         <?php foreach($categories as $category) { ?>
-        <?php if($category['active']){
-             $active = 'active';
-             }
-             else{
-             $active = '';
-             }
-         ?>
-        <a class="list-group-item <?php echo $active; ?>" href="<?php echo $category['href']; ?>"><?php echo $category['name']; ?></a>
+            <?php if($category['active']){
+                 $active = 'active';
+                 }
+                 else{
+                 $active = '';
+                 }
+             ?>
+            <a class="list-group-item <?php echo $active; ?>" href="<?php echo $category['href']; ?>"><?php echo $category['name']; ?></a>
+                <?php if ($category['children']) { ?>
+                    <?php foreach ($category['children'] as $child) { ?>
+                        <?php if ($child['category_id'] == $child_id_sub) { ?>
+                        <a href="<?php echo $child['href']; ?>" class="list-group-item active_sub">&nbsp;&nbsp;&nbsp;- <?php echo $child['name']; ?></a>
+                        <?php } else { ?>
+                        <a href="<?php echo $child['href']; ?>" class="list-group-item">&nbsp;&nbsp;&nbsp;- <?php echo $child['name']; ?></a>
+                        <?php } ?>
+                    <?php } ?>
+                <?php } ?>
         <?php } ?>
     </div>
 </column>
