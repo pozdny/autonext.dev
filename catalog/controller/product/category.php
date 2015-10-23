@@ -618,8 +618,8 @@ class ControllerProductCategory extends Controller {
 			elseif(isset($this->request->get['catalog_id']) && isset($this->request->get['section_id']) && isset($this->request->get['subsection_id'])){
 				$sections = '';
 				$subsections = '';
-				$results = $this->model_catalog_category->getItems($catalog_id, $section_id, $subsection_id);//echo '<pre>'; print_r($results); echo '</pre>';
-				$arr_item = $results['items'];echo '<pre>'; print_r($arr_item); echo '</pre>';
+				$results = $this->model_catalog_category->getItems($catalog_id, $section_id, $subsection_id);echo '<pre>'; print_r($results); echo '</pre>';
+				$arr_item = $results['items'];//echo '<pre>'; print_r($arr_item); echo '</pre>';
 				$tax_class_id = $results["tax_class_id"];
 				foreach($arr_item as &$item){
 					foreach($item as $key=>&$value){

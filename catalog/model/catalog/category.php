@@ -297,8 +297,6 @@ class ModelCatalogCategory extends Model {
 						"price" => $result["price"],
 						"part_type_name" => $result["part_type"],
 						"storage_quantity" => $storage_quantity,
-						"tax_class_id" => $result["tax_class_id"]
-
 					);
 				}
 
